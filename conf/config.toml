@@ -1,0 +1,39 @@
+# ------------------------ UI Display --------------------------
+# Display options for the UI. Note that for custom ascii banners,
+# there is a max y,x of y,x characters of the 
+# 
+
+[ui_display]
+show_background = "true"  # set to false for transparent window background
+show_headers = "true"     # display of sidepane headers
+show_ui_borders = "false" # display of borders around windows
+color_scheme = "default"  # name of the colorscheme (filename wo. extension)
+ascii_banner = "default"  # ascii banner displayed on the start screen
+
+# ----------------------- KEYBINDINGS --------------------------
+# Navigation:
+#   Default navigation: arrow keys 
+#   Default alt navigation: are set to vim keybindings (h,j,k,l)
+#
+# Cube rotation:
+#   Clockwise rotation: arrow key (right)
+#   Counter clockwise rotation: arrow key (left)
+#   Alt clockwise rotation: vim key (l)
+#   Alt counter clockwise rotation: vim key (h)
+
+[keybindings]
+nav_left = "arw"                    # navigate left
+nav_right = "arw"                   # navigate right
+nav_up = "arw"                      # navigate up
+nav_down = "arw"                    # navigate down 
+rotate_clockwise = "arw"            # clockwise cube rotation
+rotate_counter_clockwise = "arw"    # counter clockwise cube rotation
+alt_nav_left = "h"                  # alt navigate left
+alt_nav_right = "l"                 # alt navigate right
+alt_nav_up = "k"                    # alt navgate down
+alt_nav_down = "j"                  # alt navgate up
+alt_rotate_clockwise = "h"          # alt clockwise cube rotation
+alt_rotate_counter_clockwise = "l"  # alt counter clockwise cube rotation
+
+# TODO:
+# maybe implement custom shortcut bindings for the different moves.
