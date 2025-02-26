@@ -16,5 +16,10 @@ build() {
 }
 
 package() {
+    cd "$srcdir/$pkgname-$pkgver"
+    
+    install -dm755 "$pkgdir/usr/bin"
+    install -dm755 "$pkgdir/usr/share/$pkgname"
 
+    cp -r app conf pyproject.toml setup.py ""
 }

@@ -3,16 +3,29 @@
   <img src=".assets/logo_2.png"/>
 </div>
 <br/>
-<br/>
 
-A Rubik's cube game client for the terminal.
+![](https://img.shields.io/badge/license-MIT-blueviolet.svg)
+![](https://img.shields.io/github/v/release/frederik/rubiks-tui?color=%23c694ff)
+
+A Rubik's cube game client for the terminal, written in python.
 
 ## Contents
 
-1. [Installation](#installation)
-3. [Configuration](#configuration)
+- [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+  - [Homebrew](#homebrew)
+  - [AUR](#aur)
+  - [Windows]()
+  - [Manual Installation](#manual-installation)
+- [Configuration](#configuration)
+  - [Colorschemes](#colorschemes)
+  - [Ascii-banners](#ascii-banners)
 
 ## Installation
+
+### Prerequisites
+
+This appllication requires having a nerd font installed on your system and set in the terminal emulator being used to run the application. Nerd fonts can be downloaded from [www.nerdfont.com](https://nerdfont.com). 
 
 ### Homebrew
 
