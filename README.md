@@ -113,11 +113,11 @@ Colorschemes are stored in a subdirectory to the application's config directory 
 The following example shows the necessary color definitions necessary for creating a custom colorscheme:
 
 ```toml
-# ---------------------------- WINDOW ----------------------------
+# ---------------------------- WINDOW --------------------
 [window]
 window_background = "rgb(24, 25, 38)"     # background colors of ui windows
-side_pane_backgroundr = ""
-icon_color = ""
+side_pane_background = "rgb(24, 25, 38)"
+icon_color = "rgb(138, 173, 244)"         # UI icon foreground color
 
 [header]
 header_background = ""
@@ -129,12 +129,12 @@ ui_selected_text = "rgb(125, 196, 228)"   # selected text color
 ascii_title = ""
 
 [cube]
-cube_top    = "rgb(202, 211, 245)" 
-cube_bottom = "rgb(238, 212, 159)"
-cube_left   = "rgb(166, 218, 149)"
-cube_right  = "rgb(138, 173, 244)"
-cube_front  = "rgb(237, 135, 150)"
-cube_back   = "rgb(245, 169, 127)"
+cube_top = "rgb(202, 211, 245)"     # tup cube face color (default: white)
+cube_bottom = "rgb(238, 212, 159)"  # bottom cube face color (default: yellow)
+cube_left = "rgb(166, 218, 149)"    # left cube face color (default: green)
+cube_right = "rgb(138, 173, 244)"   # right cube face color (default: blue)
+cube_front = "rgb(237, 135, 150)"   # front cube face color (default: red)
+cube_back = "rgb(245, 169, 127)"    # back cube face color (default: orange)
 ```
 
 **NOTE:** The application currently does not support hex-colors in these colorschemes.
