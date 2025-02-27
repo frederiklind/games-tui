@@ -32,15 +32,11 @@ class Game(object):
         """
         self.__move_count += 1
 
-    def rotate(self) -> bool:
-        
-
-
     def restart(self) -> None:
         """
         Resets the game state
         """
         self.__move_count = 0
         self.__history = []
-        self.cube = cube()
+        self.cube = Cube()
 

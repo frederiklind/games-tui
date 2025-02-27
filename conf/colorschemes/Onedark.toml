@@ -1,0 +1,20 @@
+[window]
+window_background = "#282c34"
+
+[header]
+header_background = "#32363e"
+header_text = "#636d83"
+
+[text]
+ui_text = "#abb2bf"
+ui_selected_text = "#56b6c2"
+ascii_title = "#56b6c2"
+icons = "#c678dd"
+
+[cube]
+cube_top = "#f2f4f5" 
+cube_bottom = "#e5c07b"
+cube_left = "#98c379"
+cube_right = "#61afef"
+cube_front = "#e06c75"
+cube_back = "#d65d0e"

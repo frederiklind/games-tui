@@ -7,10 +7,11 @@
 ![](https://img.shields.io/badge/license-MIT-blueviolet.svg)
 ![](https://img.shields.io/github/v/release/frederik/rubiks-tui?color=%23c694ff)
 
-A Rubik's cube game client for the terminal, written in python.
+A Rubik's cube game client for the terminal, written in python. 
 
 ## Contents
 
+- [Features]()
 - [Installation](#installation)
   - [Prerequisites](#prerequisites)
   - [Homebrew](#homebrew)
@@ -21,6 +22,24 @@ A Rubik's cube game client for the terminal, written in python.
   - [Colorschemes](#colorschemes)
   - [Ascii-banners](#ascii-banners)
 
+## Features
+
+### Game statistics
+
+Keeps track of the number of moves used to solve the cube, and the time spent getting a valid solution. The results are saved, encouraging you to beat your fastest time.
+
+### Rubik's cube cheat sheet
+
+The application contains a cheat sheet for learning the common algorithms for solving a Rubik's cube, which can be displayed alongside the game window.
+
+### Assisted gameplay
+
+When in assisted mode, the application will generate a sequence of moves for a valid solution based on current cube state.
+
+### Auto solving
+
+Cubes can be autosolved, and showcase the move sequence used for solving the cube. Pretty useless, but cool.
+
 ## Installation
 
 ### Prerequisites
@@ -29,7 +48,9 @@ This appllication requires having a nerd font installed on your system and set i
 
 ### Homebrew
 
+
 ### AUR
+
 
 ```bash
 # using paru
