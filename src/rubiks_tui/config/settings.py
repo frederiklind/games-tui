@@ -52,6 +52,8 @@ class Settings(object):
         cs = scheme if scheme is not None else self.color_scheme
         ColorScheme.set(self.__config_dir, cs, self.show_background)
          
+    def dir(self) -> str:
+        return self.__config_dir
 
     def get_colorschemes(self) -> List[str]:
         """
@@ -66,8 +68,6 @@ class Settings(object):
                 colorschemes.append(os.path.splitext(file)[0])  # Strip extension
                 i += 1
         return colorschemes
-
-
 
     def get_ascii_banners(self) -> List[str]:
         """

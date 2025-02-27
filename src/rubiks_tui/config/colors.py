@@ -125,6 +125,7 @@ class ColorScheme:
             curses.init_pair(10, 31, ColorScheme.__get_bck(10) if show_bck else -1)  # ui selected text
             curses.init_pair(11, 32, ColorScheme.__get_bck(11) if show_bck else -1)  # icons
             curses.init_pair(12, 33, ColorScheme.__get_bck(12) if show_bck else -1)  # ascii banner
+            curses.init_pair(13, 29, ColorScheme.__get_bck(1) if show_bck else -1)
                     
     @staticmethod
     def __get_bck(pair_idx: int) -> int:

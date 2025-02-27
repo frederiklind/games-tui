@@ -1,4 +1,13 @@
+import os
+
+from typing import List
+from config.settings import settings
+
+
 class Figlet:
+    """
+
+    """
 
     @staticmethod
     def title() -> list[str]:
@@ -10,3 +19,11 @@ class Figlet:
             "/_/ |_| \\__,_/ /_.___//_/  /_/\\|_|    /____/     /_/    \\____/  /___/    ",
             "",
         ]
+    
+    @staticmethod
+    def get_from_file(filename: str) -> List[str]:
+        """
+
+        """
+        with open(os.path.join(settings.dir(), "ascii", f"{filename}.txt"), "r") as f:
+            return [line for line in f]

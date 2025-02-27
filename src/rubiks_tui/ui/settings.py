@@ -2,6 +2,7 @@ import curses
 
 from typing import Dict, List
 from config.settings import settings
+from ui.figlet import Figlet
 
 
 class SettingsUI(object):
@@ -50,8 +51,6 @@ class SettingsUI(object):
             "  Show window background  ",
             "  Show window borders     ",
             "  Keybinding Preset       ",
-            "  Save   ",
-            "  Exit   ",
         ]
         self.__vals = [
             self.__color_schemes[self.__colorscheme_idx],
@@ -87,16 +86,65 @@ class SettingsUI(object):
         self.__win.bkgd(" ", curses.color_pair(7))
 
         # draw headers
-        self.__win.addstr(0, 0, " ".join([""] * (self.__width + 1)), curses.color_pair(8))
-        self.__win.addstr(8, 0, " ".join([""] * (self.__width + 1)), curses.color_pair(8))
+        self.__win.attron(curses.color_pair(8) | curses.A_BOLD)
+        self.__win.addstr(0, 0, " ".join([""] * (self.__width + 1)))
+        self.__win.addstr(8, 0, " ".join([""] * (self.__width + 1))) 
+        self.__win.addstr(0, 1, "  Settings")
+        self.__win.addstr(8, 1, "  Preview")
+
+        self.__win.attroff(curses.color_pair(9) | curses.A_BOLD)
+        
         self.render_separator()
 
         # render opts
         self.render_opts()
-        self.render_bottom_controls()
+        self.render_sample_win()
 
         self.__win.refresh()
         self.stdscr.refresh()
+    
+    def render_sample_win(self) -> None:
+        for i in range(9, self.__height - 2):
+            self.__win.addstr(i, 0, " ".join([""] * (self.__width - 1)), curses.color_pair(1))
+            banner = Figlet.get_from_file(self.__ascii_banners[self.__ascii_idx])
+        sy = 10
+        sx = self.__width // 2 - len(banner[0]) // 2
+        self.__win.attron(curses.color_pair(12) | curses.A_BOLD)
+        for i in range(len(banner)):
+            self.__win.addstr(sy + i, sx, banner[i])
+        self.__win.attroff(curses.color_pair(8) | curses.A_BOLD)
+        
+        sy = 17
+        sx = 5
+        labels = [
+            "TOP", 
+            "BOTTOM", 
+            "LEFT", 
+            "RIGHT", 
+            "FRONT", 
+            "BACK",       
+            "Background", 
+            "Headers", 
+            "Text", 
+            "Selection", 
+            "Icons", 
+            "ASCII Banner"
+        ]
+
+        for i in range(len(labels)):
+            c = "" if i == 6 else ""
+            clr = 13 if i == 7 else i + 1
+            self.__win.addstr(sy + i, sx, c, curses.color_pair(clr))
+            self.__win.addstr(sy + i, sx + 4, labels[i], curses.color_pair(9))
+            if i == 5:
+                sy -= 6
+                sx = 20
+                    
+                        
+
+
+
+
 
     def render_separator(self) -> None:
         """
@@ -132,29 +180,6 @@ class SettingsUI(object):
                 self.__win.attroff(curses.color_pair(9))
             self.__win.addstr(sy + i, sx_a - 1, self.__icons[i], curses.color_pair(11))
 
-
-    def render_bottom_controls(self) -> None:
-        """
-
-        """
-        sy = self.__height - 3
-        sx = self.__width - 23         
-        for i in range(11, len(self.__opts)):
-            opt = self.__opts[i]
-            if i == self.__idx:
-                self.__win.attron(curses.color_pair(10) | curses.A_BOLD)
-                self.__win.addstr(sy, sx, opt)
-                self.__win.attroff(curses.color_pair(9) | curses.A_BOLD)
-            else:
-                self.__win.attron(curses.color_pair(9))
-                self.__win.addstr(sy, sx, opt)
-                self.__win.attroff(curses.color_pair(9))
-            self.__win.addstr(sy, sx - 1, self.__icons[i], curses.color_pair(11))
-            sx += len(opt) + 1
-
-
-
-
     def adjust_maxyx(self) -> None:
         """
 
@@ -173,7 +198,7 @@ class SettingsUI(object):
         """
         self.render_opts()
         # self.render_key_opts()
-        self.render_bottom_controls()
+        self.render_sample_win()
         self.__win.refresh()
 
     def increment_carrousel_item(self) -> None:
