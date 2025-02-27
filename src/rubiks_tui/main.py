@@ -3,6 +3,7 @@ import sys
 
 from config.settings import settings
 from ui.main_menu import MainMenu
+from config import size
 
 
 def main(stdscr):
@@ -26,7 +27,7 @@ def main(stdscr):
     settings.set_colors()
     stdscr.refresh()
 
-    MainMenu(stdscr)  # start main loop
+    MainMenu(stdscr, size.MAIN_HEIGHT, size.MAIN_WIDTH)  # start main loop
 
     curses.echo()
     curses.nocbreak()

@@ -11,32 +11,25 @@ class Game(object):
 
     Attributes:
         cube (Cube): Cube instance used for the current game.
-        __move_count (int): Number of moves used for the current game.
+        num_moves (int): Number of moves used for the current game.
     """
 
-    __move_count: int
+    num_moves: int
+    history: List[Tuple[int, int]]
     __max_hist_len: int
-    __history: List[Tuple[int, int]]
-    cube: Cube
 
     def __init__(self) -> None:
         """
-        creates a new instance of a Rubik's game
+
         """
-        self.__move_count = 0
+        self.num_moves = 0
         self.cube = Cube()
 
     def increment_move_count(self) -> None:
         """
         Increments the number of moves used for the game.
         """
-        self.__move_count += 1
+        self.num_moves += 1
 
-    def restart(self) -> None:
-        """
-        Resets the game state
-        """
-        self.__move_count = 0
-        self.__history = []
-        self.cube = Cube()
+
 
