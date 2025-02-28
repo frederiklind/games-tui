@@ -1,20 +1,20 @@
 [window]
-window_background = "#181926"
+window_background = "#24292e"
 
 [header]
-header_background = "#24273a"
+header_background = "#2b3137"
 header_text = "#6e738d"
 
 [text]
 ui_text = "#939ab7"
-ui_selected_text = "#7dc4e4"
-ascii_title = "#8aadf4"
-icons = "#8aadf4"
+ui_selected_text = "#52dbbd"
+ascii_title = "#55d0db"
+icons = "#b1e8fd"
 
 [cube]
-cube_top = "#cad3f5" 
-cube_bottom = "#eed49f"
-cube_left = "#a6da95"
-cube_right = "#8aadf4"
-cube_front = "#ed8796"
+cube_top = "#fafbfc" 
+cube_bottom = "#f2c35c"
+cube_left = "#2dba4e"
+cube_right = "#0d74e7"
+cube_front = "#f0440a"
 cube_back = "#f5a97f"

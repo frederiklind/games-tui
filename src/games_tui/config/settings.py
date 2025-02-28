@@ -3,7 +3,7 @@ import platform
 # from typing import List
 
 import toml
-from typing import List
+from typing import List, Any
 from config.colors import ColorScheme
 
 
@@ -83,9 +83,15 @@ class Settings(object):
                 i += 1
         return banners
     
-    def update_toml_value(self, section: str, key: str, value):
+    def update_toml_value(self, section: str, key: str, value: Any):
         """
+        Updates specified value in the toml configuration, based on
+        section and key.
 
+        Args:
+            section (str): The section name of where the key is located.
+            key (str): The key of where the value is to be changed.
+            value (Any): The new value to be stored in the configuration. 
         """
         file_path = os.path.join(self.__config_dir, "config.toml")
         try:

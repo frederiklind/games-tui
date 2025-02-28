@@ -1,4 +1,4 @@
-from typing import List, Tuple, Deque
+from typing import List, Tuple, Deque, Optional
 from collections import deque
 
 
@@ -226,7 +226,7 @@ class RubiksGame(object):
         num_moves (int): Number of moves used for the current game.
         history: (Deque[Tuple[int, int]]): Double ended queue for storing previous moves.
     """
-    
+    cube: RubiksCube 
     num_moves: int
     history: Deque[Tuple[int, int]]
 
@@ -235,6 +235,7 @@ class RubiksGame(object):
         Initializes an instance of a Rubik's game, with an initial move count
         of 0, and an empty history queue.
         """
+        self.cube = RubiksCube()
         self.num_moves = 0
         self.history = deque()
 
@@ -244,20 +245,25 @@ class RubiksGame(object):
         of the history queue
         """
         self.num_moves += 1
-        self.history.extend((face, direction))
+        self.history.append((face, direction))
         if len(self.history) > 100:
             self.history.popleft()
 
-    def last_move(self) -> Tuple[int, int]:
+    def revert_move(self) -> bool:
         """
-        Gets the latest move performed on the Rubik's cube from the
-        history queue. 
+        Reverts the last move on the cube.
+        """
+        if self.history:
+            last_move = self.history.pop()
+            face, direction = last_move
+            reverse_direction = 1 if direction == 0 else 0
+            self.cube.rotate(face, reverse_direction)
+            self.num_moves += 1  
+            return True
+        return False
 
-        Returns:
-            Tuple[int, int]: The tuple of face and direction representing a move.
-        """
-        if not self.history:
-            return None
-        self.num_moves += 1
-        return self.history.pop()
-        
+    def move(self, face: int, direction: int) -> bool:
+        return self.cube.rotate(face, direction)
+
+    def get_cube(self) -> List[List[List[str]]]:
+        return self.cube.get()

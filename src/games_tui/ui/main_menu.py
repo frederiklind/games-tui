@@ -92,7 +92,7 @@ class MainMenu(Window):
                 self.win.attron(curses.color_pair(9))
                 self.win.addstr(sy + i, cx - 6, opt)
                 self.win.attroff(curses.color_pair(9))
-            self.win.addstr(sy + i, cx - 10, icon, curses.color_pair(11))
+            self.win.addstr(sy + i, cx - 9, icon, curses.color_pair(11))
 
     def adjust_maxyx(self) -> None:
         """ """

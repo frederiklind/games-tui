@@ -2,8 +2,8 @@
 show_background = true
 show_headers = true
 show_ui_borders = false
-color_scheme = "Gruvbox-Dark"
-ascii_banner = "Grafitti"
+color_scheme = "Catppuccin-Mocha"
+ascii_banner = "Slant"
 
 [controls]
 nav_left = "arw"

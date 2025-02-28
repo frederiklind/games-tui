@@ -2,7 +2,7 @@ import curses
 import random
 import threading
 import time
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Optional
 
 # from config import settings
 from games.rubiks.rubiks import RubiksGame, RubiksCube
@@ -19,7 +19,6 @@ class RubiksUI(Window):
 
     """
     game: RubiksGame
-    cube: RubiksCube
     win_c: "curses.window"     
     win_l: "curses.window"
     win_r: "curses.window"
@@ -28,7 +27,7 @@ class RubiksUI(Window):
     timer_thread: threading.Thread
 
 
-    def __init__(self, stdscr, height, width) -> None:
+    def __init__(self, stdscr, height: int, width: int) -> None:
         """
         Takes the stdscr as argument. Initially clears stdscr,and creates the
         initial windows for the ui elements.
@@ -65,8 +64,8 @@ class RubiksUI(Window):
         self.stop_timer_flag = threading.Event()
         self.timer_thread.daemon = True
 
-        self.cube = RubiksCube()
         self.make_wins()
+        time.sleep(0.5)
         # self.shuffle_cube()
         self.run()
 
@@ -88,7 +87,7 @@ class RubiksUI(Window):
         self.win_l.attroff(curses.color_pair(7) | curses.A_BOLD)
 
         self.win_r.attron(curses.color_pair(8) | curses.A_BOLD)
-        self.win_r.addstr(0, 0, " 󰆦 RubiksGame           ")
+        self.win_r.addstr(0, 0, " 󰆦 Game           ")
         self.win_r.addstr(6, 0, " 󰔺 Highscore      ")
         self.win_r.attroff(curses.color_pair(7) | curses.A_BOLD)
 
@@ -108,6 +107,67 @@ class RubiksUI(Window):
         self.win_r.refresh()
         self.stdscr.refresh()
 
+    def make_gameover_win(self, idx: int) -> None:
+        height, width = 13, 35
+        sy = self.max_y // 2 - self.height // 2
+        sx = self.max_x // 2 - self.width // 2
+        win = curses.newwin(height, width, sy + 1, sx + 20)
+        win.bkgd(" ", curses.color_pair(7))
+        win.attron(curses.color_pair(13))
+        win.box()
+        win.attroff(curses.color_pair(9))
+        
+        header = "Congratulations!"
+        msg = "You solved the Rubik's cube."
+        y, x = win.getmaxyx()
+        sy, sx = y // 2, x // 2
+
+        win.addstr(2, (sx - len(header) // 2) - 2, "", curses.color_pair(2))
+        win.attron(curses.color_pair(12) | curses.A_BOLD)
+        win.addstr(2, (sx - len(header) // 2) + 1, header)
+        win.attroff(curses.color_pair(9) | curses.A_BOLD)
+        win.addstr(4, sx - len(msg) // 2, msg, curses.color_pair(9))
+
+        opts = [
+            "Start Over",
+            "Exit to menu",
+        ]
+        for i in range(len(opts)):
+            if i == idx:
+                win.attron(curses.color_pair(10) | curses.A_BOLD)
+                win.addstr(7 + i, (sx - len(opts[i]) // 2) + 1, opts[i])
+                win.attroff(curses.color_pair(9) | curses.A_BOLD)
+            else:
+                win.addstr(7 + i, (sx - len(opts[i]) // 2) + 1, opts[i])
+
+        win.refresh()
+        self.stdscr.refresh()
+        return win
+
+
+    def game_over(self, state: bool) -> bool:
+        """
+
+        """
+        time.sleep(1)
+        idx = 0
+        win = self.make_gameover_win(idx)
+        while True:
+            key = self.stdscr.getch()
+            self.adjust_maxyx(True)
+            
+            if key in [curses.KEY_DOWN, ord("j")]:
+                idx = 1 if idx == 0 else 0 
+                self.make_gameover_win(idx)
+            
+            elif key in [curses.KEY_UP, ord("k")]:
+                idx = 1 if idx == 0 else 0 
+                self.make_gameover_win(idx)
+            
+            elif key in [curses.KEY_ENTER, 10, 13]:
+                return idx == 0
+
+
     def update_timer(self) -> None:
         """
 
@@ -121,7 +181,6 @@ class RubiksUI(Window):
         """
 
         """
-        self.game.increment_move_count()
         self.win_r.addstr(3, 5, str(self.game.num_moves), curses.color_pair(9))
 
     def stop_timer(self) -> None:
@@ -132,7 +191,7 @@ class RubiksUI(Window):
         self.timer_thread.join()
 
 
-    def adjust_maxyx(self) -> None:
+    def adjust_maxyx(self, is_over: Optional[bool] = False, idx: Optional[int] = 0) -> None:
         """
         Checks current stdscr max y and x values, if they do not match values
         stored in state, then UI is re-rendered. The re-rendering is only
@@ -145,6 +204,9 @@ class RubiksUI(Window):
             self.stdscr.clear()
             self.stdscr.refresh()
             self.make_wins()
+
+            if is_over:
+                self.make_gameover_win(idx)
 
     # ==================================================================================
     # ---------------------- Selected cube face indicator arrows -----------------------
@@ -216,7 +278,7 @@ class RubiksUI(Window):
         """
         Handles updating displayed cube state in the curses window.
         """
-        cb = self.cube.get()
+        cb = self.game.get_cube()
         for s in range(len(cb)):
             y = self.pos_y(s)
             for r in range(len(cb[s])):
@@ -237,7 +299,7 @@ class RubiksUI(Window):
             match i:
                 case self.idx:
                     self.win_l.attron(curses.color_pair(10) | curses.A_BOLD)
-                    self.win_l.addstr(y + i, 2, f"<  {self.opts[i]}  >")
+                    self.win_l.addstr(y + i, 2, f"  {self.opts[i]}  ")
                     self.win_l.attroff(curses.color_pair(9) | curses.A_BOLD)
                 case _:
                     self.win_l.addstr(
@@ -249,8 +311,8 @@ class RubiksUI(Window):
         """
 
         """
-        keys = ["UNDO  : Z", "REDO  : R", "HINT  : ?", "PAUSE : 󱁐", "OPTS  : 󱊷"]
-        symbols = ["󰕌", "󰑎", "", "", "󱤳"]
+        keys = ["UNDO  : Z", "HINT  : ?", "PAUSE : 󱁐", "OPTS  : 󱊷"]
+        symbols = ["󰕌", "", "", "󱤳"]
         y = 9
         for i in range(len(keys)):
             self.win_l.addstr(y + i, 2, symbols[i], curses.color_pair(11))
@@ -265,7 +327,7 @@ class RubiksUI(Window):
         for i in range(len(symbols)):
             self.win_r.addstr(y + i, 2, symbols[i], curses.color_pair(11))
         self.win_r.addstr(y + 0, 5, ui_utils.format_time(self.start_time), curses.color_pair(9))
-        self.win_r.addstr(y + 1, 5, str(self.game.num_moves), curses.color_pair(9))
+        self.win_r.addstr(y + 1, 5, f"{str(self.game.num_moves)}", curses.color_pair(9))
 
 
 
@@ -295,16 +357,24 @@ class RubiksUI(Window):
 
         """
         time.sleep(0.3)
-        for i in range(100):
-            side = random.randint(0, 5)
+        for i in range(50):
+            face = random.randint(0, 5)
             direction = random.randint(0, 1)
-            self.cube.rotate(side, direction)
+            self.game.move(face, direction)
             self.render_cube()
-            sleep_time = 0.01 + (i / 100) * 0.12
-            time.sleep(sleep_time)
+            time.sleep(0.1)
 
     def reset(self) -> None:
         self.game = RubiksGame()
+        self.shuffle_cube()
+        self.start_time = time.time()
+        self.timer_thread = threading.Thread(target=self.update_timer)
+        self.stop_timer_flag = threading.Event()
+        self.timer_thread.daemon = True
+        self.start_time = time.time()
+        self.timer_thread.start()
+
+
 
     def run(self) -> None:
         """
@@ -328,22 +398,46 @@ class RubiksUI(Window):
                 self.render_arw()
 
             elif key in [curses.KEY_LEFT, ord("h")]:  # counter clockwise rotaion
-                is_valid = self.cube.rotate(self.idx, 1)
+                is_valid = self.game.move(self.idx, 1)
                 self.render_cube()
+                self.game.add(self.idx, 1)
                 self.increment_mv()
                 if is_valid:
                     self.stop_timer()
-                    break
+                    new = self.game_over(True)
+                    if new:
+                        self.stdscr.clear()
+                        self.stdscr.refresh()
+                        self.make_wins()
+                        self.reset()
+                    else:
+                        break
 
             elif key in [curses.KEY_RIGHT, ord("l")]:  # clockwise rotation
-                is_valid = self.cube.rotate(self.idx, 0)
+                is_valid = self.game.move(self.idx, 0)
                 self.render_cube()
+                self.game.add(self.idx, 0)
                 self.increment_mv()
                 if is_valid:
                     self.stop_timer()
-                    break
+                    new = self.game_over(True)
+                    if new:
+                        self.stdscr.clear()
+                        self.stdscr.refresh()
+                        self.make_wins()
+                        self.reset()
+                    else: 
+                        break
+
+            elif key == ord("u"):
+                if self.game.revert_move(): 
+                    self.render_cube()
+                    self.increment_mv()
 
             elif key == ord("q"):
                 self.stop_timer()
-                break
+                break 
             self.render()
+
+
+
