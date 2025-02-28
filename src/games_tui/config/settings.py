@@ -33,7 +33,7 @@ class Settings(object):
         user_os = platform.system()
 
         self.__config_dir = os.path.join(
-            os.path.expanduser("~"), ".config", "rubiks-tui"
+            os.path.expanduser("~"), ".config", "games-tui"
         )
                 
         self.load()

@@ -5,9 +5,9 @@
 <br/>
 
 ![](https://img.shields.io/badge/license-MIT-blueviolet.svg)
-![](https://img.shields.io/github/v/release/frederik/rubiks-tui?color=%23c694ff)
+![](https://img.shields.io/github/v/release/frederiklind/rubiks-tui?color=%23c694ff)
 
-A Rubik's cube game client for the terminal, written in python. 
+A collection of terminal based mini-games, written in python. 
 
 ## Contents
 

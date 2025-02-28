@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 package-dir = {"" = "src"}
 
 [project]
-name = "rubiks-tui"
+name = "games-tui"
 version = "1.0.0"
 
 [project.scripts]
