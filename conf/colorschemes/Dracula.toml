@@ -7,7 +7,7 @@ header_text = "#6272a4"
 
 [text]
 ui_text = "#e8e8e2"
-ui_selected_text = "#bd93f9"
+ui_selected_text = "#FFB86C"
 ascii_title = "#bd93f9"
 icons = "#8be9fd"
 

@@ -17,7 +17,6 @@ class SettingsUI(Window):
         width (int): width of the window.
         __
     """
-    opts: List[str]
     subopts: Dict[int, int]
     color_schemes: List[str]
     ascii_banners: List[str]
@@ -44,7 +43,7 @@ class SettingsUI(Window):
 
         self.opts = [
             "  Color scheme            ",
-            "  Ascii banner            ",
+            "  Ascii banner style      ",
             "  Show window background  ",
             "  Show window borders     ",
             "  Keybinding Preset       ",
@@ -82,7 +81,7 @@ class SettingsUI(Window):
         self.win.attron(curses.color_pair(8) | curses.A_BOLD)
         self.win.addstr(0, 0, " ".join([""] * (self.width + 1)))
         self.win.addstr(8, 0, " ".join([""] * (self.width + 1))) 
-        self.win.addstr(0, 1, "  Settings")
+        self.win.addstr(0, 1, "  App Settings")
         self.win.addstr(8, 1, "  Preview")
 
         self.win.attroff(curses.color_pair(9) | curses.A_BOLD)
@@ -113,12 +112,12 @@ class SettingsUI(Window):
         sy = 17
         sx = 5
         labels = [
-            "TOP", 
-            "BOTTOM", 
-            "LEFT", 
-            "RIGHT", 
-            "FRONT", 
-            "BACK",       
+            "White", 
+            "Yellow", 
+            "Green", 
+            "Blue", 
+            "Red", 
+            "Orange",
             "Background", 
             "Headers", 
             "Text", 
@@ -145,7 +144,7 @@ class SettingsUI(Window):
         sx = self.width // 2
 
         for i in range(5):
-            self.win.addstr(sy + i, sx, "│", curses.color_pair(9))
+            self.win.addstr(sy + i, sx, "│", curses.color_pair(13))
 
 
     def render_opts(self) -> None:
@@ -160,7 +159,7 @@ class SettingsUI(Window):
             if i == self.idx:
                 self.win.attron(curses.color_pair(10) | curses.A_BOLD)
                 self.win.addstr(sy + i, sx_a, opt)
-                self.win.addstr(sy + i, sx_b, f"< {" ".join([""] * 32)}>")
+                self.win.addstr(sy + i, sx_b, f" {" ".join([""] * 32)}", curses.color_pair(3))
                 self.win.addstr(sy + i, sx_b + 5, self.__vals[i])
                 self.win.attroff(curses.color_pair(9) | curses.A_BOLD)
             else:
@@ -239,19 +238,20 @@ class SettingsUI(Window):
                 settings.update_toml_value(
                     "ui_display", "color_scheme", self.color_schemes[self.colorscheme_idx]
                 )
-
+            case 1:
+                settings.update_toml_value(
+                    "ui_display", "ascii_banner", self.ascii_banners[self.ascii_idx]
+                )
             case 2:
                 settings.update_toml_value(
                     "ui_display", "show_background", self.__vals[2] == "True"
                 )
-                settings.load()
-                settings.set_colors()
             case 3:
                 settings.update_toml_value(
                     "ui_display", "show_ui_borders", self.__vals[3] == "True"
                 )
-                settings.load()
-                settings.set_colors()
+        settings.load()
+        settings.set_colors()
 
     def run(self) -> None:
         """
@@ -284,8 +284,6 @@ class SettingsUI(Window):
                     val = self.__vals[self.idx] == "True"
                     self.__vals[self.idx] = str(not val)
                     self.update_setting()
-
-
                 
             elif key == ord("q"):
                 break

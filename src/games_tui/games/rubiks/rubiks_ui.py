@@ -5,22 +5,21 @@ import time
 from typing import Dict, Tuple
 
 # from config import settings
-from cube.rubiks import Cube
-from game.game import Game
+from games.rubiks.rubiks import RubiksGame, RubiksCube
 from ui.window import Window
 from utils import ui_utils
 
 
-class GameUI(Window):
+class RubiksUI(Window):
     """
-    Game UI contains three main curses windows: Command (moves), cube state, and
+    RubiksGame UI contains three main curses windows: Command (moves), cube state, and
     current game info/statistics.
 
     Attributes:
 
     """
-    game: Game
-    cube: Cube
+    game: RubiksGame
+    cube: RubiksCube
     win_c: "curses.window"     
     win_l: "curses.window"
     win_r: "curses.window"
@@ -39,7 +38,7 @@ class GameUI(Window):
         """
         super().__init__(stdscr, height, width, 0)
 
-        self.game = Game()
+        self.game = RubiksGame()
         self.opts = [
             " TOP    ",
             " BOTTOM ",
@@ -61,14 +60,14 @@ class GameUI(Window):
         self.stdscr.clear()
         self.stdscr.refresh()
 
-        self.start_time = time.time()  # Record the start time after cube is randomized
+        self.start_time = time.time()
         self.timer_thread = threading.Thread(target=self.update_timer)
         self.stop_timer_flag = threading.Event()
         self.timer_thread.daemon = True
 
-        self.cube = Cube()
+        self.cube = RubiksCube()
         self.make_wins()
-        self.shuffle_cube()
+        # self.shuffle_cube()
         self.run()
 
     def make_wins(self) -> None:
@@ -89,7 +88,7 @@ class GameUI(Window):
         self.win_l.attroff(curses.color_pair(7) | curses.A_BOLD)
 
         self.win_r.attron(curses.color_pair(8) | curses.A_BOLD)
-        self.win_r.addstr(0, 0, " 󰆦 Game           ")
+        self.win_r.addstr(0, 0, " 󰆦 RubiksGame           ")
         self.win_r.addstr(6, 0, " 󰔺 Highscore      ")
         self.win_r.attroff(curses.color_pair(7) | curses.A_BOLD)
 
@@ -108,9 +107,6 @@ class GameUI(Window):
         self.win_l.refresh()
         self.win_r.refresh()
         self.stdscr.refresh()
-
-
-
 
     def update_timer(self) -> None:
         """
@@ -308,7 +304,7 @@ class GameUI(Window):
             time.sleep(sleep_time)
 
     def reset(self) -> None:
-        self.game = Game()
+        self.game = RubiksGame()
 
     def run(self) -> None:
         """
@@ -332,14 +328,20 @@ class GameUI(Window):
                 self.render_arw()
 
             elif key in [curses.KEY_LEFT, ord("h")]:  # counter clockwise rotaion
-                self.cube.rotate(self.idx, 1)
+                is_valid = self.cube.rotate(self.idx, 1)
                 self.render_cube()
                 self.increment_mv()
+                if is_valid:
+                    self.stop_timer()
+                    break
 
             elif key in [curses.KEY_RIGHT, ord("l")]:  # clockwise rotation
-                self.cube.rotate(self.idx, 0)
+                is_valid = self.cube.rotate(self.idx, 0)
                 self.render_cube()
                 self.increment_mv()
+                if is_valid:
+                    self.stop_timer()
+                    break
 
             elif key == ord("q"):
                 self.stop_timer()
