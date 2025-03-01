@@ -1,3 +1,5 @@
+import curses
+
 from enum import Enum
 from typing import Optional, List, Any
 
@@ -13,6 +15,7 @@ class Window:
     max_y: int
     idx: Optional[int]
     opts: Optional[List[Any]]
+    win: "curses.window"
 
     def __init__(
         self, 
@@ -20,7 +23,8 @@ class Window:
         height: int, 
         width: int, 
         idx: Optional[int] = None,
-        opts: Optional[List[Any]] = None
+        opts: Optional[List[Any]] = None,
+        render_win=False
     ) -> None:
         """
         Initializes the component
@@ -35,6 +39,16 @@ class Window:
         self.idx = idx
         self.opts = opts
 
-    
-    def adjust_yx() -> None:
-        pass
+        if render_win:
+            self.render_win()
+
+    def render_win(self) -> None:
+        self.stdscr.clear()
+        self.stdscr.refresh()
+        sy = self.max_y // 2 - self.height // 2
+        sx = self.max_x // 2 - self.width // 2
+        self.win = curses.newwin(self.height, self.width, sy, sx) 
+        self.win.bkgd(" ", curses.color_pair(7))
+        self.win.refresh()
+        self.stdscr.refresh()
+

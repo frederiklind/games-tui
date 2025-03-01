@@ -22,12 +22,8 @@ class Settings(object):
     show_headers: bool
     show_ui_borders: bool
     ascii_banner: str
+    alt_controls: str
 
-    # keybindings
-    nav_left: str
-    nav_right: str
-    nav_up: str
-    nav_down: str
 
     def __init__(self) -> None:
         user_os = platform.system()
@@ -47,6 +43,7 @@ class Settings(object):
         self.ascii_banner = conf['ui_display']['ascii_banner']
         self.show_background = conf['ui_display']['show_background']
         self.show_ui_borders = conf['ui_display']['show_ui_borders']
+        self.alt_controls = conf['controls']['alt_keys']
 
     def set_colors(self, scheme: str = None) -> None:
         cs = scheme if scheme is not None else self.color_scheme

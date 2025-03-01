@@ -26,4 +26,4 @@ class ConfigUtils:
             case 3:
                 return ("ui_display", "show_ui_borders")
             case 4:
-                return ("controls", "preset")
+                return ("controls", "alt_keys")

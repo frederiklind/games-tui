@@ -3,6 +3,7 @@ from typing import List, Tuple
 
 from config import size
 from games.rubiks.rubiks_ui import RubiksUI
+from games.chess.chess_ui import ChessUI
 from ui.settings import SettingsUI
 from ui.window import Window
 from utils import ui_utils
@@ -13,6 +14,10 @@ class MainMenu(Window):
     Main menu which shows when the application starts.
 
     Attributes:
+        win ("curses.window"): Window of the UI 
+        banner (List[str]): Each line of the ASCII banner displayed in the main menu.
+        menus (List[str]): Items of x-axis menu.
+        menu_idx (int): Index of the current selected x-axis menu item.
     """
 
     win: "curses.window"
@@ -21,7 +26,14 @@ class MainMenu(Window):
     menu_idx: int
 
     def __init__(self, stdscr, height: int, width: int) -> None:
-        """ """
+        """
+        Initializes a new instance of the MainMenu window.
+
+        Args:
+            stdscr ("curses.stdscr"): The curses standard screen.
+            height (int): Height of the window.
+            width (int): Width of the window.
+        """
         super().__init__(
             stdscr,
             height,
@@ -120,7 +132,6 @@ class MainMenu(Window):
     def run(self) -> None:
         """ """
         self.render()
-        # self.__animation_thread.start()
 
         while True:
             key = self.stdscr.getch()
@@ -145,15 +156,33 @@ class MainMenu(Window):
                     self.change_menu()
 
             elif key in [curses.KEY_ENTER, 10, 13]:
-                match self.idx:
+                match self.menu_idx:
                     case 0:
-                        RubiksUI(self.stdscr, size.GAME_HEIGHT, size.GAME_WIDHT)
-                        self.make_win()
+                        match self.idx:
+                            case 1:
+                                SettingsUI(self.stdscr, size.MAIN_HEIGHT, size.MAIN_WIDTH)
+                                self.stdscr.clear()
+                                self.stdscr.refresh()
+                                self.adjust_maxyx()
+                                self.make_win()
+                            case 3:
+                                break
                     case 1:
-                        SettingsUI(self.stdscr, size.MAIN_HEIGHT, size.MAIN_WIDTH)
-                        self.stdscr.clear()
-                        self.stdscr.refresh()
-                        self.make_win()
+                        match self.idx:
+                            case 0:
+                                ChessUI(self.stdscr, size.CHESS_HEIGHT, size.CHESS_WIDTH)
+                                self.stdscr.clear()
+                                self.stdscr.refresh()
+                                self.adjust_maxyx()
+                                self.make_win()
+                            case 1:
+                                break
+                            case 3:
+                                break
                     case 3:
-                        break
+                        match self.idx:
+                            case 0:
+                                RubiksUI(self.stdscr, size.GAME_HEIGHT, size.GAME_WIDHT)
+                                self.make_win()
+                    
             self.render()

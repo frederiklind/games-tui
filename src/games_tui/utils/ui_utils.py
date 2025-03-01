@@ -33,7 +33,7 @@ MENU_OPTIONS: Dict[int, Tuple[str, str]] = {
     3: [
         ("", "Start Game        "),
         ("", "Highscore         "),
-        ("", "How to play       "),
+        ("", "Rubik's Tutorial  "),
         ("", "Game Settings     "),
     ],
     4: [
