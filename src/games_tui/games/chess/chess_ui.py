@@ -30,14 +30,12 @@ class ChessUI(Window):
         sy = 1
 
         for r in range(8):
-            sx = 3 if r % 2 == 0 else 8
+            sx = 1 if r % 2 == 0 else 4
             for c in range(4):
-                self.win.addstr(sy, sx, "     ", curses.color_pair(14))     
-                self.win.addstr(sy + 1, sx, "     ", curses.color_pair(14))     
-                self.win.addstr(sy + 2, sx, "     ", curses.color_pair(14))
-                self.win.addstr(sy + 1, sx + 7, "󰡗", curses.color_pair(1))
-                sx += 10
-            sy += 3
+                self.win.addstr(sy, sx, "   ", curses.color_pair(14))     
+                self.win.addstr(sy, sx + 1, "󰡗", curses.color_pair(1))
+                sx += 6
+            sy += 1
         self.win.refresh()
 
     def render_pieces(self) -> None:
