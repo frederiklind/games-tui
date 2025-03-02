@@ -10,14 +10,22 @@ class Suit(Enum):
     The four possible suits of a card, and a fifth
     one for the jokers.
     """
-    SPADES = "󰣑"
-    HEARTS = "󰋑"
-    DIAMONDS = "󰣏"
-    CLUBS = "󰣎"
-    JOKER = "󱑷"
+    JOKER = 0
+    SPADES = 1
+    HEARTS = 2
+    DIAMONDS = 3
+    CLUBS = 4
+
+    __symbols = {
+        JOKER: "󱑷",
+        SPADES: "󰣑",
+        HEARTS: "󰋑",
+        DIAMONDS: "󰣏",
+        CLUBS: "󰣎",
+    }
 
     def __str__(self):
-        return self.value
+        return self.__symbols.get(self, "Invalid")
 
 
 class Rank(Enum):
@@ -37,25 +45,17 @@ class Rank(Enum):
     QUEEN = 12
     KING = 13
     ACE = 14
-    JOKER = 15
+    JOKER = 0
 
     def __str__(self):
         """
         String representation for ranks.
         """
-        match self.__rank:
-            case Rank.JACK:
-                return "J"
-            case Rank.QUEEN:
-                return "Q"
-            case Rank.KING:
-                return "K"
-            case Rank.ACE:
-                return "A"
-            case Rank.JOKER:
-                return "JOKER"
-            case _:
-                return str(self.__rank)
+        if self == Rank.JOKER:
+            return "JOKER"
+        elif self.value >= 11:  # Face cards and ACE
+            return self.name[0]  # "J", "Q", "K", "A"
+        return str(self.value)
 
 
 class Card(object):
@@ -80,12 +80,26 @@ class Card(object):
         """
         self.__rank = rank
         self.__suit = suit
+        self.__face_up = False
 
-    def rank(self) -> str:
-        return str(self.__rank)
+    def rank(self) -> Rank:
+        return self.__rank
 
-    def suit(self) -> str:
-        return str(self.__suit)
+    def suit(self) -> Suit:
+        return self.__suit
+
+    def flip(self) -> None:
+        self.__face_up = not self.__face_up
+
+    def face_up(self) -> bool:
+        return self.__face_up
+
+    def compare_color_to(self, other: "Card") -> bool:
+        """
+        Compares colors of another card.
+        """
+        return self.__suit.value % 2 == 0 and other.suit().value % 2 == 0
+
 
     def __eq__(self, other: "Card") -> bool:
         return self.__rank == other.__rank and self.__suit == other.__suit
