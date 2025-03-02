@@ -1,12 +1,12 @@
 [ui_display]
 show_background = true
 show_headers = true
-show_ui_borders = true
-color_scheme = "Catppuccin-Macchiato"
+show_ui_borders = false
+color_scheme = "Tokyonight"
 ascii_banner = "Slant"
 
 [controls]
-alt_keys = "Vim"
+alt_keys = "Gamer"
 
 [chess]
 debug_log_file = ""

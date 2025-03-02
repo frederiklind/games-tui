@@ -2,7 +2,7 @@ import random
 
 from collections import deque
 from enum import Enum
-from typing import List, Dict, Deque, Optional
+from typing import List, Deque, Optional
 
 
 class Suit(Enum):
@@ -16,25 +16,46 @@ class Suit(Enum):
     CLUBS = "󰣎"
     JOKER = "󱑷"
 
+    def __str__(self):
+        return self.value
+
 
 class Rank(Enum):
     """
     The possible ranks of a playing card.
     """
-    TWO = "2"
-    THREE = "3"
-    FOUR = "4"
-    FIVE = "5"
-    SIX = "6"
-    SEVEN = "7"
-    EIGHT = "8"
-    NINE = "9"
-    TEN = "10"
-    JACK = "J"
-    QUEEN = "Q"
-    KING = "K"
-    ACE = "A"
-    JOKER = "JOKER"
+    TWO = 2
+    THREE = 3
+    FOUR = 4
+    FIVE = 5
+    SIX = 6
+    SEVEN = 7
+    EIGHT = 8
+    NINE = 9
+    TEN = 10
+    JACK = 11
+    QUEEN = 12
+    KING = 13
+    ACE = 14
+    JOKER = 15
+
+    def __str__(self):
+        """
+        String representation for ranks.
+        """
+        match self.__rank:
+            case Rank.JACK:
+                return "J"
+            case Rank.QUEEN:
+                return "Q"
+            case Rank.KING:
+                return "K"
+            case Rank.ACE:
+                return "A"
+            case Rank.JOKER:
+                return "JOKER"
+            case _:
+                return str(self.__rank)
 
 
 class Card(object):
@@ -61,10 +82,19 @@ class Card(object):
         self.__suit = suit
 
     def rank(self) -> str:
-        return self.__rank
+        return str(self.__rank)
 
     def suit(self) -> str:
-        return self.__suit
+        return str(self.__suit)
+
+    def __eq__(self, other: "Card") -> bool:
+        return self.__rank == other.__rank and self.__suit == other.__suit
+
+    def __lt__(self, other: "Card") -> bool:
+        return self.__rank < other.__rank
+
+    def __gt__(self, other: "Card") -> bool:
+        return self.__rank > other.__rank
 
 
 class Deck(object):
@@ -180,7 +210,5 @@ class Deck(object):
         return list(self.__cards)
     
     def size(self) -> int:
-        """
-        Gets the number of card currently in the deck.
-        """
+        """ Gets the number of card currently in the deck. """
         return len(self.__cards)

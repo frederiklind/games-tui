@@ -17,9 +17,16 @@ class Database:
 
     @staticmethod
     def get_highscores(game: str) -> List[str]:
-        pass
-
-
-
+        conn = sqlite3.connect(Database.con_str)
 
     
+    @staticmethod
+    def create_init() -> None
+        """
+        Creates the initial database.
+        """
+        conn = sqlite3.connect(Database.con_str)
+        cursor = conn.cursor()
+        
+        cursor.execute()
+
