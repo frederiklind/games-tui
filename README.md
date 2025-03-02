@@ -4,9 +4,6 @@
 </div>
 <br/>
 
-![](https://img.shields.io/badge/license-MIT-blueviolet.svg)
-![](https://img.shields.io/github/v/release/frederiklind/rubiks-tui?color=%23c694ff)
-
 A collection of terminal based mini-games, written in python. 
 
 ## Contents
