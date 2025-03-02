@@ -30,6 +30,11 @@ class SettingsUI(Window):
     def __init__(self, stdscr, height: int, width: int) -> None:
         """
         initializes the main loop of the settings screen.
+
+        Args:
+            stdscr ("curses.stdscr"): The curses standard screen.
+            height (int): The width of the window.
+            width (int): The width of the window.
         """
         super().__init__(stdscr, height, width, idx=0, render_win=True)
 
@@ -136,7 +141,7 @@ class SettingsUI(Window):
                 
     def render_key_layout(self) -> None:
         """
-        
+        Renders a preview of the selected alt_controls in the sample section. 
         """
         arws = ["", "", "", ""]
         if self.__vals[4] == "Vim":
@@ -207,17 +212,6 @@ class SettingsUI(Window):
                 self.win.attroff(curses.color_pair(9))
             self.win.addstr(sy + i, sx_a - 1, self.icons[i], curses.color_pair(11))
 
-    def adjust_maxyx(self) -> None:
-        """
-
-        """
-        max_y, max_x = self.stdscr.getmaxyx()
-        if (self.max_y, self.max_x) != (max_y, max_x):
-            self.max_y = max_y
-            self.max_x = max_x
-            self.stdscr.clear()
-            self.stdscr.refresh()
-            self.make_win()
 
     def render(self) -> None:
         """
@@ -297,7 +291,7 @@ class SettingsUI(Window):
         self.render()
         while True:
             key = self.stdscr.getch()
-            self.adjust_maxyx()
+            self.adjust_maxyx(self.make_win)
 
             if key in [curses.KEY_UP, ord("k")]:
                 self.idx = (self.idx - 1) % len(self.opts)

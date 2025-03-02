@@ -2,7 +2,7 @@
 show_background = true
 show_headers = true
 show_ui_borders = true
-color_scheme = "Tokyonight"
+color_scheme = "Catppuccin-Macchiato"
 ascii_banner = "Slant"
 
 [controls]

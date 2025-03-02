@@ -137,6 +137,9 @@ class Deck(object):
     def draw_from_bottom(self) -> Optional[Card]:
         """
         Draws a card from the bottom of the deck
+
+        Returns:
+            Optional[Card]: The bottom card of the deck, returns None if empty.
         """
         return self.__cards.popleft() if self.__cards else None
 

@@ -2,10 +2,10 @@ import curses
 import random
 import threading
 import time
-from typing import Dict, Tuple, Optional
+from typing import Dict, Optional, Tuple
 
 # from config import settings
-from games.rubiks.rubiks import RubiksGame, RubiksCube
+from games.rubiks.rubiks import RubiksGame
 from ui.window import Window
 from utils import ui_utils
 
@@ -16,16 +16,18 @@ class RubiksUI(Window):
     current game info/statistics.
 
     Attributes:
-
+        game (RubiksGame): The rubiks game instance.
+        win_c (curses.window): The center window for displaying the rubiks cube.
+        win_l (curses.window): The left window for displaying options.
+        win_r (curses.window): The right window for displaying game stats.
     """
+
     game: RubiksGame
-    win_c: "curses.window"     
+    win_c: "curses.window"
     win_l: "curses.window"
     win_r: "curses.window"
     arw_xys: Dict[int, Tuple[int, int]]
-    start_time: float
     timer_thread: threading.Thread
-
 
     def __init__(self, stdscr, height: int, width: int) -> None:
         """
@@ -59,14 +61,13 @@ class RubiksUI(Window):
         self.stdscr.clear()
         self.stdscr.refresh()
 
-        self.start_time = time.time()
         self.timer_thread = threading.Thread(target=self.update_timer)
         self.stop_timer_flag = threading.Event()
         self.timer_thread.daemon = True
 
         self.make_wins()
         time.sleep(0.5)
-        # self.shuffle_cube()
+        # self.shuffle_cube()   # uncomment to actually start legit game.
         self.run()
 
     def make_wins(self) -> None:
@@ -116,7 +117,7 @@ class RubiksUI(Window):
         win.attron(curses.color_pair(13))
         win.box()
         win.attroff(curses.color_pair(9))
-        
+
         header = "Congratulations!"
         msg = "You solved the Rubik's cube."
         y, x = win.getmaxyx()
@@ -144,54 +145,45 @@ class RubiksUI(Window):
         self.stdscr.refresh()
         return win
 
-
     def game_over(self, state: bool) -> bool:
-        """
-
-        """
+        """ """
         time.sleep(1)
         idx = 0
-        win = self.make_gameover_win(idx)
+        self.make_gameover_win(idx)
         while True:
             key = self.stdscr.getch()
             self.adjust_maxyx(True)
-            
+
             if key in [curses.KEY_DOWN, ord("j")]:
-                idx = 1 if idx == 0 else 0 
+                idx = 1 if idx == 0 else 0
                 self.make_gameover_win(idx)
-            
+
             elif key in [curses.KEY_UP, ord("k")]:
-                idx = 1 if idx == 0 else 0 
+                idx = 1 if idx == 0 else 0
                 self.make_gameover_win(idx)
-            
+
             elif key in [curses.KEY_ENTER, 10, 13]:
                 return idx == 0
 
-
     def update_timer(self) -> None:
-        """
-
-        """
+        """ """
         while not self.stop_timer_flag.is_set():
             time.sleep(1)
             self.render_stats()
             self.win_r.refresh()
 
     def increment_mv(self) -> None:
-        """
-
-        """
+        """ """
         self.win_r.addstr(3, 5, str(self.game.num_moves), curses.color_pair(9))
 
     def stop_timer(self) -> None:
-        """
-
-        """
+        """ """
         self.stop_timer_flag.set()
         self.timer_thread.join()
 
-
-    def adjust_maxyx(self, is_over: Optional[bool] = False, idx: Optional[int] = 0) -> None:
+    def adjust_maxyx(
+        self, is_over: Optional[bool] = False, idx: Optional[int] = 0
+    ) -> None:
         """
         Checks current stdscr max y and x values, if they do not match values
         stored in state, then UI is re-rendered. The re-rendering is only
@@ -269,7 +261,7 @@ class RubiksUI(Window):
                 self.win_c.addstr(y, x, sa, curses.color_pair(10))
                 self.win_c.addstr(y + 4, x, sb, curses.color_pair(10))
         self.win_c.refresh()
-    
+
     # =================================================================================
     # --------------------------- Rendering of UI compoenents -------------------------
     # =================================================================================
@@ -291,9 +283,7 @@ class RubiksUI(Window):
         self.win_c.refresh()
 
     def render_cmds(self) -> None:
-        """
-
-        """
+        """ """
         y = 2
         for i in range(len(self.opts)):
             match i:
@@ -308,9 +298,7 @@ class RubiksUI(Window):
             self.win_l.addstr(y + i, 4, "", curses.color_pair(i + 1))
 
     def render_key_cmd(self) -> None:
-        """
-
-        """
+        """ """
         keys = ["UNDO  : Z", "HINT  : ?", "PAUSE : 󱁐", "OPTS  : 󱊷"]
         symbols = ["󰕌", "", "", "󱤳"]
         y = 9
@@ -319,22 +307,18 @@ class RubiksUI(Window):
             self.win_l.addstr(y + i, 5, keys[i], curses.color_pair(9))
 
     def render_stats(self) -> None:
-        """
-
-        """
+        """ """
         y = 2
         symbols = ["󰔛", "󱃴"]
         for i in range(len(symbols)):
             self.win_r.addstr(y + i, 2, symbols[i], curses.color_pair(11))
-        self.win_r.addstr(y + 0, 5, ui_utils.format_time(self.start_time), curses.color_pair(9))
+        self.win_r.addstr(
+            y + 0, 5, ui_utils.format_time(self.game.time()), curses.color_pair(9)
+        )
         self.win_r.addstr(y + 1, 5, f"{str(self.game.num_moves)}", curses.color_pair(9))
 
-
-
     def render_pr(self) -> None:
-        """
-
-        """
+        """ """
         symbols = ["󰔛", "󱃴"]
         ph = ["00:00:00", "000"]
         y = 10
@@ -343,17 +327,16 @@ class RubiksUI(Window):
             self.win_r.addstr(y + i, 5, ph[i], curses.color_pair(9))
 
     def render(self) -> None:
-        """
-
-        """
+        """ """
         self.render_cmds()
         self.win_l.refresh()
         self.win_r.refresh()
 
     # =================================================================================
 
-    def shuffle_cube(self) -> None:
+    def shuffle_cube(self, n: Optional[int] = None) -> None:
         """
+        Shuffles the cube into a random state by performing n rotations,
 
         """
         time.sleep(0.3)
@@ -367,14 +350,11 @@ class RubiksUI(Window):
     def reset(self) -> None:
         self.game = RubiksGame()
         self.shuffle_cube()
-        self.start_time = time.time()
         self.timer_thread = threading.Thread(target=self.update_timer)
         self.stop_timer_flag = threading.Event()
         self.timer_thread.daemon = True
-        self.start_time = time.time()
+        self.game.set_time(time.time())
         self.timer_thread.start()
-
-
 
     def run(self) -> None:
         """
@@ -382,7 +362,6 @@ class RubiksUI(Window):
         of ui components.
         """
         self.render()
-        self.start_time = time.time()
         self.timer_thread.start()
 
         while True:
@@ -426,18 +405,15 @@ class RubiksUI(Window):
                         self.stdscr.refresh()
                         self.make_wins()
                         self.reset()
-                    else: 
+                    else:
                         break
 
             elif key == ord("u"):
-                if self.game.revert_move(): 
+                if self.game.revert_move():
                     self.render_cube()
                     self.increment_mv()
 
             elif key == ord("q"):
                 self.stop_timer()
-                break 
+                break
             self.render()
-
-
-

@@ -1,4 +1,6 @@
-from typing import List, Tuple, Deque, Optional
+import time
+
+from typing import List, Tuple, Deque 
 from collections import deque
 
 
@@ -229,6 +231,7 @@ class RubiksGame(object):
     cube: RubiksCube 
     num_moves: int
     history: Deque[Tuple[int, int]]
+    __time: float
 
     def __init__(self) -> None:
         """
@@ -238,6 +241,7 @@ class RubiksGame(object):
         self.cube = RubiksCube()
         self.num_moves = 0
         self.history = deque()
+        self.__time = time.time()
 
     def add(self, face: int, direction: int) -> None:
         """
@@ -261,9 +265,21 @@ class RubiksGame(object):
             self.num_moves += 1  
             return True
         return False
-
+    
     def move(self, face: int, direction: int) -> bool:
         return self.cube.rotate(face, direction)
+
+    def time(self):
+        return self.__time
+
+    def set_time(self, time) -> None:
+        """
+        Sets the game time to whatever time.
+
+        Args:
+            time (sometime): Any time.
+        """
+        self.__time = time
 
     def get_cube(self) -> List[List[List[str]]]:
         return self.cube.get()
