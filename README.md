@@ -8,7 +8,9 @@ A collection of terminal based mini-games, written in python.
 
 ## Contents
 
-- [Features]()
+- [Features](#features)
+  - [Rubik's Cube Puzzle]()
+  - [Solitaire]()
 - [Installation](#installation)
   - [Prerequisites](#prerequisites)
   - [Homebrew](#homebrew)
@@ -21,21 +23,12 @@ A collection of terminal based mini-games, written in python.
 
 ## Features
 
+### Rubik's Cube Puzzle
+
 ### Game statistics
 
 Keeps track of the number of moves used to solve the cube, and the time spent getting a valid solution. The results are saved, encouraging you to beat your fastest time.
 
-### Rubik's cube cheat sheet
-
-The application contains a cheat sheet for learning the common algorithms for solving a Rubik's cube, which can be displayed alongside the game window.
-
-### Assisted gameplay
-
-When in assisted mode, the application will generate a sequence of moves for a valid solution based on current cube state.
-
-### Auto solving
-
-Cubes can be autosolved, and showcase the move sequence used for solving the cube. Pretty useless, but cool.
 
 ## Installation
 

@@ -85,19 +85,23 @@ class ColorScheme:
         with open(os.path.join(path, "colorschemes", f"{scheme}.toml"), 'r') as f:
             scheme = toml.load(f)
         return {
-            1: RGBColor(scheme['cube']['cube_top']),
-            2: RGBColor(scheme['cube']['cube_bottom']),
-            3: RGBColor(scheme['cube']['cube_left']),
-            4: RGBColor(scheme['cube']['cube_right']),
-            5: RGBColor(scheme['cube']['cube_front']),
-            6: RGBColor(scheme['cube']['cube_back']),
-            7: RGBColor(scheme['window']['window_background']),
-            8: RGBColor(scheme['header']['header_background']),
-            9: RGBColor(scheme['header']['header_text']),
-            10: RGBColor(scheme['text']['ui_text']),
-            11: RGBColor(scheme['text']['ui_selected_text']),
-            12: RGBColor(scheme['text']['icons']),
-            13: RGBColor(scheme['text']['ascii_title'])
+            1: RGBColor(scheme['base_colors']['white']),
+            2: RGBColor(scheme['base_colors']['yellow']),
+            3: RGBColor(scheme['base_colors']['green']),
+            4: RGBColor(scheme['base_colors']['blue']),
+            5: RGBColor(scheme['base_colors']['red']),
+            6: RGBColor(scheme['base_colors']['orange']),
+
+            7: RGBColor(scheme['ui_colors']['window_background']),
+            8: RGBColor(scheme['ui_colors']['header_background']),
+            9: RGBColor(scheme['ui_colors']['header_text']),
+            10: RGBColor(scheme['ui_colors']['ui_text']),
+            11: RGBColor(scheme['ui_colors']['ui_selected_text']),
+            12: RGBColor(scheme['ui_colors']['icons']),
+            13: RGBColor(scheme['ui_colors']['ascii_title']),
+
+            14: RGBColor(scheme['game_colors']['card_frames']),
+            15: RGBColor(scheme['game_colors']['card_selected_frame'])
         }
 
     @staticmethod
@@ -112,12 +116,12 @@ class ColorScheme:
                 curses.init_color(k + 20, v.r, v.g, v.b)    # create colors
 
             # setup setup colorpairs
-            curses.init_pair(1, 21, ColorScheme.__get_bck(1) if show_bck else -1)
-            curses.init_pair(2, 22, ColorScheme.__get_bck(2) if show_bck else -1)
-            curses.init_pair(3, 23, ColorScheme.__get_bck(3) if show_bck else -1)
-            curses.init_pair(4, 24, ColorScheme.__get_bck(4) if show_bck else -1)
-            curses.init_pair(5, 25, ColorScheme.__get_bck(5) if show_bck else -1)
-            curses.init_pair(6, 26, ColorScheme.__get_bck(6) if show_bck else -1)
+            curses.init_pair(1, 21, ColorScheme.__get_bck(1) if show_bck else -1)   # white
+            curses.init_pair(2, 22, ColorScheme.__get_bck(2) if show_bck else -1)   # yellow
+            curses.init_pair(3, 23, ColorScheme.__get_bck(3) if show_bck else -1)   # green
+            curses.init_pair(4, 24, ColorScheme.__get_bck(4) if show_bck else -1)   # blue
+            curses.init_pair(5, 25, ColorScheme.__get_bck(5) if show_bck else -1)   # red
+            curses.init_pair(6, 26, ColorScheme.__get_bck(6) if show_bck else -1)   # orange
 
             curses.init_pair(7, -1, ColorScheme.__get_bck(7) if show_bck else -1)    # window background
             curses.init_pair(8, 29, ColorScheme.__get_bck(8) if show_bck else -1)    # headers
@@ -127,7 +131,9 @@ class ColorScheme:
             curses.init_pair(12, 33, ColorScheme.__get_bck(12) if show_bck else -1)  # ascii banner
             curses.init_pair(13, 28, ColorScheme.__get_bck(1) if show_bck else -1)
 
-            curses.init_pair(14, -1, 28)
+            curses.init_pair(14, 34, ColorScheme.__get_bck(14) if show_bck else -1)  # card frames
+            curses.init_pair(15, 35, ColorScheme.__get_bck(15) if show_bck else -1)
+
 
                     
     @staticmethod
@@ -137,5 +143,5 @@ class ColorScheme:
                 return 28
             case _:
                 return 27
-            
+           
 

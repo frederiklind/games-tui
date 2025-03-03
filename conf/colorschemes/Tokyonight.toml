@@ -1,21 +1,20 @@
-[window]
-window_background = "#24283b"
+[base_colors]
+white = "#ffffff" 
+yellow = "#eed49f"
+green = "#9ece6a"
+blue = "#8aadf4"
+red = "#c84159"
+orange = "#ff9e64"
 
-[header]
+[ui_colors]
+window_background = "#24283b"
 header_background = "#414868"
 header_text = "#9aa5ce"
-
-[text]
 ui_text = "#939ab7"
 ui_selected_text = "#7dc4e4"
 ascii_title = "#2ac3de"
 icons = "#7aa2f7"
 
-[cube]
-cube_top = "#ffffff" 
-cube_bottom = "#eed49f"
-cube_left = "#9ece6a"
-cube_right = "#8aadf4"
-cube_front = "#c84159"
-cube_back = "#ff9e64 "
-
+[game_colors]
+card_frames = "#939ab7"
+card_selected_frame = "#c6a0f6"

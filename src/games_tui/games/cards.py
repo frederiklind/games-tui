@@ -108,7 +108,7 @@ class Card(object):
         return self.__rank == other.__rank and self.__suit == other.__suit
 
     def __lt__(self, other: "Card") -> bool:
-        return self.__rank < other.__rank
+        return self.__rank.value < other.__rank.value
 
     def __gt__(self, other: "Card") -> bool:
         return self.__rank > other.__rank

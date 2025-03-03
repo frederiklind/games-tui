@@ -7,6 +7,8 @@ class SolitaireGame(object):
     """
 
     """
+    __num_moves: int
+    __start_time: float
     stockpile: Deck    
     waste_pile: Deque[Card]
     foundation_piles: List[Deque[Card]]
@@ -16,6 +18,7 @@ class SolitaireGame(object):
         """
 
         """
+        self.__num_moves = 0
         self.stockpile = Deck(shuffle=True)
         self.waste_pile = deque()
         self.foundation_piles = [deque() for _ in range(4)] 
@@ -39,7 +42,7 @@ class SolitaireGame(object):
         while self.waste_pile:
             card = self.waste_pile.pop()
             card.flip()
-            self.stockpile.append(card)
+            self.stockpile.push_to_top(card)
 
     def push_to_foundation_pile(self, card: Card) -> bool:
         """
@@ -47,19 +50,37 @@ class SolitaireGame(object):
         """
         x = card.suit().value
         if card.rank() == Rank.ACE:
-            self.foundation_piles[x].push(card)
+            self.foundation_piles[x - 1].append(card)
             return True
-        
-        if self.is_next(card, self.foundation_piles[x][-1]):
-            self.foundation_piles[x].append(card)
+        if not self.foundation_piles[x - 1]:
+            return False
+
+        if self.is_next(card, self.foundation_piles[x - 1][-1]):
+            self.foundation_piles[x - 1].append(card)
             return True
         return False
 
+    def push_to_column(self, card: Card, clm: int) -> bool:
+        r = card.rank()
+        if self.columns[clm]:
+            card_b = self.columns[clm][-1]
+            if card < card_b and not card.compare_color_to(card_b):
+                self.columns[clm].append(card)
+                return True
+            return False
+        else:
+            if r == Rank.KING:
+                self.columns[clm].append(card)
+                return True
+            return False
 
     def is_next(self, card_a: Card, card_b: Card) -> bool:
         if card_b.rank() == Rank.ACE:
             return card_a.rank() == Rank.TWO
         else:
             return card_a.rank().value == card_b.rank().value + 1
+
+    def moves(self) -> int:
+        return self.moves()
 
 
