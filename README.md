@@ -31,8 +31,9 @@ A collection of terminal based mini-games, written in python.
 
 Become a master of the terminal based Rubik's cube. The game will track the number of performed moves of the cube, as well as the time used for a valid solution.
 
+<br/>
 <div align="center">
-  <img src=".assets/rubiks-ui.png"/>
+  <img src=".assets/rubiks.gif"/>
 </div>
 
 ### Game statistics
