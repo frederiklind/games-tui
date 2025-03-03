@@ -1,5 +1,5 @@
 [ui_display]
-show_background = false
+show_background = true
 show_headers = true
 show_ui_borders = true
 color_scheme = "Tokyonight"

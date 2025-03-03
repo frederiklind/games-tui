@@ -23,7 +23,15 @@ A collection of terminal based mini-games, written in python.
 
 ## Features
 
+### Solitaire
+
+
+
 ### Rubik's Cube Puzzle
+
+<div align="center">
+  <img src=".assets/rubiks-ui.png"/>
+</div>
 
 ### Game statistics
 

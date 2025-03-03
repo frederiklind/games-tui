@@ -321,7 +321,7 @@ class RubiksUI(Window):
         """ """
         symbols = ["󰔛", "󱃴"]
         ph = ["00:00:00", "000"]
-        y = 10
+        y = 8
         for i in range(len(symbols)):
             self.win_r.addstr(y + i, 2, symbols[i], curses.color_pair(11))
             self.win_r.addstr(y + i, 5, ph[i], curses.color_pair(9))
