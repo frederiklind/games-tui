@@ -64,8 +64,8 @@ yay -S rubiks-tui
 ### Build from source (Arch)
 
 ```bash
-git clone https://github.com/FLIVLA/rubiks-tui.git
-cd rubiks-tui
+git clone https://github.com/frederiklind/games-tui.git
+cd games-tui
 makepkg -si
 ```
 
@@ -74,14 +74,14 @@ makepkg -si
 Clone the repository and install the application using the `setup.py`:
 
 ```bash
-git clone https://github.com/FLIVLA/rubiks-tui.git
-cd rubiks-tui
+git clone https://github.com/frederiklind/games-tui.git
+cd games-tui
 python setup.py install
 ```
 
 ## Configuration
 
-### Application Settings
+### Color Themes
 
 The application saves your preferences in the `.toml` configuration file that comes with the application. Preferences are saved and takes effect while changing. Comes with a variety of different color schemes, placed in the application configuration folder.
 
@@ -121,3 +121,12 @@ icons = ""
 card_frames = ""
 card_selected_frame = ""
 ```
+
+### ASCII-Banners
+
+The ASCII-banner displayed on the application's main screen, can be changed from the application settings. 
+
+<br/>
+<div align="center">
+  <img src=".assets/ascii-banners.gif"/>
+</div>
