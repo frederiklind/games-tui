@@ -39,44 +39,7 @@ Become a master of the terminal based Rubik's cube. The game will track the numb
 
 Keeps track of the number of moves used to solve the cube, and the time spent getting a valid solution. The results are saved, encouraging you to beat your fastest time.
 
-### Application Settings
 
-The application saves your preferences in the `.toml` configuration file that comes with the application. Preferences are saved and takes effect while changing. Comes with a variety of different color schemes, placed in the application configuration folder.
-
-<div align="center">
-  <img src=".assets/colors.gif" />
-</div>
-
-The application gets color themes from the application config directory:
-
-- **Linux** - ~/.config/games-tui/colorschemes/
-- **MacOS** - ~/.something/.../games-tui/colorschemes/
-- **Windows** - C:\Users\your_username\something\...\games-tui\colorschemes
-
-To add your own color themes, the toml template below can be used as a starting point. The application supports both RGB, and hex color codes.
-
-```toml
-[base_colors]
-white = ""
-yellow = ""
-green = ""
-blue = ""
-red = ""
-orange = ""
-
-[ui_colors]
-window_background = ""
-header_background = ""
-header_text = ""
-ui_text = ""
-ui_text_selected = ""
-ascii_title = ""
-icons = ""
-
-[game_colors]
-card_frames = ""
-card_selected_frame = ""
-```
 
 ## Installation
 
@@ -116,60 +79,45 @@ cd rubiks-tui
 python setup.py install
 ```
 
-
 ## Configuration
 
-Configuration files will be placed in the applications config directory
+### Application Settings
 
-- **Linux**: ~/.config/rubiks-tui/config.toml
-- **MacOS**:
+The application saves your preferences in the `.toml` configuration file that comes with the application. Preferences are saved and takes effect while changing. Comes with a variety of different color schemes, placed in the application configuration folder.
 
-Example configuration can be found [Here]("")
+<br/>
+<div align="center">
+  <img src=".assets/colors.gif" />
+</div>
+<br/>
 
-Following is the default configuration file:
+The application gets color themes from the application config directory:
+
+- **Linux** - ~/.config/games-tui/colorschemes/
+- **MacOS** - ~/.something/.../games-tui/colorschemes/
+- **Windows** - C:\Users\your_username\something\...\games-tui\colorschemes
+
+To add your own color themes, the toml template below can be used as a starting point. The application supports both RGB, and hex color codes.
 
 ```toml
-# ------------------------ UI Display --------------------------
-# Display options for the UI. Note that for custom ascii banners,
-# there is a max y,x of y,x characters of the 
-# 
+[base_colors]
+white = ""
+yellow = ""
+green = ""
+blue = ""
+red = ""
+orange = ""
 
-[ui_display]
-show_background = "true"  # set to false for transparent window background
-show_headers = "true"     # display of sidepane headers
-show_ui_borders = "false" # display of borders around windows
-color_scheme = "default"  # name of the colorscheme (filename wo. extension)
-ascii_banner = "default"  # ascii banner displayed on the start screen
+[ui_colors]
+window_background = ""
+header_background = ""
+header_text = ""
+ui_text = ""
+ui_text_selected = ""
+ascii_title = ""
+icons = ""
 
-# ----------------------- KEYBINDINGS --------------------------
-# Navigation:
-#   Default navigation: arrow keys 
-#   Default alt navigation: are set to vim keybindings (h,j,k,l)
-#
-# Cube rotation:
-#   Clockwise rotation: arrow key (right)
-#   Counter clockwise rotation: arrow key (left)
-#   Alt clockwise rotation: vim key (l)
-#   Alt counter clockwise rotation: vim key (h)
-
-[keybindings]
-nav_left = "arw"                    # navigate left
-nav_right = "arw"                   # navigate right
-nav_up = "arw"                      # navigate up
-nav_down = "arw"                    # navigate down 
-rotate_clockwise = "arw"            # clockwise cube rotation
-rotate_counter_clockwise = "arw"    # counter clockwise cube rotation
-alt_nav_left = "h"                  # alt navigate left
-alt_nav_right = "l"                 # alt navigate right
-alt_nav_up = "k"                    # alt navgate down
-alt_nav_down = "j"                  # alt navgate up
-alt_rotate_clockwise = "h"          # alt clockwise cube rotation
-alt_rotate_counter_clockwise = "l"  # alt counter clockwise cube rotation
-
-# TODO:
-# maybe implement custom shortcut bindings for the different moves.
+[game_colors]
+card_frames = ""
+card_selected_frame = ""
 ```
-
-
-
-
