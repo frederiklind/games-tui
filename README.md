@@ -10,7 +10,7 @@ A collection of terminal based mini-games, written in python.
 
 - [Features](#features)
   - [Rubik's Cube Puzzle]()
-  - [Solitaire]()
+  - [Klondike Solitaire](#klondike-solitaire )
 - [Installation](#installation)
   - [Prerequisites](#prerequisites)
   - [Homebrew](#homebrew)
@@ -23,11 +23,13 @@ A collection of terminal based mini-games, written in python.
 
 ## Features
 
-### Solitaire
+### Klondike Solitaire
 
 
 
 ### Rubik's Cube Puzzle
+
+Become a master of the terminal based Rubik's cube. The game will track the number of performed moves of the cube, as well as the time used for a valid solution.
 
 <div align="center">
   <img src=".assets/rubiks-ui.png"/>
@@ -37,13 +39,44 @@ A collection of terminal based mini-games, written in python.
 
 Keeps track of the number of moves used to solve the cube, and the time spent getting a valid solution. The results are saved, encouraging you to beat your fastest time.
 
-### Settings
+### Application Settings
 
-Comes with a variety of different color schemes.
+The application saves your preferences in the `.toml` configuration file that comes with the application. Preferences are saved and takes effect while changing. Comes with a variety of different color schemes, placed in the application configuration folder.
 
 <div align="center">
   <img src=".assets/colors.gif" />
 </div>
+
+The application gets color themes from the application config directory:
+
+- **Linux** - ~/.config/games-tui/colorschemes/
+- **MacOS** - ~/.something/.../games-tui/colorschemes/
+- **Windows** - C:\Users\your_username\something\...\games-tui\colorschemes
+
+To add your own color themes, the toml template below can be used as a starting point. The application supports both RGB, and hex color codes.
+
+```toml
+[base_colors]
+white = ""
+yellow = ""
+green = ""
+blue = ""
+red = ""
+orange = ""
+
+[ui_colors]
+window_background = ""
+header_background = ""
+header_text = ""
+ui_text = ""
+ui_text_selected = ""
+ascii_title = ""
+icons = ""
+
+[game_colors]
+card_frames = ""
+card_selected_frame = ""
+```
 
 ## Installation
 
@@ -137,45 +170,6 @@ alt_rotate_counter_clockwise = "l"  # alt counter clockwise cube rotation
 # maybe implement custom shortcut bindings for the different moves.
 ```
 
-### Colorschemes
 
-Colorschemes are defined in `.toml` files separate from the main configuration file described in the precious section, to enable storing multiple colorschemes, and switching between them. By default the application ships with four pre-defined colorschemes:
-
-- [default]()
-- [catppuccin]()
-- [gruvbox]()
-- [tokyonight]()
-
-Colorschemes are stored in a subdirectory to the application's config directory in:
-
-
-The following example shows the necessary color definitions necessary for creating a custom colorscheme:
-
-```toml
-# ---------------------------- WINDOW --------------------
-[window]
-window_background = "rgb(24, 25, 38)"     # background colors of ui windows
-side_pane_background = "rgb(24, 25, 38)"
-icon_color = "rgb(138, 173, 244)"         # UI icon foreground color
-
-[header]
-header_background = ""
-header_text = ""
-
-[text]
-ui_text = ""
-ui_selected_text = "rgb(125, 196, 228)"   # selected text color
-ascii_title = ""
-
-[cube]
-cube_top = "rgb(202, 211, 245)"     # tup cube face color (default: white)
-cube_bottom = "rgb(238, 212, 159)"  # bottom cube face color (default: yellow)
-cube_left = "rgb(166, 218, 149)"    # left cube face color (default: green)
-cube_right = "rgb(138, 173, 244)"   # right cube face color (default: blue)
-cube_front = "rgb(237, 135, 150)"   # front cube face color (default: red)
-cube_back = "rgb(245, 169, 127)"    # back cube face color (default: orange)
-```
-
-**NOTE:** The application currently does not support hex-colors in these colorschemes.
 
 
