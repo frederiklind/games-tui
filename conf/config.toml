@@ -1,12 +1,12 @@
 [ui_display]
-show_background = true
+show_background = false
 show_headers = true
 show_ui_borders = false
 color_scheme = "Tokyonight"
 ascii_banner = "Slant"
 
 [controls]
-alt_keys = "Gamer"
+alt_keys = "Vim"
 
 [chess]
 debug_log_file = ""

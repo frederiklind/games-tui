@@ -13,19 +13,20 @@ class Suit(Enum):
     JOKER = 0
     SPADES = 1
     HEARTS = 2
-    DIAMONDS = 3
-    CLUBS = 4
+    CLUBS = 3
+    DIAMONDS = 4
 
     __symbols = {
-        JOKER: "󱑷",
-        SPADES: "󰣑",
-        HEARTS: "󰋑",
-        DIAMONDS: "󰣏",
-        CLUBS: "󰣎",
+        0: "󱑷",
+        1: "󰣑",
+        2: "󰋑",
+        3: "󰣎",
+        4: "󰣏",
     }
 
     def __str__(self):
-        return self.__symbols.get(self, "Invalid")
+        return self.__symbols[self.value]
+
 
 
 class Rank(Enum):
@@ -76,7 +77,7 @@ class Card(object):
 
         Args:
             value (str): ...
-            suit (str): ...
+            suit (str): ... 
         """
         self.__rank = rank
         self.__suit = suit
@@ -100,7 +101,9 @@ class Card(object):
         """
         return self.__suit.value % 2 == 0 and other.suit().value % 2 == 0
 
-
+    def color(self) -> int:
+        return 5 if self.__suit.value % 2 == 0 else 4 
+    
     def __eq__(self, other: "Card") -> bool:
         return self.__rank == other.__rank and self.__suit == other.__suit
 
@@ -222,7 +225,16 @@ class Deck(object):
             List[Card]: All cards in the deck.
         """
         return list(self.__cards)
+
+    def peek_top(self) -> Card:
+        if not self.is_empty():
+            return self.__cards[-1]
     
     def size(self) -> int:
         """ Gets the number of card currently in the deck. """
         return len(self.__cards)
+
+
+if __name__ == "__main__":
+    deck = Deck(shuffle=True)
+    print(str(deck.draw_from_top().rank()))

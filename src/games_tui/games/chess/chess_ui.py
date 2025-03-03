@@ -46,9 +46,3 @@ class ChessUI(Window):
             key = self.stdscr.getch()
             if key == ord("q"):
                 break
-
-
-
-            
-
-

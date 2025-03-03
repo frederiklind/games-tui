@@ -150,9 +150,9 @@ class SettingsUI(Window):
             self.win.attron(curses.color_pair(9) | curses.A_BOLD)
             for i in range(len(keys)):
                 self.win.addstr(sy - 1, sx + 2, arws[i], curses.color_pair(11))
-                self.win.addstr(sy, sx, "╭⎯⎯⎯╮")
+                self.win.addstr(sy, sx, "╭───╮")
                 self.win.addstr(sy + 1, sx, f"│ {keys[i]} │")
-                self.win.addstr(sy + 2, sx, "╰⎯⎯⎯╯")
+                self.win.addstr(sy + 2, sx, "╰───╯")
                 sx += 5
             self.win.attroff(curses.color_pair(9) | curses.A_BOLD)
         elif self.__vals[4] == "Gamer":
@@ -160,14 +160,14 @@ class SettingsUI(Window):
             keys = ["A", "S", "D", "W"]
             self.win.attron(curses.color_pair(9) | curses.A_BOLD)
             for i in range(len(keys) - 1):
-                self.win.addstr(sy, sx, "╭⎯⎯⎯╮")
+                self.win.addstr(sy, sx, "╭───╮")
                 self.win.addstr(sy + 1, sx, f"│ {keys[i]} │")
-                self.win.addstr(sy + 2, sx, "╰⎯⎯⎯╯")
+                self.win.addstr(sy + 2, sx, "╰───╯")
                 sx += 5
             sy, sx = 17, 63
-            self.win.addstr(sy, sx, "╭⎯⎯⎯╮")
+            self.win.addstr(sy, sx, "╭───╮")
             self.win.addstr(sy + 1, sx, f"│ {keys[3]} │")
-            self.win.addstr(sy + 2, sx, "╰⎯⎯⎯╯")
+            self.win.addstr(sy + 2, sx, "╰───╯")
             self.win.attroff(curses.color_pair(9) | curses.A_BOLD)
             
             self.win.addstr(21, 56, arws[0], curses.color_pair(11))

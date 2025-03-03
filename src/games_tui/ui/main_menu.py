@@ -4,6 +4,7 @@ from typing import List, Tuple
 from config import size
 from games.rubiks.rubiks_ui import RubiksUI
 from games.chess.chess_ui import ChessUI
+from games.solitaire.solitaire_ui import SolitaireUI
 from ui.settings import SettingsUI
 from ui.window import Window
 from utils import ui_utils
@@ -179,6 +180,14 @@ class MainMenu(Window):
                                 break
                             case 3:
                                 break
+                    case 2:
+                        match self.idx:
+                            case 0:
+                                SolitaireUI(self.stdscr, size.SOLITAIRE_HEIGHT, size.SOLITAIRE_WIDTH)
+                                self.stdscr.clear()
+                                self.stdscr.refresh()
+                                self.adjust_maxyx()
+                                self.make_win()
                     case 3:
                         match self.idx:
                             case 0:
