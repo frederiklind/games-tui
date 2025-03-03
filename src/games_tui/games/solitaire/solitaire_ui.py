@@ -63,7 +63,7 @@ class SolitaireUI(Window):
         for i in range(len(self.game.columns)):
             self.render_column(i)
 
-    def render_column(self, idx: int) -> None:
+    def render_column(self, idx: int, selected: Optional[Card] = None) -> None:
         sy = self.sy_b
         cards = list(self.game.columns[idx])
         for i in range(len(cards)):
@@ -98,7 +98,6 @@ class SolitaireUI(Window):
         is_top: Optional[bool] = True,
         card: Optional[Card] = None, 
         is_hover: Optional[bool] = False,
-        is_selected: Optional[bool] = False
     ) -> None:
         """ """
         c = 10 if is_hover else 14
@@ -106,6 +105,7 @@ class SolitaireUI(Window):
         self.win.attron(curses.color_pair(c))
         self.win.addstr(sy, sx, "╭───────╮")
         self.win.addstr(sy + 1, sx, "│       │")
+        self.win.addstr(sy + 2, sx, "│       │")
         sy += 1
         if is_top: 
             for i in range(5):

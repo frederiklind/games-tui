@@ -1,5 +1,5 @@
 from collections import deque 
-from typing import Deque, List
+from typing import Deque, List, Optional
 from games.cards import Suit, Rank, Card, Deck
 
 
@@ -31,7 +31,7 @@ class SolitaireGame(object):
 
     def push_to_waste_pile(self) -> None:
         """
-        
+         
         """
         if not self.stockpile.is_empty():
             card = self.stockpile.draw_from_top()
@@ -73,6 +73,18 @@ class SolitaireGame(object):
                 self.columns[clm].append(card)
                 return True
             return False
+
+    def draw_from_wastepile(self) -> Optional[Card]:
+        """
+        Draws a card from top of the waste pile. If empty,
+        returns None.
+
+        Returns:
+            Optional[Card]: The card on top of the wastepile, None if empty.
+        """
+        if self.waste_pile:
+            return self.waste_pile.pop()
+        return None
 
     def is_next(self, card_a: Card, card_b: Card) -> bool:
         if card_b.rank() == Rank.ACE:
