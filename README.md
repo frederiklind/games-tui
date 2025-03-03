@@ -37,6 +37,13 @@ A collection of terminal based mini-games, written in python.
 
 Keeps track of the number of moves used to solve the cube, and the time spent getting a valid solution. The results are saved, encouraging you to beat your fastest time.
 
+### Settings
+
+Comes with a variety of different color schemes.
+
+<div align="center">
+  <img src=".assets/colors.gif" />
+</div>
 
 ## Installation
 
