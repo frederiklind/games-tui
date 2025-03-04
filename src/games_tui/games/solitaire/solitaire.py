@@ -80,11 +80,26 @@ class SolitaireGame(object):
             return True
         return False
 
+    def flip_last(self, clm) -> None:
+        if self.columns[clm]:
+            last = self.peek_column(clm)
+            if not last.face_up():
+                last.flip()
+
+    def add_to_column(self, clm: int, cards: Deque[Card]) -> bool:
+        first = cards.popleft()
+        if self.push_to_column(first, clm):
+            while cards:
+                self.columns[clm].append(cards.popleft())
+            return True
+        cards.appendleft(first)
+        return False
+
     def push_to_column(self, card: Card, clm: int) -> bool:
         r = card.rank()
         if self.columns[clm]:
             card_b = self.columns[clm][-1]
-            if card < card_b and not card.compare_color_to(card_b):
+            if self.is_next(card, card_b) and not card.compare_color_to(card_b):
                 self.columns[clm].append(card)
                 return True
             return False
@@ -110,14 +125,24 @@ class SolitaireGame(object):
         return None
 
     def column_card_at_index(self, clm, idx) -> Optional[Card]:
-        if idx < self.column_size(clm) - 1:
+        if idx < self.column_size(clm):
             return self.columns[clm][idx]
         return None
 
-    def column_peek_range(self, clm, idx) -> Deque[Card]:
+    def put_back_clm(self, clm: int, cards: Deque[Card]) -> None:
+        for _ in range(len(cards)):
+            self.columns[clm].append(cards.popleft())
+
+    def put_back_waste_pile(self, cards: Deque[Card]) -> None:
+        for _ in range(len(cards)):
+            self.waste_pile.append(cards.pop())
+
+    def column_get_range(self, clm, idx) -> Deque[Card]:
         cards = deque()
-        for i in range(len(self.columns[clm]) - 1, idx, -1):
-            cards.appendleft(self.columns[clm][i])
+        i = len(self.columns[clm])
+        while i > idx:
+            cards.appendleft(self.columns[clm].pop())
+            i -= 1
         return cards
         
     def foundation_pile(self, idx: int) -> Deque[Card]:
@@ -151,7 +176,7 @@ class SolitaireGame(object):
         """
         if card_b.rank() == Rank.ACE:
             return card_a.rank() == Rank.TWO
-        return card_a.rank().value == card_b.rank().value + 1
+        return card_a.rank().value == card_b.rank().value - 1
 
 
     def moves(self) -> int:

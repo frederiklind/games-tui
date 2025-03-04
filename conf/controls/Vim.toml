@@ -1,0 +1,13 @@
+[navigation]
+up = "k"
+down = "j"
+right = "l"
+left = "h"
+
+[solitaire]
+move_to_foundation_pile = "m"
+deal_stockpile = "d"
+select_card = "return"
+
+[rubiks]
+
