@@ -8,15 +8,13 @@ class SolitaireGame(object):
     Class for maintaning a solitaire game.
 
     Attributes:
-        __num_moves (int): The number of moves performed in the game.
-        __start_time (float): ...
         stockpile (Deck): The remainder of cards after dealing columns.
         waste_pile (Deque[Card]): The wastepile of the game.
         foundation_piles (List[Deque[Card]]): ...
         columns (List[Deck[Card]]): ...
     """
-    __num_moves: int
-    __start_time: float
+    num_moves: int
+    start_time: float
     stockpile: Deck    
     waste_pile: Deque[Card]
     foundation_piles: List[Deque[Card]]
@@ -26,7 +24,7 @@ class SolitaireGame(object):
         """
         Initializes a new solitaire game.
         """
-        self.__num_moves = 0
+        num_moves = 0
         self.stockpile = Deck(shuffle=True)                  # start with shuffled deck
         self.waste_pile = deque()                            # initialize empty wastepile
         self.foundation_piles = [deque() for _ in range(4)]  # initialize empty foundation piles
@@ -75,7 +73,7 @@ class SolitaireGame(object):
         if not self.foundation_piles[x - 1]:
             return False
 
-        if self.is_next(card, self.foundation_piles[x - 1][-1]):
+        if self.is_next(card, self.foundation_piles[x - 1][-1], 1):
             self.foundation_piles[x - 1].append(card)
             return True
         return False
@@ -96,10 +94,13 @@ class SolitaireGame(object):
         return False
 
     def push_to_column(self, card: Card, clm: int) -> bool:
+        """
+
+        """
         r = card.rank()
         if self.columns[clm]:
             card_b = self.columns[clm][-1]
-            if self.is_next(card, card_b) and not card.compare_color_to(card_b):
+            if self.is_next(card, card_b, -1) and self.is_opposite_color(card, card_b):
                 self.columns[clm].append(card)
                 return True
             return False
@@ -163,20 +164,35 @@ class SolitaireGame(object):
             return self.waste_pile.pop()
         return None
 
-
-    def is_next(self, card_a: Card, card_b: Card) -> bool:
+    def is_opposite_color(self, card_a: Card, card_b: Card) -> bool:
         """
-        Checks if the rank of card A is sequentially next to card B.
+        Compares numeric representations of card suits, and returns the
+        negation of cards matching in color or suit. 
 
         Args:
             card_a (Card): ...
             card_b (Card): ...
         Returns:
+            bool: True if the cards have opposite colors, False otherwise.
+        """
+        a = card_a.suit().value 
+        b = card_b.suit().value
+        return not ((a % 2 == 0 and b % 2 == 0) or a == b) 
+
+
+    def is_next(self, card_a: Card, card_b: Card, n: int) -> bool:
+        """
+        Checks if the rank of card A is sequentially next to card B.
+
+        Args:
+            card_a (Card): Card numero uno.
+            card_b (Card): Card numero dos.
+        Returns:
             bool: True if card_a is sequentially next, else false.
         """
         if card_b.rank() == Rank.ACE:
             return card_a.rank() == Rank.TWO
-        return card_a.rank().value == card_b.rank().value - 1
+        return card_a.rank().value == card_b.rank().value + n
 
 
     def moves(self) -> int:
@@ -187,5 +203,3 @@ class SolitaireGame(object):
             int: The number of moves performed.
         """
         return self.moves()
-
-

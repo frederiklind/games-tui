@@ -4,7 +4,6 @@ import threading
 import time
 from typing import Dict, Optional, Tuple
 
-# from config import settings
 from games.rubiks.rubiks import RubiksGame
 from ui.window import Window
 from utils import ui_utils
@@ -109,6 +108,9 @@ class RubiksUI(Window):
         self.stdscr.refresh()
 
     def make_gameover_win(self, idx: int) -> None:
+        """
+
+        """
         height, width = 13, 35
         sy = self.max_y // 2 - self.height // 2
         sx = self.max_x // 2 - self.width // 2
@@ -198,7 +200,7 @@ class RubiksUI(Window):
             self.make_wins()
 
             if is_over:
-                self.make_gameover_win(idx)
+                self.make_gameover_win(idx)     
 
     # ==================================================================================
     # ---------------------- Selected cube face indicator arrows -----------------------
@@ -334,13 +336,15 @@ class RubiksUI(Window):
 
     # =================================================================================
 
-    def shuffle_cube(self, n: Optional[int] = None) -> None:
+    def shuffle_cube(self, n: Optional[int] = 50) -> None:
         """
         Shuffles the cube into a random state by performing n rotations,
-
+        
+        Args:
+            n (Optional[int]): Number of rotations to perform. Default: 50. 
         """
         time.sleep(0.3)
-        for i in range(50):
+        for i in range(n):
             face = random.randint(0, 5)
             direction = random.randint(0, 1)
             self.game.move(face, direction)
@@ -348,6 +352,9 @@ class RubiksUI(Window):
             time.sleep(0.1)
 
     def reset(self) -> None:
+        """
+
+        """
         self.game = RubiksGame()
         self.shuffle_cube()
         self.timer_thread = threading.Thread(target=self.update_timer)
