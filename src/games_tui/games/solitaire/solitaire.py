@@ -5,7 +5,15 @@ from games.cards import Suit, Rank, Card, Deck
 
 class SolitaireGame(object):
     """
+    Class for maintaning a solitaire game.
 
+    Attributes:
+        __num_moves (int): The number of moves performed in the game.
+        __start_time (float): ...
+        stockpile (Deck): The remainder of cards after dealing columns.
+        waste_pile (Deque[Card]): The wastepile of the game.
+        foundation_piles (List[Deque[Card]]): ...
+        columns (List[Deck[Card]]): ...
     """
     __num_moves: int
     __start_time: float
@@ -16,33 +24,45 @@ class SolitaireGame(object):
 
     def __init__(self) -> None:
         """
-
+        Initializes a new solitaire game.
         """
         self.__num_moves = 0
-        self.stockpile = Deck(shuffle=True)
-        self.waste_pile = deque()
-        self.foundation_piles = [deque() for _ in range(4)] 
-        self.columns = [deque() for _ in range(7)]
+        self.stockpile = Deck(shuffle=True)                  # start with shuffled deck
+        self.waste_pile = deque()                            # initialize empty wastepile
+        self.foundation_piles = [deque() for _ in range(4)]  # initialize empty foundation piles
+        self.columns = [deque() for _ in range(7)]           # initialize empty columns
+        
+        # deal cards to columns:
 
-        for i in range(7):
+        for i in range(7):                                              
             for _ in range(i + 1):
-                self.columns[i].append(self.stockpile.draw_from_top())
-            self.columns[i][-1].flip()
+                self.columns[i].append(self.stockpile.draw_from_top())  
+            self.columns[i][-1].flip()                                  # flip top cards
 
-    def push_to_waste_pile(self) -> None:
+    def push_to_waste_pile(self) -> bool:
         """
-         
+        Draws a card from the stockpile and pushes it to the waste pile,
+        if the stockpile is not empty.
+
+        Returns:
+            bool: True if card was pushed to wastepile, false otherwise.
         """
-        if not self.stockpile.is_empty():
-            card = self.stockpile.draw_from_top()
-            card.flip()
-            self.waste_pile.append(card)
+        if not self.stockpile.is_empty():           # check stockpile
+            card = self.stockpile.draw_from_top()   # draw card
+            card.flip()                             # card face up
+            self.waste_pile.append(card)            # add to wastepile
+            return True
+        return False                                # stockpile is empty
+
 
     def reset_stockpile(self) -> None:
-        while self.waste_pile:
-            card = self.waste_pile.pop()
-            card.flip()
-            self.stockpile.push_to_top(card)
+        """
+        Puts all cards from the wastepile back into the stockpile.
+        """
+        while self.waste_pile:                      # while there is cardz
+            card = self.waste_pile.pop()            # pop wastepile
+            card.flip()                             # do a kickflip!
+            self.stockpile.push_to_top(card)        # push to stockpile
 
     def push_to_foundation_pile(self, card: Card) -> bool:
         """
@@ -74,6 +94,9 @@ class SolitaireGame(object):
                 return True
             return False
 
+    # def peek_card_from_clm(self, clm: int) -> Card:
+        
+
     def draw_from_wastepile(self) -> Optional[Card]:
         """
         Draws a card from top of the waste pile. If empty,
@@ -86,13 +109,30 @@ class SolitaireGame(object):
             return self.waste_pile.pop()
         return None
 
+
     def is_next(self, card_a: Card, card_b: Card) -> bool:
+        """
+        Checks if the rank of card A is sequentially next to card B.
+
+        Args:
+            card_a (Card): ...
+            card_b (Card): ...
+        Returns:
+            bool: True if card_a is sequentially next, else false.
+        """
         if card_b.rank() == Rank.ACE:
             return card_a.rank() == Rank.TWO
         else:
             return card_a.rank().value == card_b.rank().value + 1
 
+
     def moves(self) -> int:
+        """
+        Returns the number of moves performed in the current game.
+
+        Returns:
+            int: The number of moves performed.
+        """
         return self.moves()
 
 

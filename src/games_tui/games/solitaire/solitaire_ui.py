@@ -20,6 +20,9 @@ class SolitaireUI(Window):
     z: int
 
     def __init__(self, stdscr, width, height) -> None:
+        """
+
+        """
         super().__init__(stdscr, width, height, idx=0, render_win=True)
 
         self.sy_a = 3
@@ -76,6 +79,9 @@ class SolitaireUI(Window):
                 is_hover=selected
             )
             sy += 2 if cards[i].face_up() else 1
+
+    def render_preview_column(self, cards: List[Card]) -> None:
+        pass
 
     def render_foundation_piles(self) -> None:
         for i in range(len(self.game.foundation_piles)):

@@ -54,8 +54,8 @@ class Rank(Enum):
         """
         if self == Rank.JOKER:
             return "JOKER"
-        elif self.value >= 11:  # Face cards and ACE
-            return self.name[0]  # "J", "Q", "K", "A"
+        elif self.value >= 11:      # Face cards and ACE
+            return self.name[0]     # "J", "Q", "K", "A"
         return str(self.value)
 
 
@@ -66,9 +66,11 @@ class Card(object):
     Attributes:
         __rank (Rank): The rank of the card.
         __suit (Suit): The suit of the card.
+        __face_up (bool): Whether the card faces up.
     """
     __rank: Rank
     __suit: Suit
+    __face_up: bool
 
     def __init__(self, rank: Rank, suit: Suit) -> None:
         """
@@ -148,15 +150,12 @@ class Deck(object):
             Deque[Card]: The generated deck of cards as double-ended queue.
         """
         deck = []
-
-        # Generate 52 cards (13 ranks x 4 suits)
         for suit in Suit:
-            if suit != Suit.JOKER:  # Skip Joker in suit loop
+            if suit != Suit.JOKER:                      # skip Joker
                 for rank in Rank:
-                    if rank != Rank.JOKER:  # Skip Joker in rank loop
+                    if rank != Rank.JOKER:              # skip Joker again
                         deck.append(Card(rank, suit))
 
-        # Optionally add Jokers to the deck
         for i in range(jokers):
             deck.append(Card(Rank.JOKER, Suit.JOKER))
 
@@ -167,9 +166,9 @@ class Deck(object):
         """
         Shuffles the cards.
         """
-        deck_list = list(self.__cards)      # Convert deque to list for shuffling
-        random.shuffle(deck_list)           # Shuffle the list
-        self.__cards = deque(deck_list)     # Convert the list back to deque
+        deck_list = list(self.__cards)      # convert deque to list for shuffling
+        random.shuffle(deck_list)           # shuffle the list
+        self.__cards = deque(deck_list)     # convert the list back to deque
 
 
     def draw_from_top(self) -> Optional[Card]:

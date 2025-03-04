@@ -1,4 +1,5 @@
 import curses
+import time
 
 from enum import Enum
 from typing import Optional, List, Any, Callable
@@ -79,5 +80,16 @@ class Window:
             self.max_x = max_x
             self.stdscr.clear()
             self.stdscr.refresh()
+
+            # prevent application crash if window is too small:
+
+            if self. max_y < self.height or self.max_x < self.width:
+                msg = "Window is currently too small"
+                self.stdscr.addstr(3, 3, msg)
+                self.stdscr.refresh()
+
+                while self.max_y < self.height or self.max_x < self.width:
+                    self.stdscr.refresh()
+                    self.max_y, self.max_x = self.stdscr.getmaxyx()
 
             after()     # do whatever
