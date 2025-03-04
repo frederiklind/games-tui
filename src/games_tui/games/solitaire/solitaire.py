@@ -94,8 +94,37 @@ class SolitaireGame(object):
                 return True
             return False
 
-    # def peek_card_from_clm(self, clm: int) -> Card:
+    def peek_foundation_pile(self, idx) -> Optional[Card]:
+        if self.foundation_piles[idx]:
+            return self.foundation_piles[idx][-1]
+        return None
+
+    def peek_waste_pile(self) -> Optional[Card]:
+        if self.waste_pile:
+            return self.waste_pile[-1]
+        return None
+
+    def peek_column(self, idx: int) -> Optional[Card]:
+        if self.columns[idx]:
+            return self.columns[idx][-1]
+        return None
+
+    def column_card_at_index(self, clm, idx) -> Optional[Card]:
+        if idx < self.column_size(clm) - 1:
+            return self.columns[clm][idx]
+        return None
+
+    def column_peek_range(self, clm, idx) -> Deque[Card]:
+        cards = deque()
+        for i in range(len(self.columns[clm]) - 1, idx, -1):
+            cards.appendleft(self.columns[clm][i])
+        return cards
         
+    def foundation_pile(self, idx: int) -> Deque[Card]:
+        return self.foundation_piles[idx]
+
+    def column_size(self, idx: int) -> int:
+        return len(self.columns[idx])
 
     def draw_from_wastepile(self) -> Optional[Card]:
         """
@@ -122,8 +151,7 @@ class SolitaireGame(object):
         """
         if card_b.rank() == Rank.ACE:
             return card_a.rank() == Rank.TWO
-        else:
-            return card_a.rank().value == card_b.rank().value + 1
+        return card_a.rank().value == card_b.rank().value + 1
 
 
     def moves(self) -> int:
