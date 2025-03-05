@@ -23,12 +23,20 @@ A collection of terminal based mini-games, written in python. Built using Python
 
 ## Features
 
+## Games
+
 ### Klondike Solitaire
+
+Play Klondike Solitaire in your terminal
 
 <br/>
 <div align="center">
   <img src=".assets/solitaire.gif"/>
 </div>
+
+<br/>
+
+#### [Source Code for Klondike Solitaire](./src/games_tui/games/solitaire/)
 
 ### Rubik's Cube Puzzle
 
