@@ -39,11 +39,11 @@ A collection of terminal based mini-games, written in python. Built using Python
 
 ### Klondike Solitaire
 
-Play Klondike Solitaire in your terminal
+Play Klondike Solitaire in your terminal. 
 
 <br/>
 <div align="center">
-  <img src=".assets/solitaire_2.gif"/>
+  <img src=".assets/solitaire.gif"/>
 </div>
 
 #### Controls
