@@ -28,6 +28,8 @@ A collection of terminal based mini-games, written in python. Built using Python
 
 ## Games
 
+### Tetris
+
 ### Klondike Solitaire
 
 Play Klondike Solitaire in your terminal
@@ -51,9 +53,15 @@ Play Klondike Solitaire in your terminal
 
 </div>
 
+[How to manage keybindings]()
+
 #### [Source Code for Klondike Solitaire](./src/games_tui/games/solitaire/)
 
 <br/>
+
+<div align="center">
+  <img src=".assets/rubiks_logo.png" width="75%"/>
+</div>
 
 ### Rubik's Cube Puzzle
 
