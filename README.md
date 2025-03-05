@@ -59,6 +59,10 @@ Play Klondike Solitaire in your terminal
 
 <br/>
 
+#
+
+<br/>
+
 <div align="center">
   <img src=".assets/rubiks_logo.png" width="75%"/>
 </div>
