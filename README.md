@@ -31,7 +31,7 @@ Play Klondike Solitaire in your terminal
 
 <br/>
 <div align="center">
-  <img src=".assets/solitaire.gif"/>
+  <img src=".assets/solitaire_2.gif"/>
 </div>
 
 <br/>

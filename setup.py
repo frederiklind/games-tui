@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='rubiks-tui',
+    name='games-tui',
     version='0.1',
-    packages=find_packages(where='rubiks_tui'),
-    package_dir={'': 'rubiks_tui'},
+    packages=find_packages(where='games_tui'),
+    package_dir={'': 'games_tui'},
     entry_points={
         'console_scripts': [
-            'rubiks-tui = rubiks_tui.main:main',
-            'rubiks-tui-setup = rubiks_tui.install:install'
+            'games-tui = games_tui.main:main',
+            'games-tui-setup = games_tui.install:install'
         ],
     },
     install_requires=[],
