@@ -100,6 +100,7 @@ class SolitaireUI(Window):
         self.render_foundation_piles()
         self.render_columns()
         self.render_timer()
+        self.render_move_count()
         self.win.refresh()
 
     def render_timer(self) -> None:
@@ -114,6 +115,18 @@ class SolitaireUI(Window):
         
         self.win.addstr(
             1, self.width - (len(timestr) + 8), timestr, curses.color_pair(9)
+        )
+
+    def render_move_count(self) -> None:
+        """
+        Renders the number of moves performed in the current game.
+        """
+        self.win.addstr(
+            1, self.sx[0], "󰘹", curses.color_pair(11)
+        )
+        
+        self.win.addstr(
+            1, self.sx[0] + 3, f"Moves: {str(self.game.moves())}", curses.color_pair(9)
         )
 
     # This might need some work
@@ -315,9 +328,8 @@ class SolitaireUI(Window):
             self.render_stockile()
             self.render_wastepile()
 
-            n = len(selection) if selection else 0
             if self.game.column_size(self.c) == 1:
-                self.clear_column(self.c, n)
+                self.clear_column(self.c)
             if selection:
                 self.render_preview_column(self.c, selection)
             else:
@@ -366,10 +378,11 @@ class SolitaireUI(Window):
     ) -> None:
         """ """
         clm_size = self.game.column_size(self.c)
+
         self.z = 0 if clm_size == 0 else clm_size - 1
-        n = len(selection) + 2 if selection else 0
-        self.clear_column(prev, n)
-        self.clear_column(self.c, n)
+
+        self.clear_column(prev)
+        self.clear_column(self.c)
         self.render_column(prev)
 
         if selection:
@@ -380,6 +393,88 @@ class SolitaireUI(Window):
 
     def deal_stockpile(self) -> None:
         pass
+
+
+    def game_over(self, state: bool) -> bool:
+        """ """
+        time.sleep(1)
+        idx = 0
+        self.make_gameover_win(idx)
+        while True:
+            key = self.stdscr.getch()
+            self.adjust_maxyx(True)
+
+            if key in [curses.KEY_DOWN, ord("j")]:
+                idx = 1 if idx == 0 else 0
+                self.make_gameover_win(idx)
+
+            elif key in [curses.KEY_UP, ord("k")]:
+                idx = 1 if idx == 0 else 0
+                self.make_gameover_win(idx)
+
+            elif key in [curses.KEY_ENTER, 10, 13]:
+                return idx == 0
+    
+    def make_gameover_win(self, idx: int) -> None:
+        """
+
+        """
+        height, width = 13, 45
+        sy = self.max_y // 2 - height // 2
+        sx = self.max_x // 2 - width // 2
+        
+        win = curses.newwin(height, width, sy, sx)
+        
+        win.bkgd(" ", curses.color_pair(7))
+        win.attron(curses.color_pair(13))
+        win.box()
+        win.attroff(curses.color_pair(9))
+
+        header = "Congratulations!"
+        msg = "You won the game"
+        y, x = win.getmaxyx()
+        sy, sx = y // 2, x // 2
+
+        win.addstr(2, (sx - len(header) // 2) - 2, "", curses.color_pair(2))
+        win.attron(curses.color_pair(12) | curses.A_BOLD)
+        win.addstr(2, (sx - len(header) // 2) + 1, header)
+        win.attroff(curses.color_pair(9) | curses.A_BOLD)
+        win.addstr(4, sx - len(msg) // 2, msg, curses.color_pair(9))
+
+        opts = [
+            "Start Over",
+            "Exit to menu",
+        ]
+        for i in range(len(opts)):
+            if i == idx:
+                win.attron(curses.color_pair(10) | curses.A_BOLD)
+                win.addstr(7 + i, (sx - len(opts[i]) // 2) + 1, opts[i])
+                win.attroff(curses.color_pair(9) | curses.A_BOLD)
+            else:
+                win.addstr(7 + i, (sx - len(opts[i]) // 2) + 1, opts[i])
+
+        win.refresh()
+        self.stdscr.refresh()
+        return win
+
+
+    def reset(self) -> None:
+        """
+        Starts a new game.
+        """
+        self.r = 0
+        self.c = 0
+        self.z = -1
+
+        self.game = SolitaireGame()
+        self.render_game()
+        self.timer_thread = threading.Thread(target=self.update_timer)
+        self.stop_timer_flag = threading.Event()
+        self.timer_thread.daemon = True
+        self.game.set_time(time.time())
+        self.timer_thread.start()
+
+        
 
     # ================================================================================
     # ------------------------------ Event handlers ----------------------------------
@@ -401,6 +496,7 @@ class SolitaireUI(Window):
         else:
             self.switch_row(i)
 
+
     def on_key_down(self, i: int):
         """ """
         if self.r == 1:
@@ -408,26 +504,47 @@ class SolitaireUI(Window):
         else:
             self.switch_row(i)
 
-    def on_key_m(self) -> None:
+
+    def on_key_m(self) -> bool:
+        """
+        Handles moving a card to the foundation piles.
+        """
+        # attempt moving a card from waste pile:
+
         if self.r == 0 and self.c == 1:
             if self.game.waste_pile:
                 card = self.game.peek_waste_pile()
+                
                 if self.game.push_to_foundation_pile(card):
                     self.game.waste_pile.pop()
                     self.render_wastepile()
                     self.render_foundation_piles()
+                    self.render_move_count()
                     self.win.refresh()
+
+                    return self.game.is_solved()
+        
+        # attempt moving a card from column:
+
         if self.r == 1 and self.z + 1 == self.game.column_size(self.c):
             card = self.game.peek_column(self.c)
             if self.game.push_to_foundation_pile(card):
                 self.game.columns[self.c].pop()
+                
                 if self.game.columns[self.c]:
                     self.game.flip_last(self.c)
                     self.z = 0 if self.game.column_size(self.c) == 0 else self.z - 1
+                    
                 self.clear_column(self.c)
                 self.render_column(self.c)
                 self.render_foundation_piles()
+                self.render_move_count()
                 self.win.refresh()
+
+                return self.game.is_solved()
+
+        return False
+
 
     def on_key_enter(self) -> None:
         """ """
@@ -438,6 +555,7 @@ class SolitaireUI(Window):
                 self.game.push_to_waste_pile()
             self.render_stockile()
             self.render_wastepile()
+            self.render_move_count()
             self.win.refresh()
         else:
             self.select_mode()
@@ -494,6 +612,7 @@ class SolitaireUI(Window):
                     self.clear_column(c)
                     self.render_column(self.c)
                     self.render_column(c)
+                    self.render_move_count()
                     self.win.refresh()
                 else:
                     if wp:
@@ -505,6 +624,7 @@ class SolitaireUI(Window):
                         self.render_column(c)
                     self.clear_column(self.c)
                     self.render_column(self.c)
+                    self.render_move_count()
                     self.win.refresh()
                 break
             elif key == 27:
@@ -513,9 +633,9 @@ class SolitaireUI(Window):
                     self.render_wastepile()
                 else:
                     self.game.put_back_clm(c, cards)
-                    self.clear_column(c, len(cards) + 2)
+                    self.clear_column(c)
                     self.render_column(c)
-                self.clear_column(self.c, len(cards) + 2)
+                self.clear_column(self.c)
                 self.render_column(self.c)
                 self.win.refresh()
                 break
@@ -561,7 +681,18 @@ class SolitaireUI(Window):
                         self.switch_columns(prev)
 
             elif key == ord("m"):
-                self.on_key_m()
+                res = self.on_key_m()
+                if res:
+                    self.stop_timer()
+                    new = self.game_over(True)
+                    if new:
+                        self.stdscr.clear()
+                        self.stdscr.refresh()
+                        self.render_win()
+                        self.reset()
+                    else:
+                        break
+                    
 
             elif key in [curses.KEY_ENTER, 10, 13]:
                 self.on_key_enter()

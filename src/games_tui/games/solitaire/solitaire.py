@@ -40,6 +40,18 @@ class SolitaireGame(object):
                 self.columns[i].append(self.stockpile.draw_from_top())  
             self.columns[i][-1].flip()                                  # flip top cards
 
+
+    def is_solved(self) -> bool:
+        """
+        Checks if game is solved by checking length if columns.
+        If all columns have length of 0, the game is over.
+
+        Returns:
+            bool: True is game is solved, False otherwise.
+        """
+        return all(len(c) == 0 for c in self.columns) 
+
+
     def push_to_waste_pile(self) -> bool:
         """
         Draws a card from the stockpile and pushes it to the waste pile,
@@ -52,6 +64,7 @@ class SolitaireGame(object):
             card = self.stockpile.draw_from_top()   # draw card
             card.flip()                             # card face up
             self.waste_pile.append(card)            # add to wastepile
+            self.num_moves += 1
             return True
         return False                                # stockpile is empty
 
@@ -65,6 +78,7 @@ class SolitaireGame(object):
             card.flip()                             # do a kickflip!
             self.stockpile.push_to_top(card)        # push to stockpile
 
+
     def push_to_foundation_pile(self, card: Card) -> bool:
         """
          
@@ -72,20 +86,24 @@ class SolitaireGame(object):
         x = card.suit().value
         if card.rank() == Rank.ACE:
             self.foundation_piles[x - 1].append(card)
+            self.num_moves += 1
             return True
         if not self.foundation_piles[x - 1]:
             return False
 
         if self.is_next(card, self.foundation_piles[x - 1][-1], 1):
             self.foundation_piles[x - 1].append(card)
+            self.num_moves += 1
             return True
         return False
+
 
     def flip_last(self, clm) -> None:
         if self.columns[clm]:
             last = self.peek_column(clm)
             if not last.face_up():
                 last.flip()
+
 
     def add_to_column(self, clm: int, cards: Deque[Card]) -> bool:
         first = cards.popleft()
@@ -96,6 +114,7 @@ class SolitaireGame(object):
         cards.appendleft(first)
         return False
 
+
     def push_to_column(self, card: Card, clm: int) -> bool:
         """
 
@@ -105,41 +124,50 @@ class SolitaireGame(object):
             card_b = self.columns[clm][-1]
             if self.is_next(card, card_b, -1) and self.is_opposite_color(card, card_b):
                 self.columns[clm].append(card)
+                self.num_moves += 1
                 return True
             return False
         else:
             if r == Rank.KING:
                 self.columns[clm].append(card)
+                self.num_moves += 1
                 return True
             return False
+
 
     def peek_foundation_pile(self, idx) -> Optional[Card]:
         if self.foundation_piles[idx]:
             return self.foundation_piles[idx][-1]
         return None
 
+
     def peek_waste_pile(self) -> Optional[Card]:
         if self.waste_pile:
             return self.waste_pile[-1]
         return None
+
 
     def peek_column(self, idx: int) -> Optional[Card]:
         if self.columns[idx]:
             return self.columns[idx][-1]
         return None
 
+
     def column_card_at_index(self, clm, idx) -> Optional[Card]:
         if idx < self.column_size(clm):
             return self.columns[clm][idx]
         return None
 
+
     def put_back_clm(self, clm: int, cards: Deque[Card]) -> None:
         for _ in range(len(cards)):
             self.columns[clm].append(cards.popleft())
 
+
     def put_back_waste_pile(self, cards: Deque[Card]) -> None:
         for _ in range(len(cards)):
             self.waste_pile.append(cards.pop())
+
 
     def column_get_range(self, clm, idx) -> Deque[Card]:
         cards = deque()
@@ -149,11 +177,14 @@ class SolitaireGame(object):
             i -= 1
         return cards
         
+
     def foundation_pile(self, idx: int) -> Deque[Card]:
         return self.foundation_piles[idx]
 
+
     def column_size(self, idx: int) -> int:
         return len(self.columns[idx])
+
 
     def draw_from_wastepile(self) -> Optional[Card]:
         """
@@ -166,6 +197,7 @@ class SolitaireGame(object):
         if self.waste_pile:
             return self.waste_pile.pop()
         return None
+
 
     def is_opposite_color(self, card_a: Card, card_b: Card) -> bool:
         """
@@ -198,11 +230,14 @@ class SolitaireGame(object):
             return card_a.rank() == Rank.TWO
         return card_a.rank().value == card_b.rank().value + n
 
+
     def set_time(self, time: float) -> None:
         self.__time = time
 
+
     def time(self) -> float:
         return self.__time
+
 
     def moves(self) -> int:
         """
@@ -211,4 +246,4 @@ class SolitaireGame(object):
         Returns:
             int: The number of moves performed.
         """
-        return self.moves()
+        return self.num_moves

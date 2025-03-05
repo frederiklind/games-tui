@@ -4,7 +4,7 @@
 </div>
 <br/>
 
-A collection of terminal based mini-games, written in python. 
+A collection of terminal based mini-games, written in python. Built using Python's builtin curses library.
 
 ## Contents
 
@@ -25,7 +25,10 @@ A collection of terminal based mini-games, written in python.
 
 ### Klondike Solitaire
 
-
+<br/>
+<div align="center">
+  <img src=".assets/solitaire.gif"/>
+</div>
 
 ### Rubik's Cube Puzzle
 
@@ -35,6 +38,8 @@ Become a master of the terminal based Rubik's cube. The game will track the numb
 <div align="center">
   <img src=".assets/rubiks.gif"/>
 </div>
+
+#### [Source Code for Rubik's](./src/games_tui/games/rubiks/) 
 
 ### Game statistics
 
