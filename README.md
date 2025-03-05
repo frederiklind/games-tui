@@ -28,18 +28,6 @@ A collection of terminal based mini-games, written in python. Built using Python
 
 ## Games
 
-<br/>
-
-<div align="center">
-  <img src=".assets/tetris-logo.png" width="75%">
-</div>
-
-### Tetris
-
-Super awesome terminal tetris.
-
-<br/>
-
 #
 
 <br/>
@@ -96,6 +84,19 @@ Become a master of the terminal based Rubik's cube. The game will track the numb
 
 <br/>
 
+#
+
+<br/>
+<div align="center">
+  <img src=".assets/tetris-logo.png" width="75%">
+</div>
+
+### Tetris
+
+Super awesome terminal tetris.
+
+<br/>
+
 ## Features
 
 ### Game statistics
@@ -118,10 +119,10 @@ This appllication requires having a nerd font installed on your system and set i
 
 ```bash
 # using paru
-paru -S rubiks-tui
+paru -S games-tui
 
 # using yay
-yay -S rubiks-tui
+yay -S games-tui
 ```
 
 ### Build from source (Arch)
