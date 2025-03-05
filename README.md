@@ -44,6 +44,10 @@ Play Klondike Solitaire in your terminal
 | Action                            | Default    | Vim        | Gamer      |
 |:----------------------------------|------------|------------|------------|
 | Navigate (Left, Down, Up Right)   | Arrow-keys | H, J, K, L | A, S, W, D |
+| Select Card(s)                    | Return     | S          | Return     |
+| Drop Selection                    | Esc        | Esc        | Esc        |
+| Move  card to foundation pile     | M          | F          | M          |
+| Quit Game                         | Q          | Q          | Q          |
 
 </div>
 
