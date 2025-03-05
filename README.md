@@ -30,6 +30,13 @@ A collection of terminal based mini-games, written in python. Built using Python
 
 ### Tetris
 
+#
+
+<br/>
+<div align="center">
+  <img src=".assets/klondike-logo.png" width="75%">
+</div>
+
 ### Klondike Solitaire
 
 Play Klondike Solitaire in your terminal
@@ -62,7 +69,6 @@ Play Klondike Solitaire in your terminal
 #
 
 <br/>
-
 <div align="center">
   <img src=".assets/rubiks_logo.png" width="75%"/>
 </div>
