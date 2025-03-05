@@ -28,7 +28,17 @@ A collection of terminal based mini-games, written in python. Built using Python
 
 ## Games
 
+<br/>
+
+<div align="center">
+  <img src=".assets/tetris-logo.png" width="75%">
+</div>
+
 ### Tetris
+
+Super awesome terminal tetris.
+
+<br/>
 
 #
 
