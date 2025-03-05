@@ -47,6 +47,7 @@ class MainMenu(Window):
         self.make_win()
         self.run()
 
+
     def make_win(self) -> None:
         """
         Creates the main menu window and renders the ascii banner and menu options.
@@ -57,11 +58,17 @@ class MainMenu(Window):
         self.win = curses.newwin(self.height, self.width, sy, sx)
         self.win.bkgd(" ", curses.color_pair(7))
         self.banner = ui_utils.get_banner()
+
         self.render_banner()
         self.render_opts()
 
         self.win.refresh()
         self.stdscr.refresh()
+
+    
+    # ======================================================================
+    # --------------------- Rendering of UI components ---------------------
+    # ======================================================================
 
     def render_banner(self) -> None:
         """
@@ -78,6 +85,7 @@ class MainMenu(Window):
         self.win.attron(curses.color_pair(9) | curses.A_BOLD)
         self.win.addstr(sy + 1 + len(self.banner), subsx, subtitle)
         self.win.attroff(curses.color_pair(9) | curses.A_BOLD)
+
 
     def render_opts(self) -> None:
         """
@@ -107,8 +115,11 @@ class MainMenu(Window):
                 self.win.attroff(curses.color_pair(9))
             self.win.addstr(sy + i, cx - 9, icon, curses.color_pair(11))
 
+
     def adjust_maxyx(self) -> None:
-        """ """
+        """ 
+
+        """
         max_y, max_x = self.stdscr.getmaxyx()
         if (self.max_y, self.max_x) != (max_y, max_x):
             self.max_y = max_y
@@ -117,9 +128,11 @@ class MainMenu(Window):
             self.stdscr.refresh()
             self.make_win()
 
+
     def change_menu(self) -> None:
         """
-
+        Handles the horizontal menu carrousel, setting the win opts,
+        based on the carrousel index.
         """
         self.opts = ui_utils.MENU_OPTIONS[self.menu_idx] 
         self.win.refresh()
@@ -129,6 +142,7 @@ class MainMenu(Window):
         """ """
         self.render_opts()
         self.win.refresh()
+
 
     def run(self) -> None:
         """ """

@@ -48,7 +48,7 @@ class Rank(Enum):
     ACE = 14
     JOKER = 0
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         String representation for ranks.
         """
@@ -78,8 +78,8 @@ class Card(object):
         specified in arguments of the constructor.
 
         Args:
-            value (str): ...
-            suit (str): ... 
+            value (Rank): Rank of the card. 
+            suit (Suit): Suit of the card.
         """
         self.__rank = rank
         self.__suit = suit
@@ -88,29 +88,34 @@ class Card(object):
     def rank(self) -> Rank:
         return self.__rank
 
+
     def suit(self) -> Suit:
         return self.__suit
+
 
     def flip(self) -> None:
         self.__face_up = not self.__face_up
 
+
     def face_up(self) -> bool:
         return self.__face_up
 
+
     def compare_color_to(self, other: "Card") -> bool:
-        """
-        Compares colors of another card.
-        """
         return self.__suit.value % 2 == 0 and other.suit().value % 2 == 0
+
 
     def color(self) -> int:
         return 5 if self.__suit.value % 2 == 0 else 4 
     
+
     def __eq__(self, other: "Card") -> bool:
         return self.__rank == other.__rank and self.__suit == other.__suit
 
+
     def __lt__(self, other: "Card") -> bool:
         return self.__rank.value < other.__rank.value
+
 
     def __gt__(self, other: "Card") -> bool:
         return self.__rank > other.__rank
@@ -230,7 +235,9 @@ class Deck(object):
             return self.__cards[-1]
     
     def size(self) -> int:
-        """ Gets the number of card currently in the deck. """
+        """ 
+        Gets the number of card currently in the deck. 
+        """
         return len(self.__cards)
 
 

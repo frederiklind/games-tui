@@ -2,7 +2,7 @@ import curses
 import time
 
 from enum import Enum
-from typing import Optional, List, Any, Callable
+from typing import Optional, Tuple, List, Any, Callable
 
 
 class Window:
@@ -34,10 +34,18 @@ class Window:
         width: int, 
         idx: Optional[int] = None,
         opts: Optional[List[Any]] = None,
-        render_win=False
+        render_win: Optional[bool] = False
     ) -> None:
         """
         Initializes the component
+
+        Args:
+            stdscr (curses stuff): ...
+            height (int): height of the window.
+            width (int): Width of the window.
+            idx (Optional[int]): Start index for the window.
+            opts (Optional[List[str]]): List of seletable options.
+            render_win (Optional[bool]): Whether to render window on initialization.
         """
         self.stdscr = stdscr
         self.height = height
@@ -105,3 +113,42 @@ class Window:
                 self.render_win()
 
             after()     # do whatever
+
+
+    def center_win(self) -> Tuple[int, int]:
+        """
+        Gets the yx center coordinates of the window.
+
+        Returns:
+            Tuple[int, int]: The y and x center coordinates.
+        """
+        y = self.height // 2
+        x = self.width // 2
+
+        return (y, x)
+
+    
+    def center_scr(self) -> Tuple[int, int]:
+        """
+        Gets the yx center coordinates of the stdscr.
+
+        Returns:
+            Tuple[int, int]: The y and x center coordinates.
+        """
+        y = self.max_y // 2
+        x = self.max_x // 2
+
+        return (y, x)
+
+
+    def win_syx(self) -> Tuple[int, int]:
+        """
+        Gets appropriate start yx coordinates for the window
+
+        Returns:
+            Tuple[int, int]: The s_yx coordinates for the window. 
+        """
+        y = self.max_y // 2 - self.height // 2
+        x = self.max_x // 2 - self.wifth // 2
+
+        return (y, x)

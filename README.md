@@ -82,7 +82,7 @@ Become a master of the terminal based Rubik's cube. The game will track the numb
   <img src=".assets/rubiks.gif"/>
 </div>
 
-#### [Source Code for Rubik's](./src/games_tui/games/rubiks/) 
+#### [Source Code for Rubik's](./src/games_tui/games/rubiks/)
 
 <br/>
 
