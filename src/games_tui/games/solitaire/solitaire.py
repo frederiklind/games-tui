@@ -1,3 +1,5 @@
+import time
+
 from collections import deque 
 from typing import Deque, List, Optional
 from games.cards import Suit, Rank, Card, Deck
@@ -13,8 +15,8 @@ class SolitaireGame(object):
         foundation_piles (List[Deque[Card]]): ...
         columns (List[Deck[Card]]): ...
     """
+    __time: float
     num_moves: int
-    start_time: float
     stockpile: Deck    
     waste_pile: Deque[Card]
     foundation_piles: List[Deque[Card]]
@@ -24,7 +26,8 @@ class SolitaireGame(object):
         """
         Initializes a new solitaire game.
         """
-        num_moves = 0
+        self.__time = time.time()
+        self.num_moves = 0
         self.stockpile = Deck(shuffle=True)                  # start with shuffled deck
         self.waste_pile = deque()                            # initialize empty wastepile
         self.foundation_piles = [deque() for _ in range(4)]  # initialize empty foundation piles
@@ -177,6 +180,7 @@ class SolitaireGame(object):
         """
         a = card_a.suit().value 
         b = card_b.suit().value
+
         return not ((a % 2 == 0 and b % 2 == 0) or a == b) 
 
 
@@ -194,6 +198,11 @@ class SolitaireGame(object):
             return card_a.rank() == Rank.TWO
         return card_a.rank().value == card_b.rank().value + n
 
+    def set_time(self, time: float) -> None:
+        self.__time = time
+
+    def time(self) -> float:
+        return self.__time
 
     def moves(self) -> int:
         """

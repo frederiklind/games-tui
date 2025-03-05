@@ -44,6 +44,7 @@ class Window:
         self.width = width 
         
         max_y, max_x = self.stdscr.getmaxyx()
+
         self.max_y = max_y
         self.max_x = max_x
         self.idx = idx
@@ -58,14 +59,21 @@ class Window:
         """
         self.stdscr.clear()
         self.stdscr.refresh()
+
         sy = self.max_y // 2 - self.height // 2
         sx = self.max_x // 2 - self.width // 2
+
         self.win = curses.newwin(self.height, self.width, sy, sx) 
         self.win.bkgd(" ", curses.color_pair(7))
+
         self.win.refresh()
         self.stdscr.refresh()
 
-    def adjust_maxyx(self, after: Callable[..., None]) -> None:
+    def adjust_maxyx(
+            self, 
+            after: Callable[..., None], 
+            render_win: Optional[bool] = False
+    ) -> None:
         """
         Adjusts the max yx values of the window if the window have resized.
         Clears the screen and executes the after function if given in 
@@ -73,6 +81,7 @@ class Window:
 
         Args:
             after (Callable[..., None]): Function to execute after clearing the screen.
+            render_win (Optional[bool]): Whether to render the window. False by default.
         """
         max_y, max_x = self.stdscr.getmaxyx()
         if (self.max_y, self.max_x) != (max_y, max_x):
@@ -91,5 +100,8 @@ class Window:
                 while self.max_y < self.height or self.max_x < self.width:
                     self.stdscr.refresh()
                     self.max_y, self.max_x = self.stdscr.getmaxyx()
+
+            if render_win:
+                self.render_win()
 
             after()     # do whatever
