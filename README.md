@@ -8,9 +8,14 @@ A collection of terminal based mini-games, written in python. Built using Python
 
 ## Contents
 
+- [Games](#games)
+  - [Tetris]()
+  - [Pingpong]()
+  - [Klondike Solitaire](#klondike-solitaire)
+  - [Rubik's Cube Puzzle](#rubiks-cube-puzzle)
 - [Features](#features)
-  - [Rubik's Cube Puzzle]()
-  - [Klondike Solitaire](#klondike-solitaire )
+  - [Achievements]()
+  - [Game Statistics]()
 - [Installation](#installation)
   - [Prerequisites](#prerequisites)
   - [Homebrew](#homebrew)
@@ -20,8 +25,6 @@ A collection of terminal based mini-games, written in python. Built using Python
 - [Configuration](#configuration)
   - [Colorschemes](#colorschemes)
   - [Ascii-banners](#ascii-banners)
-
-## Features
 
 ## Games
 
@@ -34,9 +37,19 @@ Play Klondike Solitaire in your terminal
   <img src=".assets/solitaire_2.gif"/>
 </div>
 
-<br/>
+#### Controls
+
+<div align="center">
+
+| Action                            | Default    | Vim        | Gamer      |
+|:----------------------------------|------------|------------|------------|
+| Navigate (Left, Down, Up Right)   | Arrow-keys | H, J, K, L | A, S, W, D |
+
+</div>
 
 #### [Source Code for Klondike Solitaire](./src/games_tui/games/solitaire/)
+
+<br/>
 
 ### Rubik's Cube Puzzle
 
@@ -48,6 +61,10 @@ Become a master of the terminal based Rubik's cube. The game will track the numb
 </div>
 
 #### [Source Code for Rubik's](./src/games_tui/games/rubiks/) 
+
+<br/>
+
+## Features
 
 ### Game statistics
 
