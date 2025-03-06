@@ -8,8 +8,6 @@ A collection of terminal based mini-games, written in python. Built using Python
 ## Contents
 
 - [Games](#games)
-  - [Tetris]()
-  - [Pingpong]()
   - [Klondike Solitaire](#klondike-solitaire)
   - [Rubik's Cube Puzzle](#rubiks-cube-puzzle)
 - [Features](#features)
@@ -26,8 +24,6 @@ A collection of terminal based mini-games, written in python. Built using Python
   - [Ascii-banners](#ascii-banners)
 
 ## Games
-
-#
 
 <br/>
 <div align="center">
@@ -84,15 +80,6 @@ Become a master of the terminal based Rubik's cube. The game will track the numb
 <br/>
 
 #
-
-<br/>
-<div align="center">
-  <img src=".assets/tetris-logo.png" width="75%">
-</div>
-
-### Tetris
-
-Super awesome terminal tetris.
 
 <br/>
 

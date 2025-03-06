@@ -45,14 +45,21 @@ jobs:
       run: |
         if [[ "${{ matrix.os }}" == "ubuntu-latest" || "${{ matrix.os }}" == "macos-latest" ]]; then
           pyinstaller --onefile src/games_tui/main.py
-        fi
-        if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+        elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
           pyinstaller --onefile --windowed src/games_tui/main.py
         fi
-    outputs:
-      ubuntu_binary: dist/games-tui 
-      macos_binary: dist/games-tui
-      windows_binary: dist/games-tui.exe
+      shell: bash
+      if: runner.os != 'Windows'
+      
+    - name: Build binary for Windows
+      run: |
+        pyinstaller --onefile --windowed src/games_tui/main.py
+      shell: pwsh
+      if: runner.os == 'Windows'
+      outputs:
+          ubuntu_binary: dist/games-tui 
+          macos_binary: dist/games-tui
+          windows_binary: dist/games-tui.exe
 
   release:
     runs-on: ubuntu-latest
