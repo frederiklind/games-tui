@@ -34,39 +34,44 @@ jobs:
       run: |
         pytest   
 
-  release:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - name: Prepare release
-      run: |
-        zip -r games-tui-v${{ github.run_number }}.zip src data conf
-        tar -czf games-tui-v${{ github.run_number }}.tar.gz src data conf
+release:
+  runs-on: ubuntu-latest
+  needs: build
+  steps:
+  - name: Prepare release
+    run: |
+      # Ensure the directories exist and list them
+      ls -l ./src
+      ls -l ./data
+      ls -l ./conf
+      # Create the release archives
+      zip -r ./games-tui-v${{ github.run_number }}.zip ./src ./data ./conf
+      tar -czf ./games-tui-v${{ github.run_number }}.tar.gz ./src ./data ./conf
 
-    - name: Create new release
-      id: create_release
-      uses: actions/create-release@v1
-      with:
-        tag_name: v${{ github.run_number }}
-        release_name: Release ${{ github.run_number }}
-        body: "New release for version ${{ github.run_number }}."
-        draft: true
-        prerelease: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  - name: Create new release
+    id: create_release
+    uses: actions/create-release@v1
+    with:
+      tag_name: v${{ github.run_number }}
+      release_name: Release ${{ github.run_number }}
+      body: "New release for version ${{ github.run_number }}."
+      draft: true
+      prerelease: true
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Upload release assets
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ steps.create_release-outputs.upload_url }}
-        asset_path: ./games-tui-v${{ github.run_number }}.zip
-        asset_name: games-tui-v${{ github.run_number }}.zip
-        asset_content_type: application/zip
+  - name: Upload release assets (zip)
+    uses: actions/upload-release-asset@v1
+    with:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      asset_path: ./games-tui-v${{ github.run_number }}.zip
+      asset_name: games-tui-v${{ github.run_number }}.zip
+      asset_content_type: application/zip
 
-    - name: Upload release assets (tar.gz)
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ steps.create_release-outputs.upload_url }}
-        asset_path: ./games-tui-v${{ github.run_number }}.tar.gz
-        asset_name: games-tui-v${{ github.run_number }}.tar.gz
-        asset_content_type: application/gzip
+  - name: Upload release assets (tar.gz)
+    uses: actions/upload-release-asset@v1
+    with:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      asset_path: ./games-tui-v${{ github.run_number }}.tar.gz
+      asset_name: games-tui-v${{ github.run_number }}.tar.gz
+      asset_content_type: application/gzip
