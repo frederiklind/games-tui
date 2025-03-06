@@ -1,3 +1,4 @@
+
 name: ci-cd
 
 on:
@@ -8,7 +9,7 @@ on:
 
 env:
   RELEASE_VERSION: v0.0.1
-  RELEASE_NOTES: "New release for version 0.0.1"
+  RELEASE_NOTES: "New release for version ${{ github.run_number }}"
 
 permissions:
   contents: write
@@ -37,12 +38,14 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
-
     - name: Create source code archive
       run: |
         tar -czf source-code.tar.gz ./src ./conf ./data
         zip -r source-code.zip ./src ./conf ./data
-
+    - name: Create Git tag
+      run: git tag -a "v${{ github.run_number }}" -m "Release version v${{ github.run_number }}"
+    - name: Push Git tag
+      run: git push origin "v${{ github.run_number }}"
     - name: Create GitHub release and upload assets
       uses: softprops/action-gh-release@v1
       with:
@@ -51,4 +54,3 @@ jobs:
           source-code.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
