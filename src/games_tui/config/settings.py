@@ -22,6 +22,7 @@ class Settings(object):
     show_headers: bool
     show_ui_borders: bool
     ascii_banner: str
+    sound_effects_enabled: bool
     alt_controls: str
 
 
@@ -43,6 +44,7 @@ class Settings(object):
         self.ascii_banner = conf['ui_display']['ascii_banner']
         self.show_background = conf['ui_display']['show_background']
         self.show_ui_borders = conf['ui_display']['show_ui_borders']
+        self.sound_effects_enabled = conf['audio']['enable_sound_effects']
         self.alt_controls = conf['controls']['alt_keys']
 
     def set_colors(self, scheme: str = None) -> None:

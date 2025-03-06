@@ -7,6 +7,7 @@ from typing import Dict, Optional, Tuple
 from games.rubiks.rubiks import RubiksGame
 from ui.window import Window
 from utils import ui_utils
+from audio.player import Player, Sound
 
 
 class RubiksUI(Window):
@@ -66,7 +67,7 @@ class RubiksUI(Window):
 
         self.make_wins()
         time.sleep(0.5)
-        # self.shuffle_cube()   # uncomment to actually start legit game.
+        self.shuffle_cube()   # uncomment to actually start legit game.
         self.run()
 
     def make_wins(self) -> None:
@@ -153,6 +154,7 @@ class RubiksUI(Window):
         time.sleep(1)
         idx = 0
         self.make_gameover_win(idx)
+        Player.play(Sound.SOLITAIRE_WIN)
         while True:
             key = self.stdscr.getch()
             self.adjust_maxyx(True)
@@ -361,6 +363,7 @@ class RubiksUI(Window):
         Args:
             n (Optional[int]): Number of rotations to perform. Default: 50. 
         """
+        Player.play(Sound.RUBIKS_SHUFFLE)
         time.sleep(0.3)
         for i in range(n):
             face = random.randint(0, 5)
@@ -402,6 +405,7 @@ class RubiksUI(Window):
                 self.render_arw()
 
             elif key in [curses.KEY_LEFT, ord("h")]:  # counter clockwise rotaion
+                Player.play(Sound.RUBIKS)
                 is_valid = self.game.move(self.idx, 1)
                 self.render_cube()
                 self.game.add(self.idx, 1)
@@ -418,6 +422,7 @@ class RubiksUI(Window):
                         break
 
             elif key in [curses.KEY_RIGHT, ord("l")]:  # clockwise rotation
+                Player.play(Sound.RUBIKS)
                 is_valid = self.game.move(self.idx, 0)
                 self.render_cube()
                 self.game.add(self.idx, 0)

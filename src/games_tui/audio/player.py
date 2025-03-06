@@ -3,6 +3,7 @@ import subprocess
 import platformdirs
 
 from enum import Enum
+from config.settings import settings
 
 
 class Sound(Enum):
@@ -10,6 +11,10 @@ class Sound(Enum):
     CARD_FLIP = "card_flip"
     CARD_PLACE = "card_place"
     SOLITAIRE_WIN = "solitaire_win"
+    RUBIKS = "rubiks"
+    RUBIKS_SHUFFLE = "rubiks_shuffle"
+    RUBIKS_WIN = "rubiks_win"
+    INVALID_1 = "invalid_1"
 
 
 class Player:
@@ -20,7 +25,7 @@ class Player:
     @classmethod
     def initialize(cls) -> None:
         """
-        Initializes player at class level.
+        Initializes player for playing stuff.
         """
         # windows:
 
@@ -47,6 +52,9 @@ class Player:
         """
         if Player.player is None:
             Player.initialize()
+        
+        if not settings.sound_effects_enabled:
+            return
 
         sound_path = os.path.join(Player.data_dir, "sounds", f"{sound.value}.mp3") 
         

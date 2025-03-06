@@ -61,6 +61,7 @@ class SolitaireUI(Window):
         self.c = 0      # column index
         self.z = -1     # card index
 
+        # TEMPORARILY COMMENTED OUT, UNTIL SOLVING BROKEN RENDER
         # setup timer stuff:
 
         self.timer_thread = threading.Thread(target=self.update_timer)
@@ -265,7 +266,7 @@ class SolitaireUI(Window):
         Clears column at index of row 1. 
         """
         sy = self.sy_b
-        while sy < self.height - 5:
+        while sy < self.height - 2:
             self.win.addstr(sy, self.sx[idx], " " * 9)
             sy += 1
 
@@ -281,6 +282,9 @@ class SolitaireUI(Window):
         """ 
         Renders a card frame. 
         """
+
+        if sy + 4 > self.height - 8:
+            return
         c = 10 if is_hover else 14
         sy += 1 if is_hover and card and self.r == 1 else 0
         self.win.attron(curses.color_pair(c))
@@ -491,6 +495,7 @@ class SolitaireUI(Window):
 
         self.game = SolitaireGame()
         self.render_game()
+
         self.timer_thread = threading.Thread(target=self.update_timer)
         self.stop_timer_flag = threading.Event()
         self.timer_thread.daemon = True
@@ -646,6 +651,7 @@ class SolitaireUI(Window):
                     self.render_move_count()
                     self.win.refresh()
                 else:
+                    Player.play(Sound.INVALID_1)
                     if wp:
                         self.game.put_back_waste_pile(cards)
                         self.render_wastepile()

@@ -9,7 +9,7 @@ ascii_banner = "Slant"
 enable_sound_effects = true
 
 [controls]
-alt_keys = "Gamer"
+alt_keys = "Vim"
 
 [chess]
 debug_log_file = ""
