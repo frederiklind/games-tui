@@ -6,9 +6,13 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+  RELEASE_VERSION: v0.0.1
+  RELEASE_NOTES: "New release for version ${{ github.run_number }}."
+
+
 permissions:
   contents: write
-  repo: write
 
 jobs:
   build:
@@ -47,7 +51,7 @@ jobs:
 
     - name: Create new release
       id: create_release
-      uses: actions/create-release@v1.1.4
+      uses: actions/create-release@v1
       with:
         tag_name: v${{ github.run_number }}
         release_name: Release ${{ github.run_number }}
@@ -55,7 +59,7 @@ jobs:
         draft: true
         prerelease: true
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
     - name: Upload release assets (zip)
       uses: actions/upload-release-asset@v1
