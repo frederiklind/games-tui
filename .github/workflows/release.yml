@@ -51,9 +51,9 @@ jobs:
       
     - name: Build binary for Windows
       run: |
-        if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+        if ($env:RUNNER_OS -eq "Windows") {
           pyinstaller --onefile --windowed src/games_tui/main.py
-        fi
+        }
       shell: pwsh
       if: runner.os == 'Windows'
       
@@ -84,4 +84,5 @@ jobs:
           ${{ needs.build.outputs.windows_binary }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
