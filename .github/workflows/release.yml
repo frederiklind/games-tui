@@ -73,12 +73,12 @@ jobs:
         git config --global user.name "Frederik Lind"
     - name: Delete existing remote tag if it exists
       run: |
-        git tag -d "v${{ env.RELEASE_VERSION }}" || echo "No local tag to delete"
+        git tag -d "${{ env.RELEASE_VERSION }}" || echo "No local tag to delete"
         git push --delete origin "v${{ env.RELEASE_VERSION }}" || echo "No remote tag to delete"
     - name: Create Git tag
       run: |
         git tag -a "${{ env.RELEASE_VERSION }}" -m "Release version ${{ env.RELEASE_VERSION }}"
-        git push origin "v${{ env.RELEASE_VERSION }}"
+        git push origin "${{ env.RELEASE_VERSION }}"
 
   release:
     runs-on: ubuntu-latest
