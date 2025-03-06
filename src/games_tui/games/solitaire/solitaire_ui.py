@@ -61,7 +61,6 @@ class SolitaireUI(Window):
         self.c = 0      # column index
         self.z = -1     # card index
 
-        # TEMPORARILY COMMENTED OUT, UNTIL SOLVING BROKEN RENDER
         # setup timer stuff:
 
         self.timer_thread = threading.Thread(target=self.update_timer)
