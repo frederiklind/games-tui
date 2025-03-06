@@ -72,6 +72,10 @@ jobs:
       run: |
         git config --global user.email "frederiklind@noreply.com"
         git config --global user.name "Frederik Lind"
+    - name: Delete existing remote tag if it exists
+      run: |
+        git tag -d "v${{ env.RELEASE_VERSION }}" || echo "No local tag to delete"
+        git push --delete origin "v${{ env.RELEASE_VERSION }}" || echo "No remote tag to delete"
     - name: Create Git tag
       run: |
         git tag -a "v${{ env.RELEASE_VERSION }}" -m "Release version ${{ env.RELEASE_VERSION }}"
