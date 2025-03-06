@@ -92,9 +92,7 @@ jobs:
         files: |
           source-code.tar.gz
           source-code.zip
-          ${{ needs.build.outputs.ubuntu_binary }}
-          ${{ needs.build.outputs.macos_binary }}
-          ${{ needs.build.outputs.windows_binary }}
+          dist/games-tui  # This will point to the correct binary (check the dist folder)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
