@@ -1,4 +1,4 @@
-name: Test Build
+name: Release
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 env:
-  RELEASE_VERSION: v0.0.1
+  RELEASE_VERSION: 0.0.1
   RELEASE_NOTES: "New release for version v0.0.1"
 
 permissions:
@@ -16,7 +16,6 @@ permissions:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
@@ -86,6 +85,8 @@ jobs:
     needs: create_tag
     steps:
     - uses: actions/checkout@v4
+    - name: Fetch tags to ensure the tag is available
+      run: git fetch --tags
     - name: Create source code archive
       run: |
         tar -czf source-code.tar.gz ./src ./conf ./data
@@ -99,4 +100,5 @@ jobs:
           dist/games-tui  # This will point to the correct binary (check the dist folder)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
