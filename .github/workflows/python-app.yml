@@ -41,17 +41,12 @@ jobs:
     - uses: actions/checkout@v4
     - name: Prepare release
       run: |
-        # Ensure the directories exist and list them
-        ls -l ./src
-        ls -l ./data
-        ls -l ./conf
-        # Create the release archives
         zip -r ./games-tui-v${{ github.run_number }}.zip src data conf
         tar -czf ./games-tui-v${{ github.run_number }}.tar.gz src data conf
 
     - name: Create new release
       id: create_release
-      uses: actions/create-release@v1
+      uses: actions/create-release@v1.1.4
       with:
         tag_name: v${{ github.run_number }}
         release_name: Release ${{ github.run_number }}
