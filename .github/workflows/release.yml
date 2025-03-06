@@ -68,6 +68,10 @@ jobs:
     needs: build
     steps:
     - uses: actions/checkout@v4
+    - name: Set Git user identity
+      run: |
+        git config --global user.email "frederiklind@noreply.com"
+        git config --global user.name "Frederik Lind"
     - name: Create Git tag
       run: |
         git tag -a "v${{ env.RELEASE_VERSION }}" -m "Release version ${{ env.RELEASE_VERSION }}"
