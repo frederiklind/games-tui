@@ -4,7 +4,7 @@ from Typing import List, Dict
 from datetime import datetime
 
 
-class Result(Object):
+class Result(object):
     """
     Contains results of a successfully completed game.
 
@@ -18,13 +18,8 @@ class Result(Object):
     move_count: int
     elapsed_time: float
 
-class Result(Object):
-    """
 
-    """
-
-    move_count: int
-    elapsed_time    def __init__(self, date: str, move_count: int, elapsed_time: float) -> None:
+    def __init__(self, date: str, move_count: int, elapsed_time: float) -> None:
         """
         
         """
@@ -46,11 +41,11 @@ class Result(Object):
         }
     
 
-class Results(Object):
+class Results(object):
     """
 
     """
-    __results: List[Results]
+    __results: List[Result]
 
     def __init__(self) -> None:
     

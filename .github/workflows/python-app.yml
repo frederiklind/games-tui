@@ -54,7 +54,7 @@ jobs:
         draft: true
         prerelease: true
       env:
-        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
     - name: Upload release assets (zip)
       uses: actions/upload-release-asset@v1
