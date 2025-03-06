@@ -27,3 +27,5 @@ class ConfigUtils:
                 return ("ui_display", "show_ui_borders")
             case 4:
                 return ("controls", "alt_keys")
+            case 5:
+                return ("audio", "enable_sound_effects")

@@ -111,7 +111,7 @@ class RubiksUI(Window):
 
     def make_gameover_win(self, idx: int) -> None:
         """
-
+        Renders the game-over popup window.
         """
         height, width = 13, 35
         sy = self.max_y // 2 - self.height // 2
@@ -149,6 +149,7 @@ class RubiksUI(Window):
         self.stdscr.refresh()
         return win
 
+
     def game_over(self, state: bool) -> bool:
         """ """
         time.sleep(1)
@@ -170,21 +171,29 @@ class RubiksUI(Window):
             elif key in [curses.KEY_ENTER, 10, 13]:
                 return idx == 0
 
+    
     def update_timer(self) -> None:
-        """ """
+        """ 
+        Based on function name, it's obvious that this updates
+        the game timer :).
+        """
         while not self.stop_timer_flag.is_set():
             time.sleep(1)
             self.render_timer()
-            self.win_r.refresh()
+            self.win_r.noutrefresh()    # avoid interference with main thread
+            curses.doupdate()
+
 
     def increment_mv(self) -> None:
         """ """
         self.win_r.addstr(3, 5, str(self.game.num_moves), curses.color_pair(9))
 
+        
     def stop_timer(self) -> None:
         """ """
         self.stop_timer_flag.set()
         self.timer_thread.join()
+
 
     def adjust_maxyx(
         self, is_over: Optional[bool] = False, idx: Optional[int] = 0
@@ -390,6 +399,7 @@ class RubiksUI(Window):
         of ui components.
         """
         self.render()
+        self.game.set_time(time.time())
         self.timer_thread.start()
 
         while True:

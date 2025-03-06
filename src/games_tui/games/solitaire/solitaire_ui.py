@@ -83,7 +83,8 @@ class SolitaireUI(Window):
         while not self.stop_timer_flag.is_set():
             time.sleep(1)
             self.render_timer()
-            self.win.refresh()
+            self.win.noutrefresh()  # avoid interference with main thread
+            curses.doupdate()
 
 
     def stop_timer(self) -> None:

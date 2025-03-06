@@ -1,6 +1,5 @@
 import os
-import platform
-# from typing import List
+import platformdirs
 
 import toml
 from typing import List, Any
@@ -27,11 +26,9 @@ class Settings(object):
 
 
     def __init__(self) -> None:
-        user_os = platform.system()
+        # user_os = platform.system()
 
-        self.__config_dir = os.path.join(
-            os.path.expanduser("~"), ".config", "games-tui"
-        )
+        self.__config_dir = platformdirs.user_config_dir("games-tui")
                 
         self.load()
 
