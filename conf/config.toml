@@ -5,6 +5,9 @@ show_ui_borders = true
 color_scheme = "Catppuccin-Macchiato"
 ascii_banner = "Slant"
 
+[audio]
+enable_sound_effects = true
+
 [controls]
 alt_keys = "Gamer"
 

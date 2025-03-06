@@ -93,7 +93,8 @@ class RubiksUI(Window):
 
         self.render_cmds()
         self.render_key_cmd()
-        self.render_stats()
+        self.render_timer()
+        self.render_move_count()
         self.render_pr()
 
         self.win_c = curses.newwin(self.height, 37, sy, sx + 19)
@@ -171,7 +172,7 @@ class RubiksUI(Window):
         """ """
         while not self.stop_timer_flag.is_set():
             time.sleep(1)
-            self.render_stats()
+            self.render_timer()
             self.win_r.refresh()
 
     def increment_mv(self) -> None:
@@ -308,16 +309,33 @@ class RubiksUI(Window):
             self.win_l.addstr(y + i, 2, symbols[i], curses.color_pair(11))
             self.win_l.addstr(y + i, 5, keys[i], curses.color_pair(9))
 
-    def render_stats(self) -> None:
-        """ """
-        y = 2
-        symbols = ["󰔛", "󱃴"]
-        for i in range(len(symbols)):
-            self.win_r.addstr(y + i, 2, symbols[i], curses.color_pair(11))
+
+    def render_timer(self) -> None:
+        """
+        Renders the current game time in the UI window.
+        """
+        timestr = ui_utils.format_time(self.game.time())
+
         self.win_r.addstr(
-            y + 0, 5, ui_utils.format_time(self.game.time()), curses.color_pair(9)
+            2, 2, "󰔛", curses.color_pair(11)
         )
-        self.win_r.addstr(y + 1, 5, f"{str(self.game.num_moves)}", curses.color_pair(9))
+        
+        self.win_r.addstr(
+            2, 5, timestr, curses.color_pair(9)
+        )
+
+    def render_move_count(self) -> None:
+        """
+        Renders the number of moves performed in the current game.
+        """
+        self.win_r.addstr(
+            3, 2, "󱃴", curses.color_pair(11)
+        )
+        
+        self.win_r.addstr(
+            3, 5, str(self.game.num_moves), curses.color_pair(9)
+        )
+
 
     def render_pr(self) -> None:
         """ """

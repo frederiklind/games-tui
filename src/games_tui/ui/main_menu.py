@@ -3,7 +3,7 @@ from typing import List, Tuple
 
 from config import size
 from games.rubiks.rubiks_ui import RubiksUI
-from games.chess.chess_ui import ChessUI
+from games.space_invaders.space_invaders_ui import SpaceInvadersUI
 from games.solitaire.solitaire_ui import SolitaireUI
 from ui.settings import SettingsUI
 from ui.window import Window
@@ -185,7 +185,7 @@ class MainMenu(Window):
                     case 1:
                         match self.idx:
                             case 0:
-                                ChessUI(self.stdscr, size.CHESS_HEIGHT, size.CHESS_WIDTH)
+                                SpaceInvadersUI(self.stdscr, size.SPACE_INVADERS_HEIGHT, size.SPACE_INVADERS_WIDTH)
                                 self.stdscr.clear()
                                 self.stdscr.refresh()
                                 self.adjust_maxyx()

@@ -3,12 +3,13 @@ import threading
 import time
 
 from collections import deque
-from typing import Deque, List, Optional
+from typing import Deque, List, Optional, Tuple
 
 from utils import ui_utils
 from games.cards import Card, Rank
 from games.solitaire.solitaire import SolitaireGame
 from ui.window import Window
+from audio.player import Player, Sound
 
 
 class SolitaireUI(Window):
@@ -50,7 +51,9 @@ class SolitaireUI(Window):
 
         self.sy_a = 3
         self.sy_b = 10
-        self.sx = [8, 18, 28, 38, 48, 58, 68]
+
+        sx = 8
+        self.sx = [x for x in range(sx, sx + 70, 10)]
 
         self.game = SolitaireGame()
 
@@ -67,9 +70,11 @@ class SolitaireUI(Window):
         self.render_game()  # render everything
         self.run()          # run main game loop
 
+
     # ======================================================================
     # ---------------------------- Timer Stuff -----------------------------
     # ======================================================================
+
 
     def update_timer(self) -> None:
         """
@@ -80,6 +85,7 @@ class SolitaireUI(Window):
             self.render_timer()
             self.win.refresh()
 
+
     def stop_timer(self) -> None:
         """
         Stops the game timer and returns nothing at all.
@@ -87,9 +93,11 @@ class SolitaireUI(Window):
         self.stop_timer_flag.set()
         self.timer_thread.join()
 
+
     # ======================================================================
     # --------------------- Rendering of UI components ---------------------
     # ======================================================================
+
 
     def render_game(self) -> None:
         """
@@ -102,6 +110,7 @@ class SolitaireUI(Window):
         self.render_timer()
         self.render_move_count()
         self.win.refresh()
+
 
     def render_timer(self) -> None:
         """
@@ -117,6 +126,7 @@ class SolitaireUI(Window):
             1, self.width - (len(timestr) + 8), timestr, curses.color_pair(9)
         )
 
+
     def render_move_count(self) -> None:
         """
         Renders the number of moves performed in the current game.
@@ -128,6 +138,7 @@ class SolitaireUI(Window):
         self.win.addstr(
             1, self.sx[0] + 3, f"Moves: {str(self.game.moves())}", curses.color_pair(9)
         )
+
 
     # This might need some work
     def render_stockile(self) -> None:
@@ -150,6 +161,7 @@ class SolitaireUI(Window):
             self.win.addstr(self.sy_a + 2, sx + 4, "", curses.color_pair(3))
             self.win.addstr(self.sy_a + 4, sx + 2, "RESET", curses.color_pair(4))
 
+
     def render_wastepile(self) -> None:
         """
         Renders the waste pile of the game.
@@ -160,12 +172,14 @@ class SolitaireUI(Window):
             self.sy_a, sx, card=self.game.peek_waste_pile(), is_hover=is_hover
         )
 
+
     def render_columns(self) -> None:
         """
         Renders all seven columns of row 1.
         """
         for i in range(len(self.game.columns)):
             self.render_column(i)
+
 
     def render_column(self, idx: int) -> None:
         """
@@ -179,11 +193,11 @@ class SolitaireUI(Window):
         sy = self.sy_b
         cards = list(self.game.columns[idx])
         if len(cards) == 0:
-            selected = self.r == 1 and self.c == idx and self.z == 0
+            selected = self.rcz() == (1, idx, 0)
             self.render_frame(sy, self.sx[idx], is_hover=selected)
         else:
             for i in range(len(cards)):
-                selected = self.r == 1 and self.c == idx and self.z == i
+                selected = self.rcz() == (1, idx, i)
                 self.render_frame(
                     sy,
                     self.sx[idx],
@@ -193,6 +207,7 @@ class SolitaireUI(Window):
                 )
                 sy += 2 if cards[i].face_up() else 1
                 sy += 1 if selected else 0
+
 
     def render_preview_column(self, idx: int, selected_cards: List[Card]) -> None:
         """
@@ -234,6 +249,7 @@ class SolitaireUI(Window):
             )
             sy += 3 if selected else 2
 
+
     def render_foundation_piles(self) -> None:
         """
         Renders all four foundation piles. Renders an empty frame if
@@ -243,6 +259,7 @@ class SolitaireUI(Window):
             sx = self.sx[i + 3]
             self.render_frame(self.sy_a, sx, card=self.game.peek_foundation_pile(i))
 
+
     def clear_column(self, idx: int) -> None:
         """ 
         Clears column at index of row 1. 
@@ -251,6 +268,7 @@ class SolitaireUI(Window):
         while sy < self.height - 5:
             self.win.addstr(sy, self.sx[idx], " " * 9)
             sy += 1
+
 
     def render_frame(
         self,
@@ -296,6 +314,7 @@ class SolitaireUI(Window):
                 for i in range(n):
                     self.win.addstr(sy + i, sx + 1, "▞▚▞▚▞▚▞", curses.color_pair(13))
 
+
     def render_top(self) -> None:
         """
         Renders the top row components. Renders waste pile, stockpile
@@ -307,9 +326,11 @@ class SolitaireUI(Window):
 
         self.win.refresh()
 
+
     # ======================================================================
     # ------------------------ UI Navigation Helpers -----------------------
     # ======================================================================
+
 
     def switch_row(self, i: int, selection: Optional[Deque[Card]] = None) -> None:
         """
@@ -350,6 +371,7 @@ class SolitaireUI(Window):
                 self.render_wastepile()
         self.win.refresh()
 
+
     def switch_column_card(self, i: int) -> bool:
         """
         Handles switching between face-up cards in a column.
@@ -373,6 +395,7 @@ class SolitaireUI(Window):
         self.win.refresh()
         return False
 
+
     def switch_columns(
         self, prev: int, selection: Optional[Deque[Card]] = None
     ) -> None:
@@ -390,9 +413,6 @@ class SolitaireUI(Window):
         else:
             self.render_column(self.c)
         self.win.refresh()
-
-    def deal_stockpile(self) -> None:
-        pass
 
 
     def game_over(self, state: bool) -> bool:
@@ -415,6 +435,7 @@ class SolitaireUI(Window):
             elif key in [curses.KEY_ENTER, 10, 13]:
                 return idx == 0
     
+
     def make_gameover_win(self, idx: int) -> None:
         """
 
@@ -424,6 +445,8 @@ class SolitaireUI(Window):
         sx = self.max_x // 2 - width // 2
         
         win = curses.newwin(height, width, sy, sx)
+
+        Player.play(Sound.SOLITAIRE_WIN)
         
         win.bkgd(" ", curses.color_pair(7))
         win.attron(curses.color_pair(13))
@@ -474,6 +497,12 @@ class SolitaireUI(Window):
         self.game.set_time(time.time())
         self.timer_thread.start()
 
+
+    def rcz(self) -> Tuple[int, int, int]:
+        """
+        Returns rcz of self.
+        """
+        return (self.r, self.c, self.z)
         
 
     # ================================================================================
@@ -516,6 +545,7 @@ class SolitaireUI(Window):
                 card = self.game.peek_waste_pile()
                 
                 if self.game.push_to_foundation_pile(card):
+                    Player.play(Sound.CARD_FLIP) 
                     self.game.waste_pile.pop()
                     self.render_wastepile()
                     self.render_foundation_piles()
@@ -531,7 +561,8 @@ class SolitaireUI(Window):
             if self.game.push_to_foundation_pile(card):
                 self.game.columns[self.c].pop()
                 
-                if self.game.columns[self.c]:
+                if self.game.column_size(self.c) > 0:
+                    Player.play(Sound.CARD_FLIP) 
                     self.game.flip_last(self.c)
                     self.z = 0 if self.game.column_size(self.c) == 0 else self.z - 1
                     
@@ -552,6 +583,7 @@ class SolitaireUI(Window):
             if self.game.stockpile.is_empty():
                 self.game.reset_stockpile()
             else:
+                Player.play(Sound.CARD_DEAL)
                 self.game.push_to_waste_pile()
             self.render_stockile()
             self.render_wastepile()
@@ -576,9 +608,7 @@ class SolitaireUI(Window):
             self.c = 0
             self.switch_row(1, cards)
         else:
-            if (
-                self.game.column_size(self.c) == 0
-            ):  # exit function if selected clm empty
+            if self.game.column_size(self.c) == 0:  
                 return
             cards = self.game.column_get_range(self.c, self.z)
         c = self.c
@@ -606,6 +636,7 @@ class SolitaireUI(Window):
 
             elif key in [curses.KEY_ENTER, 10, 13]:
                 if self.game.add_to_column(self.c, cards):
+                    Player.play(Sound.CARD_PLACE)
                     self.game.flip_last(c)
                     new_size = self.game.column_size(self.c)
                     self.z = new_size - 1 if new_size > 0 else 0
@@ -639,6 +670,7 @@ class SolitaireUI(Window):
                 self.render_column(self.c)
                 self.win.refresh()
                 break
+
 
     def run(self) -> None:
         """
@@ -691,8 +723,7 @@ class SolitaireUI(Window):
                         self.render_win()
                         self.reset()
                     else:
-                        break
-                    
+                        break 
 
             elif key in [curses.KEY_ENTER, 10, 13]:
                 self.on_key_enter()

@@ -1,7 +1,5 @@
 import curses
-import time
 
-from enum import Enum
 from typing import Optional, Tuple, List, Any, Callable
 
 
@@ -113,6 +111,10 @@ class Window:
                 self.render_win()
 
             after()     # do whatever
+
+
+    def center_x(self) -> int:
+        return self.width // 2
 
 
     def center_win(self) -> Tuple[int, int]:

@@ -8,7 +8,7 @@ from config.settings import settings
 MENU_OPTIONS: Dict[int, Tuple[str, str]] = {
     -1: [
         ("󰍜", "Main Menu"),
-        ("", "Chess"),
+        ("󰯉", "Space Invaders"),
         ("󱢮", "Solitaire"),
         ("", "Rubik's Cube"),
     ],
