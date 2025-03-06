@@ -38,6 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+    - uses: actions/chechout@v4
     - name: Prepare release
       run: |
         # Ensure the directories exist and list them
@@ -45,8 +46,8 @@ jobs:
         ls -l ./data
         ls -l ./conf
         # Create the release archives
-        zip -r ./games-tui-v${{ github.run_number }}.zip ./src ./data ./conf
-        tar -czf ./games-tui-v${{ github.run_number }}.tar.gz ./src ./data ./conf
+        zip -r ./games-tui-v${{ github.run_number }}.zip src data conf
+        tar -czf ./games-tui-v${{ github.run_number }}.tar.gz src data conf
 
     - name: Create new release
       id: create_release
