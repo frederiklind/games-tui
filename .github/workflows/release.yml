@@ -41,25 +41,28 @@ jobs:
     - name: Install PyInstaller
       run: |
         pip install pyinstaller
-    - name: Build binary for ${{ matrix.os }}
+    - name: Build binary for Ubuntu/MacOS
       run: |
         if [[ "${{ matrix.os }}" == "ubuntu-latest" || "${{ matrix.os }}" == "macos-latest" ]]; then
           pyinstaller --onefile src/games_tui/main.py
-        elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-          pyinstaller --onefile --windowed src/games_tui/main.py
         fi
       shell: bash
       if: runner.os != 'Windows'
       
     - name: Build binary for Windows
       run: |
-        pyinstaller --onefile --windowed src/games_tui/main.py
+        if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+          pyinstaller --onefile --windowed src/games_tui/main.py
+        fi
       shell: pwsh
       if: runner.os == 'Windows'
-      outputs:
-          ubuntu_binary: dist/games-tui 
-          macos_binary: dist/games-tui
-          windows_binary: dist/games-tui.exe
+      
+    - name: Set output for binaries
+      id: set-binary-output
+      run: |
+        echo "ubuntu_binary=dist/games-tui" >> $GITHUB_ENV
+        echo "macos_binary=dist/games-tui" >> $GITHUB_ENV
+        echo "windows_binary=dist/games-tui.exe" >> $GITHUB_ENV
 
   release:
     runs-on: ubuntu-latest
@@ -76,6 +79,9 @@ jobs:
         files: |
           source-code.tar.gz
           source-code.zip
-          dist/games-tui  # This will point to the correct binary (check the dist folder)
+          ${{ needs.build.outputs.ubuntu_binary }}
+          ${{ needs.build.outputs.macos_binary }}
+          ${{ needs.build.outputs.windows_binary }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
