@@ -32,3 +32,8 @@ jobs:
     - name: Test with pytest
       run: |
         pytest 
+    
+    - name: Test Makefile on macOS
+      if: matrix.os == 'macos-latest'
+      run: make
+      shell: bash

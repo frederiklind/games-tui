@@ -56,46 +56,54 @@ jobs:
     - name: Run Unit-tests
       run: pytest
 
-    - name: Build binary for each platform
-      run: |
-        pyinstaller --onefile --name games-tui src/games_tui/main.py
+    - name: Test Makefile on macOS
+      if: matrix.os == 'macos-latest'
+      run: make
       shell: bash
-      if: runner.os != 'Windows'
 
-    - name: Build binary for Windows
-      run: |
-        pyinstaller --onefile --windowed --name games-tui src/games_tui/main.py
-      shell: pwsh
-      if: runner.os == 'Windows'
+    # SKIP BINARIES FOR NOW...
+    # - name: Build binary for each platform
+    #   run: |
+    #     pyinstaller --onefile --name games-tui src/games_tui/main.py
+    #   shell: bash
+    #   if: runner.os != 'Windows'
 
-    - name: Package release for Linux and macOS
-      run: |
-        mkdir release
-        cp -r dist/games-tui release/
-        cp -r data release/              
-        cp -r conf release/
-        tar -czf games-tui-${{ runner.os }}.tar.gz -C release .
-      shell: bash
-      if: runner.os != 'Windows'
+    # - name: Build binary for Windows
+    #   run: |
+    #     pyinstaller --onefile --windowed --name games-tui src/games_tui/main.py
+    #   shell: pwsh
+    #   if: runner.os == 'Windows'
 
+    # - name: Package release for Linux and macOS
+    #   run: |
+    #     mkdir release
+    #     cp Makefile release/
+    #     cp -r dist/games-tui release/
+    #     cp -r data release/              
+    #     cp -r config release/
+    #     tar -czf games-tui-${{ runner.os }}.tar.gz -C release .
+    #   shell: bash
+    #   if: runner.os != 'Windows'
+    #
+    #
+    # - name: Package release for Windows
+    #   run: |
+    #     mkdir release
+    #     cp Makefile release\
+    #     cp dist\games-tui.exe release\
+    #     cp -r conf release\config
+    #     cp -r data release\
+    #     Compress-Archive -Path release\* -DestinationPath games-tui-${{ runner.os }}.zip
+    #   shell: pwsh
+    #   if: runner.os == 'Windows'
 
-    - name: Package release for Windows
-      run: |
-        mkdir release
-        cp dist\games-tui.exe release\
-        cp -r conf release\config
-        cp -r data release\
-        Compress-Archive -Path release\* -DestinationPath games-tui-${{ runner.os }}.zip
-      shell: pwsh
-      if: runner.os == 'Windows'
-
-    - name: Upload release artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: games-tui-${{ runner.os }}
-        path: |
-          games-tui-*.tar.gz
-          games-tui-*.zip
+    # - name: Upload release artifacts
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: games-tui-${{ runner.os }}
+    #     path: |
+    #       games-tui-*.tar.gz
+    #       games-tui-*.zip
 
   #
   #   ╔═╗────────╔═╗──╔══╗
