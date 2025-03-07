@@ -1,6 +1,5 @@
 name: Run Tests
 
-
 on:
   push:
     branches: [ "development" ]
@@ -11,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -32,4 +31,4 @@ jobs:
       shell: bash
     - name: Test with pytest
       run: |
-        pytest
+        pytest 
