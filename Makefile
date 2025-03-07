@@ -1,4 +1,3 @@
-
 # Variables
 APP_NAME = games-tui
 SRC_DIR = src
@@ -16,8 +15,8 @@ install:
 
 build:
 	mkdir -p $(DIST_DIR)
-	pyinstaller --onefile --name $(APP_NAME) $(SRC_DIR)/games_tui/main.py
-	mv $(DIST_DIR)/$(APP_NAME) $(APP_NAME) 
+	pyinstaller --onefile --name $(APP_NAME) --debug all $(SRC_DIR)/games_tui/main.py  # Add debug
+	mv dist/$(APP_NAME) $(APP_NAME)  # Correct binary path
 	mkdir -p $(DIST_DIR)/config
 	mkdir -p $(DIST_DIR)/data
 	cp -r $(CONFIG_DIR)/* $(DIST_DIR)/config/
@@ -31,17 +30,14 @@ install_binary:
 	mkdir -p $(APP_DIR)/data
 	cp -r $(CONFIG_DIR)/* $(APP_DIR)/config/
 	cp -r $(DATA_DIR)/* $(APP_DIR)/data/
-	sudo cp $(APP_NAME) $(BIN_DIR) 
-	@echo "Binary installed to: $(BIN_DIR)/$(APP_NAME)"
+	cp $(APP_NAME) $(HOME)/.local/bin/ 
+	@echo "Binary installed to: $(HOME)/.local/bin/$(APP_NAME)"
 	@echo "Config installed to: $(APP_DIR)/config"
 	@echo "Data installed to: $(APP_DIR)/data"
-
-package:
-	tar -czf $(APP_NAME)-$(VERSION)-macOS.tar.gz $(APP_NAME) -C $(DIST_DIR) config data
-	@echo "Package created at: $(PWD)/$(APP_NAME)-$(VERSION)-macOS.tar.gz"
 
 clean:
 	rm -rf $(DIST_DIR) build $(APP_NAME).spec $(APP_NAME)
 	@echo "Cleaned up build artifacts."
 
-all: install build package install_binary
+all: install build install_binary
+
