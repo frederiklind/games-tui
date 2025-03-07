@@ -3,7 +3,6 @@ from typing import List, Tuple
 
 from config import size
 from games.rubiks.rubiks_ui import RubiksUI
-from games.space_invaders.space_invaders_ui import SpaceInvadersUI
 from games.solitaire.solitaire_ui import SolitaireUI
 from ui.settings import SettingsUI
 from ui.window import Window
@@ -69,6 +68,7 @@ class MainMenu(Window):
     # ======================================================================
     # --------------------- Rendering of UI components ---------------------
     # ======================================================================
+
 
     def render_banner(self) -> None:
         """
@@ -174,27 +174,15 @@ class MainMenu(Window):
                 match self.menu_idx:
                     case 0:
                         match self.idx:
-                            case 1:
+                            case 0:
                                 SettingsUI(self.stdscr, size.MAIN_HEIGHT, size.MAIN_WIDTH)
                                 self.stdscr.clear()
                                 self.stdscr.refresh()
                                 self.adjust_maxyx()
                                 self.make_win()
-                            case 3:
-                                break
-                    case 1:
-                        match self.idx:
-                            case 0:
-                                SpaceInvadersUI(self.stdscr, size.SPACE_INVADERS_HEIGHT, size.SPACE_INVADERS_WIDTH)
-                                self.stdscr.clear()
-                                self.stdscr.refresh()
-                                self.adjust_maxyx()
-                                self.make_win()
                             case 1:
                                 break
-                            case 3:
-                                break
-                    case 2:
+                    case 1:
                         match self.idx:
                             case 0:
                                 SolitaireUI(self.stdscr, size.SOLITAIRE_HEIGHT, size.SOLITAIRE_WIDTH)
@@ -202,7 +190,7 @@ class MainMenu(Window):
                                 self.stdscr.refresh()
                                 self.adjust_maxyx()
                                 self.make_win()
-                    case 3:
+                    case 2:
                         match self.idx:
                             case 0:
                                 RubiksUI(self.stdscr, size.GAME_HEIGHT, size.GAME_WIDHT)

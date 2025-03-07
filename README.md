@@ -10,9 +10,6 @@ A collection of terminal based mini-games, written in python. Built using Python
 - [Games](#games)
   - [Klondike Solitaire](#klondike-solitaire)
   - [Rubik's Cube Puzzle](#rubiks-cube-puzzle)
-- [Features](#features)
-  - [Achievements]()
-  - [Game Statistics]()
 - [Installation](#installation)
   - [Prerequisites](#prerequisites)
   - [Homebrew](#homebrew)
@@ -85,37 +82,6 @@ Become a master of the terminal based Rubik's cube. The game will track the numb
 
 This appllication requires having a nerd font installed on your system and set in the terminal emulator being used to run the application. Nerd fonts can be downloaded from [www.nerdfont.com](https://nerdfont.com). 
 
-### Homebrew
-
-
-### AUR
-
-
-```bash
-# using paru
-paru -S games-tui
-
-# using yay
-yay -S games-tui
-```
-
-### Build from source (Arch)
-
-```bash
-git clone https://github.com/frederiklind/games-tui.git
-cd games-tui
-makepkg -si
-```
-
-### Manual Installation
-
-Clone the repository and install the application using the `setup.py`:
-
-```bash
-git clone https://github.com/frederiklind/games-tui.git
-cd games-tui
-python setup.py install
-```
 
 ## Configuration
 

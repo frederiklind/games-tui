@@ -8,35 +8,22 @@ from config.settings import settings
 MENU_OPTIONS: Dict[int, Tuple[str, str]] = {
     -1: [
         ("󰍜", "Main Menu"),
-        ("󰯉", "Space Invaders"),
         ("󱢮", "Solitaire"),
         ("", "Rubik's Cube"),
     ],
     0: [
-        ("󱌦", "Achievements      "),
         ("", "App Settings      "),
-        ("", "Readme            "),
         ("󰈆", "Quit Application  "),
     ],
     1: [
         ("", "Start Game        "),
         ("", "Highscore         "),
-        ("", "How to play       "),
-        ("", "Chess Settings    "),
     ],
     2: [
         ("", "Start Game        "),
         ("", "Highscore         "),
-        ("", "How to play       "),
-        ("", "Chess Settings    "),
     ],
     3: [
-        ("", "Start Game        "),
-        ("", "Highscore         "),
-        ("", "Rubik's Tutorial  "),
-        ("", "Game Settings     "),
-    ],
-    4: [
         ("", "Color scheme"),
         ("", "Ascii banner"),
         ("󰹞", "Show window background"),

@@ -1,4 +1,0 @@
-include requirements.txt
-include conf/*/*.toml
-include conf/*/*.txt
-recursive-include rubiks_tui *
