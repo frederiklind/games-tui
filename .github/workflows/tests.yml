@@ -33,15 +33,20 @@ jobs:
       run: |
         pytest 
     
-
     - name: Test Makefile on macOS
       if: matrix.os == 'macos-latest'
       run: |
-        set -x 
+        set -x
         make
         echo "Checking installed binary..."
         ls -l /usr/local/bin/games-tui || echo "Binary not found!"
+        
+        # Check macOS specific directory for app data
         echo "Checking installation directory..."
-        ls -l $(HOME)/.local/share/games-tui || echo "App data not found!"
-      shell: bash
+        echo "Home directory: $$HOME"
+        
+        # Use the expected macOS path for app data (~/Library/Application Support)
+        ls -l $$HOME/Library/Application\ Support/games-tui || echo "App data not found!"
+    shell: bash
+
 
