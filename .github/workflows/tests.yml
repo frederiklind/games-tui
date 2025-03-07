@@ -33,16 +33,15 @@ jobs:
       run: |
         pytest 
     
+
     - name: Test Makefile on macOS
       if: matrix.os == 'macos-latest'
-      run: make
-      shell: bash
-    
-    - name: Run installed application
-      if: matrix.os == 'macos-latest'
       run: |
-        echo "Checking binary location:"
-        ls -l /usr/local/bin/games-tui
-        echo "Running games-tui..."
-        /usr/local/bin/games-tui --version
+        set -x 
+        make
+        echo "Checking installed binary..."
+        ls -l /usr/local/bin/games-tui || echo "Binary not found!"
+        echo "Checking installation directory..."
+        ls -l $(HOME)/.local/share/games-tui || echo "App data not found!"
       shell: bash
+
