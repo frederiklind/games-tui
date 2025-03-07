@@ -99,5 +99,3 @@ jobs:
         #   dist/games-tui  # This will point to the correct binary (check the dist folder)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-

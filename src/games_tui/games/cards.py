@@ -2,7 +2,7 @@ import random
 
 from collections import deque
 from enum import Enum
-from typing import List, Deque, Optional
+from typing import List, Deque, Optional, Iterator
 
 
 class Suit(Enum):
@@ -221,15 +221,6 @@ class Deck(object):
         """
         return False if self.__cards else True
 
-    def tolist(self) -> List[Card]:
-        """
-        Gets the card deck as a list of cards.
-
-        Returns:
-            List[Card]: All cards in the deck.
-        """
-        return list(self.__cards)
-
     def peek_top(self) -> Card:
         if not self.is_empty():
             return self.__cards[-1]
@@ -240,6 +231,9 @@ class Deck(object):
         """
         return len(self.__cards)
 
+    def __iter__(self) -> Iterator[Card]:
+        return iter(self.__cards)
+    
 
 if __name__ == "__main__":
     deck = Deck(shuffle=True)
