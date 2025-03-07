@@ -37,3 +37,12 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: make
       shell: bash
+    
+    - name: Run installed application
+      if: matrix.os == 'macos-latest'
+      run: |
+        echo "Checking binary location:"
+        ls -l /usr/local/bin/games-tui
+        echo "Running games-tui..."
+        /usr/local/bin/games-tui --version
+      shell: bash
