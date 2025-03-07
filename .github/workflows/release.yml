@@ -1,0 +1,267 @@
+# name: Release
+#
+# on:
+#   push:
+#     branches: [ "master" ]
+#   pull_request:
+#     branches: [ "master" ]
+#
+# env:
+#   RELEASE_VERSION: v0.0.1
+#   RELEASE_NOTES: "New release for version v0.0.1"
+#
+# permissions:
+#   contents: write
+#
+# jobs:
+#   build:
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       matrix:
+#         os: [ubuntu-latest, macos-latest, windows-latest]
+#       fail-fast: false
+#
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: Set up Python 3.13
+#       uses: actions/setup-python@v3
+#       with:
+#         python-version: "3.13"
+#     - name: Install dependencies
+#       run: |
+#         python -m pip install --upgrade pip
+#         pip install pytest
+#         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+#       shell: bash
+#     - name: Test with pytest
+#       run: |
+#         pytest
+#     - name: Install PyInstaller
+#       run: |
+#         pip install pyinstaller
+#     - name: Build binary for Ubuntu/MacOS
+#       run: |
+#         if [[ "${{ matrix.os }}" == "ubuntu-latest" || "${{ matrix.os }}" == "macos-latest" ]]; then
+#           pyinstaller --onefile src/games_tui/main.py
+#         fi
+#       shell: bash
+#       if: runner.os != 'Windows'
+#       
+#     - name: Build binary for Windows
+#       run: |
+#         if ($env:RUNNER_OS -eq "Windows") {
+#           pyinstaller --onefile --windowed src/games_tui/main.py
+#         }
+#       shell: pwsh
+#       if: runner.os == 'Windows'
+#       
+#     - name: Set output for binaries
+#       id: set-binary-output
+#       run: |
+#         echo "ubuntu_binary=dist/games-tui" >> $GITHUB_ENV
+#         echo "macos_binary=dist/games-tui" >> $GITHUB_ENV
+#         echo "windows_binary=dist/games-tui.exe" >> $GITHUB_ENV
+#
+#   create_tag:
+#     runs-on: ubuntu-latest
+#     needs: build
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: Set Git user identity
+#       run: |
+#         git config --global user.email "frederiklind@noreply.com"
+#         git config --global user.name "Frederik Lind"
+#     - name: Delete existing remote tag if it exists
+#       run: |
+#         git tag -d "${{ env.RELEASE_VERSION }}" || echo "No local tag to delete"
+#         git push --delete origin "v${{ env.RELEASE_VERSION }}" || echo "No remote tag to delete"
+#     - name: Create Git tag
+#       run: |
+#         git tag -a "${{ env.RELEASE_VERSION }}" -m "Release version ${{ env.RELEASE_VERSION }}"
+#         git push origin "${{ env.RELEASE_VERSION }}"
+#
+#   release:
+#     runs-on: ubuntu-latest
+#     needs: create_tag
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: Fetch tags to ensure the tag is available
+#       run: git fetch --tags
+#     - name: Create GitHub release and upload assets
+#       uses: softprops/action-gh-release@v1
+#       with:
+#         tag_name: "${{ env.RELEASE_VERSION }}"
+#         # files: |
+#         #   dist/games-tui  # This will point to the correct binary (check the dist folder)
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#
+#
+
+
+name: Release
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  RELEASE_VERSION: v1.0.0  # Update this version dynamically later
+  RELEASE_NOTES: "New release for version v1.0.0"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.13"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pyinstaller
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      shell: bash
+
+    - name: Test with pytest
+      run: pytest
+
+    - name: Build binary for each platform
+      run: |
+        pyinstaller --onefile --name games-tui src/games_tui/main.py
+      shell: bash
+      if: runner.os != 'Windows'
+
+    - name: Build binary for Windows
+      run: |
+        pyinstaller --onefile --windowed --name games-tui src/games_tui/main.py
+      shell: pwsh
+      if: runner.os == 'Windows'
+
+    - name: Package release for Linux and macOS
+      run: |
+        mkdir -p release/bin release/conf release/data
+        cp dist/games-tui release/bin/
+        cp -r conf/* release/conf/
+        cp -r data/* release/data/
+        tar -czf games-tui-${{ runner.os }}.tar.gz -C release .
+      shell: bash
+      if: runner.os != 'Windows'
+
+    - name: Package release for Windows
+      run: |
+        mkdir release
+        mkdir release\bin
+        mkdir release\conf
+        mkdir release\data
+        cp dist\games-tui.exe release\bin\
+        cp -r conf\* release\conf\
+        cp -r data\* release\data\
+        Compress-Archive -Path release\* -DestinationPath games-tui-${{ runner.os }}.zip
+      shell: pwsh
+      if: runner.os == 'Windows'
+
+    - name: Upload release artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: games-tui-${{ runner.os }}
+        path: |
+          games-tui-*.tar.gz
+          games-tui-*.zip
+
+  create_tag:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set Git user identity
+      run: |
+        git config --global user.email "frederiklind@noreply.com"
+        git config --global user.name "Frederik Lind"
+
+    - name: Delete existing remote tag if it exists
+      run: |
+        git tag -d "${{ env.RELEASE_VERSION }}" || echo "No local tag to delete"
+        git push --delete origin "${{ env.RELEASE_VERSION }}" || echo "No remote tag to delete"
+
+    - name: Create Git tag
+      run: |
+        git tag -a "${{ env.RELEASE_VERSION }}" -m "Release version ${{ env.RELEASE_VERSION }}"
+        git push origin "${{ env.RELEASE_VERSION }}"
+
+  release:
+    runs-on: ubuntu-latest
+    needs: create_tag
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Fetch tags to ensure the tag is available
+      run: git fetch --tags
+
+    - name: Download release artifacts
+      uses: actions/download-artifact@v4
+
+    - name: Create GitHub release and upload assets
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: "${{ env.RELEASE_VERSION }}"
+        files: |
+          games-tui-*.tar.gz
+          games-tui-*.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # update_homebrew:
+  #   runs-on: ubuntu-latest
+  #   needs: release
+  #   steps:
+  #   - name: Clone Homebrew Tap
+  #     run: |
+  #       git clone https://github.com/frederiklind/homebrew-frederiklind.git homebrew-tap
+  #       cd homebrew-tap
+  #       git config user.name "Frederik Lind"
+  #       git config user.email "frederiklind@noreply.com"
+  #
+  #   - name: Download the new release and compute SHA256
+  #     run: |
+  #       RELEASE_URL="https://github.com/frederiklind/games-tui/releases/download/${{ env.RELEASE_VERSION }}/games-tui-ubuntu-latest.tar.gz"
+  #       wget -O games-tui.tar.gz "$RELEASE_URL"
+  #       SHA256=$(sha256sum games-tui.tar.gz | awk '{ print $1 }')
+  #
+  #       echo "RELEASE_URL=$RELEASE_URL" >> $GITHUB_ENV
+  #       echo "SHA256=$SHA256" >> $GITHUB_ENV
+  #
+  #   - name: Update Homebrew Formula
+  #     run: |
+  #       cd homebrew-tap/Formula
+  #       FORMULA_FILE=games-tui.rb
+  #
+  #       # Update version, URL, and SHA256
+  #       sed -i "s/version .*/version \"${{ env.RELEASE_VERSION }}\"/" $FORMULA_FILE
+  #       sed -i "s|url .*|url \"${{ env.RELEASE_URL }}\"|" $FORMULA_FILE
+  #       sed -i "s/sha256 .*/sha256 \"${{ env.SHA256 }}\"/" $FORMULA_FILE
+  #
+  #   - name: Commit and push Homebrew update
+  #     run: |
+  #       cd homebrew-tap
+  #       git add Formula/games-tui.rb
+  #       git commit -m "Update games-tui formula to version ${{ env.RELEASE_VERSION }}"
+  #       git push origin master
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.PUBLISHER_TOKEN }}
+

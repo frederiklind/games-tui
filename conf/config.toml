@@ -1,0 +1,28 @@
+[ui_display]
+show_background = true
+show_headers = true
+show_ui_borders = true
+color_scheme = "Catppuccin-Macchiato"
+ascii_banner = "Slant"
+
+[audio]
+enable_sound_effects = true
+
+[controls]
+alt_keys = "Vim"
+
+[chess]
+debug_log_file = ""
+contempt = 0
+min_split_depth = 0
+threads = 1
+ponder = false
+hash = 16
+multi_pv = 1
+skill_level = 20
+move_overhead = 10
+min_thinking_time = 20
+slow_mover = 100
+uci_chess_960 = false
+uci_limit_strength = false
+uci_elo = 1350

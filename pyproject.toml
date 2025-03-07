@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[project]
+name = "games-tui"
+version = "1.0.0"
+
+[project.scripts]
+rubiks-tui = "main:main"

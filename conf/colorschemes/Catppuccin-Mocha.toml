@@ -1,0 +1,20 @@
+[base_colors]
+white = "#cdd6f4" 
+yellow = "#f9e2af"
+green = "#a6e3a1"
+blue = "#89b4fa"
+red = "#f38ba8"
+orange = "#fab387"
+
+[ui_colors]
+window_background = "#11111b"
+header_background = "#313244"
+header_text = "#7f849c"
+ui_text = "#a6adc8"
+ui_selected_text = "#74c7ec"
+ascii_title = "#89b4fa"
+icons = "#89b4fa"
+
+[game_colors]
+card_frames = "#939ab7"
+card_selected_frame = "#c6a0f6"
