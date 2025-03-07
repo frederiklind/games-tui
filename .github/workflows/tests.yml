@@ -47,6 +47,6 @@ jobs:
         
         # Use the expected macOS path for app data (~/Library/Application Support)
         ls -l $$HOME/Library/Application\ Support/games-tui || echo "App data not found!"
-    shell: bash
+      shell: bash
 
 
