@@ -5,7 +5,7 @@ CONFIG_DIR = config
 DATA_DIR = data
 VERSION = 1.0.0
 BIN_DIR = /usr/local/bin  
-APP_DIR = $(HOME)/.local/share/$(APP_NAME) 
+APP_DIR = $(HOME)/Library/Application Support/$(APP_NAME)
 
 install:
 	python3 -m pip install --upgrade pip
