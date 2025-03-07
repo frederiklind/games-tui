@@ -1,11 +1,14 @@
+
 APP_NAME = games-tui
 SRC_DIR = src
 DIST_DIR = dist
 CONFIG_DIR = config
 DATA_DIR = data
 VERSION = 1.0.0
-BIN_DIR = /usr/local/bin  
-APP_DIR = $(HOME)/Library/Application Support/$(APP_NAME)
+APP_DIR = /usr/local/lib/$(APP_NAME)
+BIN_FILE = $(APP_DIR)/$(APP_NAME)
+LINK_DIR = /usr/local/bin
+CURRENT_USER := $(shell whoami)
 
 install:
 	python3 -m pip install --upgrade pip
@@ -25,13 +28,14 @@ build:
 	@echo "Data copied to: $(PWD)/data"
 
 install_binary:
-	mkdir -p $(HOME)/.local/bin/
 	mkdir -p $(APP_DIR)/config
 	mkdir -p $(APP_DIR)/data
+	install -m 0755 $(APP_NAME) $(BIN_FILE)
 	cp -r $(CONFIG_DIR)/* $(APP_DIR)/config/
 	cp -r $(DATA_DIR)/* $(APP_DIR)/data/
-	install -m 0755 $(APP_NAME) $(HOME)/.local/bin/
-	@echo "Binary installed to: $(HOME)/.local/bin/$(APP_NAME)"
+	ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME)
+	@echo "Binary installed to: $(BIN_FILE)"
+	@echo "Symlink created at: $(LINK_DIR)/$(APP_NAME)"
 	@echo "Config installed to: $(APP_DIR)/config"
 	@echo "Data installed to: $(APP_DIR)/data"
 
@@ -40,3 +44,4 @@ clean:
 	@echo "Cleaned up build artifacts."
 
 all: install build install_binary
+

@@ -32,21 +32,21 @@ jobs:
     - name: Test with pytest
       run: |
         pytest 
-    
+
     - name: Test Makefile on macOS
       if: matrix.os == 'macos-latest'
       run: |
         set -x
-        make
+        make install  # Ensure dependencies and environment are set up
+        make build    # Build the project
         echo "Checking installed binary..."
         ls -l /usr/local/bin/games-tui || echo "Binary not found!"
         
-        # Check macOS specific directory for app data
+        # Check macOS specific directory for app data (now in /usr/local/lib/games-tui)
         echo "Checking installation directory..."
-        echo "Home directory: $$HOME"
-        
-        # Use the expected macOS path for app data (~/Library/Application Support)
-        ls -l $$HOME/Library/Application\ Support/games-tui || echo "App data not found!"
+        ls -l /usr/local/lib/games-tui/config || echo "Config data not found!"
+        ls -l /usr/local/lib/games-tui/data || echo "App data not found!"
       shell: bash
+
 
 
