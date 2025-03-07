@@ -22,6 +22,9 @@ build:
 	mkdir -p $(DIST_DIR)/data
 	cp -r $(CONFIG_DIR)/* $(DIST_DIR)/config/
 	cp -r $(DATA_DIR)/* $(DIST_DIR)/data/
+	echo "Binary created at: $(PWD)/$(APP_NAME)"
+	echo "Config copied to: $(PWD)/config"
+	echo "Data copied to: $(PWD)/data"
 
 install_binary:
 	mkdir -p $(APP_DIR)/config
@@ -29,6 +32,9 @@ install_binary:
 	cp -r $(CONFIG_DIR)/* $(APP_DIR)/config/
 	cp -r $(DATA_DIR)/* $(APP_DIR)/data/
 	sudo cp $(APP_NAME) $(BIN_DIR) 
+	echo "Binary installed to: $(BIN_DIR)/$(APP_NAME)"
+	echo "Config installed to: $(APP_DIR)/config"
+	echo "Data installed to: $(APP_DIR)/data"
 
 package:
 	tar -czf $(APP_NAME)-$(VERSION)-macOS.tar.gz $(APP_NAME) -C $(DIST_DIR) config data
