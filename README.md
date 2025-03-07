@@ -1,5 +1,5 @@
 <div align="center">
-  <img src=".assets/logo.png"/>
+  <img src=".assets/logo.png" width="90%"/>
 </div>
 <br/>
 
@@ -27,12 +27,11 @@ A collection of terminal based mini-games, written in python. Built using Python
 
 <br/>
 <div align="center">
-  <img src=".assets/klondike-logo.png" width="75%">
+  <img src=".assets/klondike-logo.png" width="75%"/>
 </div>
 
 ### Klondike Solitaire
 
-Play Klondike Solitaire in your terminal. 
 
 <br/>
 <div align="center">
@@ -53,7 +52,7 @@ Play Klondike Solitaire in your terminal.
 
 </div>
 
-[How to manage keybindings]()
+
 
 #### [Source Code for Klondike Solitaire](./src/games_tui/games/solitaire/)
 
@@ -78,17 +77,6 @@ Become a master of the terminal based Rubik's cube. The game will track the numb
 #### [Source Code for Rubik's](./src/games_tui/games/rubiks/)
 
 <br/>
-
-#
-
-<br/>
-
-## Features
-
-### Game statistics
-
-Keeps track of the number of moves used to solve the cube, and the time spent getting a valid solution. The results are saved, encouraging you to beat your fastest time.
-
 
 
 ## Installation
