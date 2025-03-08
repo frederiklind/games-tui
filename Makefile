@@ -7,7 +7,6 @@
 # 	╚╝╚╝╚╩╝╚╩╝╚╩══╝╚╝╚╩═╩══╝
 # 		
 
-
 VERSION = 1.0.0
 APP_NAME = games-tui
 SRC_DIR = src
@@ -70,7 +69,6 @@ build:
 	@echo "Config copied to: $(PWD)/config"
 	@echo "Data copied to: $(PWD)/data"
 
-
 install_binary:
 ifeq ($(OS), Windows)
 	mkdir $(APP_DIR)/config
@@ -82,14 +80,33 @@ ifeq ($(OS), Windows)
 	@echo "Binary installed to: $(BIN_FILE)"
 	@echo "Config installed to: $(APP_DIR)/config"
 	@echo "Data installed to: $(APP_DIR)/data"
-else
-	# For Linux and MacOS
+else ifeq ($(OS), Darwin)
+	# For macOS
+	sudo mkdir -p /Users/$(CURRENT_USER)/Library/Application\ Support/games-tui
+	sudo cp -r $(APP_CONFIG)/* /Users/$(CURRENT_USER)/Library/Application\ Support/games-tui/
+
+	# Create directories and install the binary
 	sudo mkdir -p $(APP_DIR)/config
 	sudo mkdir -p $(APP_DIR)/data
 	$(INSTALL) -m 0755 $(APP_NAME) $(BIN_FILE)
 	sudo $(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
 	sudo $(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
 	sudo ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME)
+
+	@echo "Binary installed to: $(BIN_FILE)"
+	@echo "Symlink created at: $(LINK_DIR)/$(APP_NAME)"
+	@echo "Config installed to: $(APP_DIR)/config"
+	@echo "Data installed to: $(APP_DIR)/data"
+	@echo "Config copied to: /Users/$(CURRENT_USER)/Library/Application Support/games-tui"
+else
+	# For Linux
+	sudo mkdir -p $(APP_DIR)/config
+	sudo mkdir -p $(APP_DIR)/data
+	$(INSTALL) -m 0755 $(APP_NAME) $(BIN_FILE)
+	sudo $(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
+	sudo $(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
+	sudo ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME)
+
 	@echo "Binary installed to: $(BIN_FILE)"
 	@echo "Symlink created at: $(LINK_DIR)/$(APP_NAME)"
 	@echo "Config installed to: $(APP_DIR)/config"
