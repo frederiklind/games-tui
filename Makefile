@@ -71,6 +71,18 @@ build:
 	@echo "Data copied to: $(PWD)/data"
 
 install_binary:
+ifeq ($(OS), Windows)
+	mkdir $(APP_DIR)/config
+	mkdir $(APP_DIR)/data
+	$(INSTALL) $(APP_NAME) $(BIN_FILE)
+	$(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
+	$(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
+	@echo "Binary installed to: $(BIN_FILE)"
+	@echo "Config installed to: $(APP_DIR)/config"
+	@echo "Data installed to: $(APP_DIR)/data"
+	@echo "Creating symlink (Windows requires admin privileges)..."
+	cmd.exe /C "mklink $(LINK_DIR)/$(APP_NAME).exe $(BIN_FILE)"
+else
 	ifneq ($(OS), Windows)
 		sudo mkdir -p $(APP_DIR)/config
 		sudo mkdir -p $(APP_DIR)/data
@@ -82,18 +94,8 @@ install_binary:
 		@echo "Symlink created at: $(LINK_DIR)/$(APP_NAME)"
 		@echo "Config installed to: $(APP_DIR)/config"
 		@echo "Data installed to: $(APP_DIR)/data"
-	else
-		mkdir $(APP_DIR)/config
-		mkdir $(APP_DIR)/data
-		$(INSTALL) $(APP_NAME) $(BIN_FILE)
-		$(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
-		$(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
-		@echo "Binary installed to: $(BIN_FILE)"
-		@echo "Config installed to: $(APP_DIR)/config"
-		@echo "Data installed to: $(APP_DIR)/data"
-		@echo "Creating symlink (Windows requires admin privileges)..."
-		cmd.exe /C "mklink $(LINK_DIR)/$(APP_NAME).exe $(BIN_FILE)"
 	endif
+endif
 
 clean:
 	rm -rf $(DIST_DIR) build $(APP_NAME).spec $(APP_NAME) $(VENV)
