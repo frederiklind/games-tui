@@ -11,8 +11,8 @@ VERSION = 1.0.0
 APP_NAME = games-tui
 SRC_DIR = src
 DIST_DIR = dist
-APP_CONFIG = config
-DATA_DIR = data
+CONFIG = config
+DATA = data
 VENV = .venv
 CURRENT_USER := $(shell whoami)
 
@@ -30,7 +30,8 @@ ifeq ($(OS), Linux)
 	INSTALL = sudo install -m 0755
 	VENV_ACTIVATE = . $(VENV)/bin/activate
 	LINK_DIR = /usr/local/bin
-	CONFIG_DIR = $(HOME)/.config/games-tui
+	CONFIG_DIR = $(HOME)/.config/$(APP_NAME)
+	DATA_DIR = $(HOME)/.local/share/$(APP_NAME) 
 else ifeq ($(OS), Darwin)
 	APP_DIR = /usr/local/lib/$(APP_NAME)
 	BIN_FILE = $(APP_DIR)/$(APP_NAME)
@@ -96,14 +97,12 @@ else ifeq ($(OS), Darwin)
 	@echo "Data installed to: $(APP_DIR)/data"
 	@echo "Config copied to: $(CONFIG_DIR)"
 else
-	# For Linux: Ensure directories exist
 	mkdir -p $(CONFIG_DIR)
-	$(COPY) $(APP_CONFIG)/* $(CONFIG_DIR)/
+	$(COPY) $(CONFIG)/* $(CONFIG_DIR)/
 
-	mkdir -p $(CONFIG_DIR)/data
-	$(COPY) $(DATA_DIR)/* $(CONFIG_DIR)/data/
+	mkdir -p $(DATA_DIR)
+	$(COPY) $(DATA)/* $(DATA_DIR)/
 
-	# Create directories and install the binary
 	sudo mkdir -p $(APP_DIR)/config
 	sudo mkdir -p $(APP_DIR)/data
 	$(INSTALL) -m 0755 $(APP_NAME) $(BIN_FILE)
