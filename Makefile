@@ -28,8 +28,6 @@ ifeq ($(OS), Linux)
 	INSTALL = sudo install -m 0755
 	VENV_ACTIVATE = . $(VENV)/bin/activate
 	LINK_DIR = /usr/local/bin
-	CONFIG_DIR = $(HOME)/.config/$(APP_NAME)
-	DATA_DIR = $(HOME)/.local/share/$(APP_NAME) 
 else ifeq ($(OS), Darwin)
 	APP_DIR = /usr/local/lib/$(APP_NAME)
 	BIN_FILE = $(APP_DIR)/$(APP_NAME)
@@ -65,33 +63,22 @@ build:
 
 install_binary:
 ifeq ($(OS), Windows)
-	# For Windows: Ensure directories exist
 	mkdir $(APP_DIR)\config
 	mkdir $(APP_DIR)\data
 	$(INSTALL) $(APP_NAME) $(BIN_FILE)
-	xcopy /E /I /Y $(APP_CONFIG) $(APP_DIR)\config
+	xcopy /E /I /Y $(CONFIG_DIR) $(APP_DIR)\config
 	xcopy /E /I /Y $(DATA_DIR) $(APP_DIR)\data
-	@echo "Binary installed to: $(BIN_FILE)"
-	@echo "Config installed to: $(APP_DIR)\config"
-	@echo "Data installed to: $(APP_DIR)\data"
-else ifeq ($(OS), Darwin)
-	# For macOS: Ensure directories exist and copy correctly
-	sudo mkdir -p $(CONFIG_DIR)
-	sudo cp -r $(APP_CONFIG)/* $(CONFIG_DIR)/
 
-	# Create directories and install the binary
+else ifeq ($(OS), Darwin)
+	sudo mkdir -p $(CONFIG_DIR)
+	sudo cp -r $(CONFIG_DIR)/* $(CONFIG_DIR)/
 	sudo mkdir -p $(APP_DIR)/config
 	sudo mkdir -p $(APP_DIR)/data
 	$(INSTALL) -m 0755 $(APP_NAME) $(BIN_FILE)
-	sudo $(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
+	sudo $(COPY) $(CONFIG_DIR)/* $(APP_DIR)/config/
 	sudo $(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
 	sudo ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME)
 
-	@echo "Binary installed to: $(BIN_FILE)"
-	@echo "Symlink created at: $(LINK_DIR)/$(APP_NAME)"
-	@echo "Config installed to: $(APP_DIR)/config"
-	@echo "Data installed to: $(APP_DIR)/data"
-	@echo "Config copied to: $(CONFIG_DIR)"
 else
 	sudo mkdir -p $(HOME)/.config/$(APP_NAME)
 	sudo cp -r $(CONFIG_DIR)/* $(HOME)/.config/$(APP_NAME)
