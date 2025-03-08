@@ -1,3 +1,4 @@
+
 name: Run Tests
 
 on:
@@ -49,8 +50,6 @@ jobs:
         
         echo "Checking installation directory..."
         ls -l $HOME/.config/games-tui
-
-        # games-tui || echo "Failed running the application."
       shell: bash
 
 
@@ -67,8 +66,6 @@ jobs:
         echo "Checking installation directory..."
         ls -l "/Users/$(whoami)/Library/Application Support/games-tui/config" || echo "Config data not found!"
         ls -l "/Users/$(whoami)/Library/Application Support/games-tui/data" || echo "App data not found!"
-
-        games-tui || echo "Failed running the application."
       shell: bash
 
 
@@ -80,13 +77,9 @@ jobs:
         make build
         make install_binary
         echo "Checking installed binary..."
-        dir C:\Program\ Files\games-tui\games-tui.exe || echo "Binary not found!"
+        dir "C:\Program Files\games-tui\games-tui.exe" || echo "Binary not found!"
 
         echo "Checking installation directory..."
-        dir C:\Program\ Files\games-tui\config || echo "Config data not found!"
-        dir C:\Program\ Files\games-tui\data || echo "App data not found!"
-        
-        games-tui || echo "games-tui failed to run"
+        dir "C:\Program Files\games-tui\config" || echo "Config data not found!"
+        dir "C:\Program Files\games-tui\data" || echo "App data not found!"
       shell: bash
-
-
