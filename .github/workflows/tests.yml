@@ -51,6 +51,8 @@ jobs:
         echo "Checking installation directory..."
         ls -l $HOME/.config/games-tui
         ls -l $HOME/.local/share/games-tui
+
+        games-tui
       shell: bash
 
 
