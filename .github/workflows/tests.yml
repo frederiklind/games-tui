@@ -50,6 +50,8 @@ jobs:
         echo "Checking installation directory..."
         ls -l /usr/local/lib/games-tui/config || echo "Config data not found!"
         ls -l /usr/local/lib/games-tui/data || echo "App data not found!"
+
+        games-tui || echo "Failed running the application."
       shell: bash
 
     - name: Test Makefile on macOS
@@ -65,13 +67,14 @@ jobs:
         echo "Checking installation directory..."
         ls -l /usr/local/lib/games-tui/config || echo "Config data not found!"
         ls -l /usr/local/lib/games-tui/data || echo "App data not found!"
+
+        games-tui || echo "Failed running the application."
       shell: bash
 
     - name: Test Makefile on Windows
       if: matrix.os == 'windows-latest'
       run: |
         set -x
-        # Ensure make is available in Windows (via Git Bash or similar)
         make install
         make build
         make install_binary
@@ -81,6 +84,8 @@ jobs:
         echo "Checking installation directory..."
         dir C:\Program\ Files\games-tui\config || echo "Config data not found!"
         dir C:\Program\ Files\games-tui\data || echo "App data not found!"
+        
+        games-tui || echo "games-tui failed to run"
       shell: bash
 
 

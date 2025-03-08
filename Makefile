@@ -76,13 +76,12 @@ ifeq ($(OS), Windows)
 	mkdir $(APP_DIR)/config
 	mkdir $(APP_DIR)/data
 	$(INSTALL) $(APP_NAME) $(BIN_FILE)
-	$(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
-	$(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
+	xcopy /E /I /Y config $(APP_DIR)/config
+	xcopy /E /I /Y data $(APP_DIR)/data
+	
 	@echo "Binary installed to: $(BIN_FILE)"
 	@echo "Config installed to: $(APP_DIR)/config"
 	@echo "Data installed to: $(APP_DIR)/data"
-	@echo "Creating symlink (Windows requires admin privileges)..."
-	cmd.exe /C "mklink $(LINK_DIR)/$(APP_NAME).exe $(BIN_FILE)"
 else
 	# For Linux and MacOS
 	sudo mkdir -p $(APP_DIR)/config
