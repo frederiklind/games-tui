@@ -84,7 +84,7 @@ else
 	sudo cp -r $(CONFIG_DIR)/* $(HOME)/.config/$(APP_NAME)
 
 	sudo mkdir -p $(HOME)/.local/share/$(APP_NAME)
-	sudo cp -r $(DATA)/* $(HOME)/.local/share/$(APP_NAME)
+	sudo cp -r $(DATA_DIR)/* $(HOME)/.local/share/$(APP_NAME)
 
 	$(INSTALL) -m 0755 $(APP_NAME) /usr/local/bin/$(APP_NAME)
 	sudo ln -sf /usr/local/bin/$(APP_NAME) /usr/local/bin/$(APP_NAME)
