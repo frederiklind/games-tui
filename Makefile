@@ -70,6 +70,7 @@ build:
 	@echo "Config copied to: $(PWD)/config"
 	@echo "Data copied to: $(PWD)/data"
 
+
 install_binary:
 ifeq ($(OS), Windows)
 	mkdir $(APP_DIR)/config
@@ -83,18 +84,17 @@ ifeq ($(OS), Windows)
 	@echo "Creating symlink (Windows requires admin privileges)..."
 	cmd.exe /C "mklink $(LINK_DIR)/$(APP_NAME).exe $(BIN_FILE)"
 else
-	ifneq ($(OS), Windows)
-		sudo mkdir -p $(APP_DIR)/config
-		sudo mkdir -p $(APP_DIR)/data
-		$(INSTALL) -m 0755 $(APP_NAME) $(BIN_FILE)
-		$(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
-		$(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
-		ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME)
-		@echo "Binary installed to: $(BIN_FILE)"
-		@echo "Symlink created at: $(LINK_DIR)/$(APP_NAME)"
-		@echo "Config installed to: $(APP_DIR)/config"
-		@echo "Data installed to: $(APP_DIR)/data"
-	endif
+	# For Linux and MacOS
+	sudo mkdir -p $(APP_DIR)/config
+	sudo mkdir -p $(APP_DIR)/data
+	$(INSTALL) -m 0755 $(APP_NAME) $(BIN_FILE)
+	$(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
+	$(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
+	ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME)
+	@echo "Binary installed to: $(BIN_FILE)"
+	@echo "Symlink created at: $(LINK_DIR)/$(APP_NAME)"
+	@echo "Config installed to: $(APP_DIR)/config"
+	@echo "Data installed to: $(APP_DIR)/data"
 endif
 
 clean:
