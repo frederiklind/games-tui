@@ -85,7 +85,7 @@ else
 	sudo mkdir -p $(HOME)/.local/share/$(APP_NAME)
 	sudo cp -r $(DATA_DIR)/* $(HOME)/.local/share/$(APP_NAME)
 
-	sudo install -m 0755 $(APP_NAME) /usr/local/bin/$(APP_NAME)
+	sudo install -m 0755 /dist/$(APP_NAME) /usr/local/bin/$(APP_NAME)
 
 	@echo "Binary installed to: /usr/local/bin/$(APP_NAME)"
 	@echo "Config installed to: $(HOME)/.config/$(APP_NAME)"
