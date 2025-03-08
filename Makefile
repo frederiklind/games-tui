@@ -54,10 +54,11 @@ install:
 	$(PYTHON) -m pip install -r requirements.txt
 	$(PYTHON) -m pip install pyinstaller
 
+
 build:
 	mkdir -p $(DIST_DIR)
-	pyinstaller --onefile --name $(APP_NAME) $(SRC_DIR)/games_tui/main.py
-	@echo "Binary created at: $(PWD)/dist/$(APP_NAME)"
+	pyinstaller --onefile --name $(APP_NAME) $(SRC_DIR)/games_tui/main.py --distpath $(DIST_DIR)
+	@echo "Binary created at: $(PWD)/$(DIST_DIR)/$(APP_NAME)"
 
 install_binary:
 ifeq ($(OS), Windows)
@@ -78,13 +79,16 @@ else ifeq ($(OS), Darwin)
 	sudo ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME)
 
 else
+	# Ensure config directory exists and copy config files
 	sudo mkdir -p $(HOME)/.config/$(APP_NAME)
 	sudo cp -r $(CONFIG_DIR)/* $(HOME)/.config/$(APP_NAME)
 
+	# Ensure data directory exists and copy data files
 	sudo mkdir -p $(HOME)/.local/share/$(APP_NAME)
 	sudo cp -r $(DATA_DIR)/* $(HOME)/.local/share/$(APP_NAME)
 
-	sudo install -m 0755 /dist/$(APP_NAME) /usr/local/bin/$(APP_NAME)
+	# Install the binary directly from the dist folder to /usr/local/bin
+	sudo install -m 0755 $(DIST_DIR)/$(APP_NAME) /usr/local/bin/$(APP_NAME)
 
 	@echo "Binary installed to: /usr/local/bin/$(APP_NAME)"
 	@echo "Config installed to: $(HOME)/.config/$(APP_NAME)"
