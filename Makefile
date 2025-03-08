@@ -94,7 +94,7 @@ else ifeq ($(OS), Darwin)
 	@echo "Config copied to: $(CONFIG_DIR)"
 else
 	sudo mkdir -p $(HOME)/.config/$(APP_NAME)
-	sudo cp -r $(CONFIG)/* $(HOME)/.config/$(APP_NAME)
+	sudo cp -r $(CONFIG_DIR)/* $(HOME)/.config/$(APP_NAME)
 
 	sudo mkdir -p $(HOME)/.local/share/$(APP_NAME)
 	sudo cp -r $(DATA)/* $(HOME)/.local/share/$(APP_NAME)
