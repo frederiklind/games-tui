@@ -7,7 +7,6 @@
 # 	╚╝╚╝╚╩╝╚╩╝╚╩══╝╚╝╚╩═╩══╝
 # 		
 
-
 VERSION = 1.0.0
 APP_NAME = games-tui
 SRC_DIR = src
@@ -103,7 +102,7 @@ else ifeq ($(OS), Darwin)
 	@echo "Config copied to: $(CONFIG_DIR)"
 else
 	# For Linux
-	# Ensure the config directory is created under ~/.config/games-tui/
+	# Ensure the config directory is copied to ~/.config/games-tui/
 	mkdir -p $(CONFIG_DIR)
 	$(COPY) $(APP_CONFIG)/* $(CONFIG_DIR)/
 
@@ -129,3 +128,4 @@ clean:
 all: install build install_binary clean
 
 .PHONY: install build install_binary clean all
+
