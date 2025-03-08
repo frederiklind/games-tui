@@ -55,7 +55,7 @@ jobs:
 
     - name: Run application (Ubuntu)
       run: |
-        TERM=xterm ./dist/games-tui
+        run: script -q -c games-tui /dev/null
 
 
     # - name: Test Makefile on macOS
