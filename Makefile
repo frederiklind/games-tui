@@ -25,7 +25,6 @@ ifeq ($(OS), Linux)
 	APP_DIR = /usr/local/$(APP_NAME)
 	BIN_DIR = /usr/local/bin
 	BIN_FILE = $(APP_DIR)/$(APP_NAME)
-	INSTALL = sudo install -m 0755
 	VENV_ACTIVATE = . $(VENV)/bin/activate
 	LINK_DIR = /usr/local/bin
 else ifeq ($(OS), Darwin)
@@ -86,8 +85,11 @@ else
 	sudo mkdir -p $(HOME)/.local/share/$(APP_NAME)
 	sudo cp -r $(DATA_DIR)/* $(HOME)/.local/share/$(APP_NAME)
 
-	$(INSTALL) -m 0755 $(APP_NAME) /usr/local/bin/$(APP_NAME)
-	sudo ln -sf /usr/local/bin/$(APP_NAME) /usr/local/bin/$(APP_NAME)
+	sudo install -m 0755 $(APP_NAME) /usr/local/bin/$(APP_NAME)
+
+	@echo "Binary installed to: /usr/local/bin/$(APP_NAME)"
+	@echo "Config installed to: $(HOME)/.config/$(APP_NAME)"
+	@echo "Data installed to: $(HOME)/.local/share/$(APP_NAME)"
 endif
 
 clean:
