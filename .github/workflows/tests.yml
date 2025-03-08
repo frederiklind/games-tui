@@ -53,6 +53,7 @@ jobs:
         # games-tui || echo "Failed running the application."
       shell: bash
 
+
     - name: Test Makefile on macOS
       if: matrix.os == 'macos-latest'
       run: |
@@ -64,11 +65,12 @@ jobs:
         ls -l /usr/local/bin/games-tui || echo "Binary not found!"
         
         echo "Checking installation directory..."
-        ls -l /usr/local/lib/games-tui/config || echo "Config data not found!"
-        ls -l /usr/local/lib/games-tui/data || echo "App data not found!"
+        ls -l "/Users/$(whoami)/Library/Application Support/games-tui/config" || echo "Config data not found!"
+        ls -l "/Users/$(whoami)/Library/Application Support/games-tui/data" || echo "App data not found!"
 
         games-tui || echo "Failed running the application."
       shell: bash
+
 
     - name: Test Makefile on Windows
       if: matrix.os == 'windows-latest'

@@ -7,6 +7,7 @@
 # 	╚╝╚╝╚╩╝╚╩╝╚╩══╝╚╝╚╩═╩══╝
 # 		
 
+
 VERSION = 1.0.0
 APP_NAME = games-tui
 SRC_DIR = src
@@ -64,21 +65,16 @@ build:
 	mkdir -p $(DIST_DIR)
 	pyinstaller --onefile --name $(APP_NAME) $(SRC_DIR)/games_tui/main.py
 	mv dist/$(APP_NAME) $(APP_NAME)
-	mkdir -p $(DIST_DIR)/config
-	mkdir -p $(DIST_DIR)/data
-	$(COPY) $(APP_CONFIG)/* $(DIST_DIR)/config/
-	$(COPY) $(DATA_DIR)/* $(DIST_DIR)/data/
 	@echo "Binary created at: $(PWD)/$(APP_NAME)"
-	@echo "Config copied to: $(PWD)/config"
-	@echo "Data copied to: $(PWD)/data"
 
 install_binary:
 ifeq ($(OS), Windows)
+	# For Windows
 	mkdir $(APP_DIR)/config
 	mkdir $(APP_DIR)/data
 	$(INSTALL) $(APP_NAME) $(BIN_FILE)
-	xcopy /E /I /Y config $(APP_DIR)/config
-	xcopy /E /I /Y data $(APP_DIR)/data
+	xcopy /E /I /Y $(APP_CONFIG) $(APP_DIR)/config
+	xcopy /E /I /Y $(DATA_DIR) $(APP_DIR)/data
 	@echo "Binary installed to: $(BIN_FILE)"
 	@echo "Config installed to: $(APP_DIR)/config"
 	@echo "Data installed to: $(APP_DIR)/data"
@@ -102,9 +98,12 @@ else ifeq ($(OS), Darwin)
 	@echo "Config copied to: $(CONFIG_DIR)"
 else
 	# For Linux
-	# Ensure the config directory is copied to ~/.config/games-tui/
+	# Ensure the config and data directories are copied to the correct locations
 	mkdir -p $(CONFIG_DIR)
 	$(COPY) $(APP_CONFIG)/* $(CONFIG_DIR)/
+
+	mkdir -p $(CONFIG_DIR)/data
+	$(COPY) $(DATA_DIR)/* $(CONFIG_DIR)/data/
 
 	# Create directories and install the binary
 	sudo mkdir -p $(APP_DIR)/config
@@ -128,4 +127,3 @@ clean:
 all: install build install_binary clean
 
 .PHONY: install build install_binary clean all
-
