@@ -97,11 +97,11 @@ else ifeq ($(OS), Darwin)
 	@echo "Data installed to: $(APP_DIR)/data"
 	@echo "Config copied to: $(CONFIG_DIR)"
 else
-	mkdir -p $(CONFIG_DIR)
-	$(COPY) $(CONFIG)/* $(CONFIG_DIR)/
+	sudo mkdir -p $(CONFIG_DIR)
+	sudo $(COPY) $(CONFIG)/* $(CONFIG_DIR)/
 
-	mkdir -p $(DATA_DIR)
-	$(COPY) $(DATA)/* $(DATA_DIR)/
+	sudo mkdir -p $(DATA_DIR)
+	sudo $(COPY) $(DATA)/* $(DATA_DIR)/
 
 	sudo mkdir -p $(APP_DIR)/config
 	sudo mkdir -p $(APP_DIR)/data
