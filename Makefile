@@ -11,8 +11,8 @@ VERSION = 1.0.0
 APP_NAME = games-tui
 SRC_DIR = src
 DIST_DIR = dist
-CONFIG = config
-DATA = data
+CONFIG_DIR = config
+DATA_DIR = data
 VENV = .venv
 CURRENT_USER := $(shell whoami)
 
@@ -25,8 +25,6 @@ ifeq ($(OS), Linux)
 	APP_DIR = /usr/local/$(APP_NAME)
 	BIN_DIR = /usr/local/bin
 	BIN_FILE = $(APP_DIR)/$(APP_NAME)
-	COPY = cp -r
-	RM = rm -rf
 	INSTALL = sudo install -m 0755
 	VENV_ACTIVATE = . $(VENV)/bin/activate
 	LINK_DIR = /usr/local/bin
@@ -36,12 +34,10 @@ else ifeq ($(OS), Darwin)
 	APP_DIR = /usr/local/lib/$(APP_NAME)
 	BIN_FILE = $(APP_DIR)/$(APP_NAME)
 	LINK_DIR = /usr/local/bin
-	COPY = cp -r
-	RM = rm -rf
 	INSTALL = sudo install -m 0755
 	VENV_ACTIVATE = . $(VENV)/bin/activate
 	LINK_DIR = /usr/local/bin
-	CONFIG_DIR = "/Users/$(CURRENT_USER)/Library/Application Support/games-tui"
+	# CONFIG_DIR = "/Users/$(CURRENT_USER)/Library/Application Support/games-tui"
 else ifeq ($(OS), Windows)
 	APP_DIR = "C:/Program Files/$(APP_NAME)"
 	BIN_FILE = $(APP_DIR)/$(APP_NAME).exe
@@ -50,7 +46,7 @@ else ifeq ($(OS), Windows)
 	INSTALL = copy
 	VENV_ACTIVATE = .\$(VENV)\Scripts\activate
 	LINK_DIR = "C:/Program Files/$(APP_NAME)"
-	CONFIG_DIR = "C:/Users/$(CURRENT_USER)/AppData/Roaming/games-tui"
+	# CONFIG_DIR = "C:/Users/$(CURRENT_USER)/AppData/Roaming/games-tui"
 endif
 
 install:
@@ -97,24 +93,14 @@ else ifeq ($(OS), Darwin)
 	@echo "Data installed to: $(APP_DIR)/data"
 	@echo "Config copied to: $(CONFIG_DIR)"
 else
-	sudo mkdir -p $(CONFIG_DIR)
-	sudo $(COPY) $(CONFIG)/* $(CONFIG_DIR)/
+	sudo mkdir -p $(HOME)/.config/$(APP_NAME)
+	sudo cp -r $(CONFIG)/* $(HOME)/.config/$(APP_NAME)
 
-	sudo mkdir -p $(DATA_DIR)
-	sudo $(COPY) $(DATA)/* $(DATA_DIR)/
+	sudo mkdir -p $(HOME)/.local/share/$(APP_NAME)
+	sudo cp -r $(DATA)/* $(HOME)/.local/share/$(APP_NAME)
 
-	sudo mkdir -p $(APP_DIR)/config
-	sudo mkdir -p $(APP_DIR)/data
-	$(INSTALL) -m 0755 $(APP_NAME) $(BIN_FILE)
-	sudo $(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
-	sudo $(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
-	sudo ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME)
-
-	@echo "Binary installed to: $(BIN_FILE)"
-	@echo "Symlink created at: $(LINK_DIR)/$(APP_NAME)"
-	@echo "Config installed to: $(APP_DIR)/config"
-	@echo "Data installed to: $(APP_DIR)/data"
-	@echo "Config copied to: $(CONFIG_DIR)"
+	$(INSTALL) -m 0755 $(APP_NAME) /usr/local/bin/$(APP_NAME)
+	sudo ln -sf /usr/local/bin/$(APP_NAME) /usr/local/bin/$(APP_NAME)
 endif
 
 clean:
