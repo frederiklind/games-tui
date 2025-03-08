@@ -57,8 +57,7 @@ install:
 build:
 	mkdir -p $(DIST_DIR)
 	pyinstaller --onefile --name $(APP_NAME) $(SRC_DIR)/games_tui/main.py
-	mv dist/$(APP_NAME) $(APP_NAME)
-	@echo "Binary created at: $(PWD)/$(APP_NAME)"
+	@echo "Binary created at: $(PWD)/dist/$(APP_NAME)"
 
 install_binary:
 ifeq ($(OS), Windows)
