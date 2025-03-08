@@ -88,9 +88,9 @@ else
 	sudo mkdir -p $(APP_DIR)/config
 	sudo mkdir -p $(APP_DIR)/data
 	$(INSTALL) -m 0755 $(APP_NAME) $(BIN_FILE)
-	$(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
-	$(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
-	ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME)
+	sudo $(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
+	sudo $(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
+	sudo ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME)
 	@echo "Binary installed to: $(BIN_FILE)"
 	@echo "Symlink created at: $(LINK_DIR)/$(APP_NAME)"
 	@echo "Config installed to: $(APP_DIR)/config"
