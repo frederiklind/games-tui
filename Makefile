@@ -7,6 +7,7 @@
 # 	╚╝╚╝╚╩╝╚╩╝╚╩══╝╚╝╚╩═╩══╝
 # 		
 
+
 VERSION = 1.0.0
 APP_NAME = games-tui
 SRC_DIR = src
@@ -30,6 +31,7 @@ ifeq ($(OS), Linux)
 	INSTALL = sudo install -m 0755
 	VENV_ACTIVATE = . $(VENV)/bin/activate
 	LINK_DIR = /usr/local/bin
+	CONFIG_DIR = $(HOME)/.config/games-tui
 else ifeq ($(OS), Darwin)
 	APP_DIR = /usr/local/lib/$(APP_NAME)
 	BIN_FILE = $(APP_DIR)/$(APP_NAME)
@@ -39,6 +41,7 @@ else ifeq ($(OS), Darwin)
 	INSTALL = sudo install -m 0755
 	VENV_ACTIVATE = . $(VENV)/bin/activate
 	LINK_DIR = /usr/local/bin
+	CONFIG_DIR = /Users/$(CURRENT_USER)/Library/Application\ Support/games-tui
 else ifeq ($(OS), Windows)
 	APP_DIR = "C:/Program Files/$(APP_NAME)"
 	BIN_FILE = $(APP_DIR)/$(APP_NAME).exe
@@ -47,6 +50,7 @@ else ifeq ($(OS), Windows)
 	INSTALL = copy
 	VENV_ACTIVATE = .\$(VENV)\Scripts\activate
 	LINK_DIR = "C:/Program Files/$(APP_NAME)"
+	CONFIG_DIR = "C:/Users/$(CURRENT_USER)/AppData/Roaming/games-tui"
 endif
 
 install:
@@ -76,14 +80,13 @@ ifeq ($(OS), Windows)
 	$(INSTALL) $(APP_NAME) $(BIN_FILE)
 	xcopy /E /I /Y config $(APP_DIR)/config
 	xcopy /E /I /Y data $(APP_DIR)/data
-	
 	@echo "Binary installed to: $(BIN_FILE)"
 	@echo "Config installed to: $(APP_DIR)/config"
 	@echo "Data installed to: $(APP_DIR)/data"
 else ifeq ($(OS), Darwin)
 	# For macOS
-	sudo mkdir -p /Users/$(CURRENT_USER)/Library/Application\ Support/games-tui
-	sudo cp -r $(APP_CONFIG)/* /Users/$(CURRENT_USER)/Library/Application\ Support/games-tui/
+	sudo mkdir -p $(CONFIG_DIR)
+	sudo cp -r $(APP_CONFIG)/* $(CONFIG_DIR)/
 
 	# Create directories and install the binary
 	sudo mkdir -p $(APP_DIR)/config
@@ -97,9 +100,14 @@ else ifeq ($(OS), Darwin)
 	@echo "Symlink created at: $(LINK_DIR)/$(APP_NAME)"
 	@echo "Config installed to: $(APP_DIR)/config"
 	@echo "Data installed to: $(APP_DIR)/data"
-	@echo "Config copied to: /Users/$(CURRENT_USER)/Library/Application Support/games-tui"
+	@echo "Config copied to: $(CONFIG_DIR)"
 else
 	# For Linux
+	# Ensure the config directory is created under ~/.config/games-tui/
+	mkdir -p $(CONFIG_DIR)
+	$(COPY) $(APP_CONFIG)/* $(CONFIG_DIR)/
+
+	# Create directories and install the binary
 	sudo mkdir -p $(APP_DIR)/config
 	sudo mkdir -p $(APP_DIR)/data
 	$(INSTALL) -m 0755 $(APP_NAME) $(BIN_FILE)
@@ -111,6 +119,7 @@ else
 	@echo "Symlink created at: $(LINK_DIR)/$(APP_NAME)"
 	@echo "Config installed to: $(APP_DIR)/config"
 	@echo "Data installed to: $(APP_DIR)/data"
+	@echo "Config copied to: $(CONFIG_DIR)"
 endif
 
 clean:
