@@ -7,6 +7,7 @@
 # 	╚╝╚╝╚╩╝╚╩╝╚╩══╝╚╝╚╩═╩══╝
 # 		
 
+
 VERSION = 1.0.0
 APP_NAME = games-tui
 SRC_DIR = src
@@ -28,7 +29,7 @@ ifeq ($(OS), Linux)
 	COPY = cp -r
 	RM = rm -rf
 	INSTALL = sudo install -m 0755
-	VENV_ACTIVATE = source $(VENV)/bin/activate
+	VENV_ACTIVATE = . $(VENV)/bin/activate
 	LINK_DIR = /usr/local/bin
 else ifeq ($(OS), Darwin)
 	APP_DIR = /usr/local/lib/$(APP_NAME)
@@ -37,16 +38,16 @@ else ifeq ($(OS), Darwin)
 	COPY = cp -r
 	RM = rm -rf
 	INSTALL = sudo install -m 0755
-	VENV_ACTIVATE = source $(VENV)/bin/activate
+	VENV_ACTIVATE = . $(VENV)/bin/activate
 	LINK_DIR = /usr/local/bin
 else ifeq ($(OS), Windows)
-	APP_DIR = C:/Program\ Files/$(APP_NAME)
+	APP_DIR = "C:/Program Files/$(APP_NAME)"
 	BIN_FILE = $(APP_DIR)/$(APP_NAME).exe
 	COPY = xcopy /E /I /Y
 	RM = rmdir /S /Q
 	INSTALL = copy
-	VENV_ACTIVATE = $(VENV)\\Scripts\\activate
-	LINK_DIR = C:/Program\ Files/$(APP_NAME)
+	VENV_ACTIVATE = .\$(VENV)\Scripts\activate
+	LINK_DIR = "C:/Program Files/$(APP_NAME)"
 endif
 
 install:
@@ -63,7 +64,7 @@ build:
 	mv dist/$(APP_NAME) $(APP_NAME)
 	mkdir -p $(DIST_DIR)/config
 	mkdir -p $(DIST_DIR)/data
-	$(COPY) $(CONFIG_DIR)/* $(DIST_DIR)/config/
+	$(COPY) $(APP_CONFIG)/* $(DIST_DIR)/config/
 	$(COPY) $(DATA_DIR)/* $(DIST_DIR)/data/
 	@echo "Binary created at: $(PWD)/$(APP_NAME)"
 	@echo "Config copied to: $(PWD)/config"
@@ -74,7 +75,7 @@ install_binary:
 		sudo mkdir -p $(APP_DIR)/config
 		sudo mkdir -p $(APP_DIR)/data
 		$(INSTALL) -m 0755 $(APP_NAME) $(BIN_FILE)
-		$(COPY) $(CONFIG_DIR)/* $(APP_DIR)/config/
+		$(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
 		$(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
 		ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME)
 		@echo "Binary installed to: $(BIN_FILE)"
@@ -85,11 +86,13 @@ install_binary:
 		mkdir $(APP_DIR)/config
 		mkdir $(APP_DIR)/data
 		$(INSTALL) $(APP_NAME) $(BIN_FILE)
-		$(COPY) $(CONFIG_DIR)/* $(APP_DIR)/config/
+		$(COPY) $(APP_CONFIG)/* $(APP_DIR)/config/
 		$(COPY) $(DATA_DIR)/* $(APP_DIR)/data/
 		@echo "Binary installed to: $(BIN_FILE)"
 		@echo "Config installed to: $(APP_DIR)/config"
 		@echo "Data installed to: $(APP_DIR)/data"
+		@echo "Creating symlink (Windows requires admin privileges)..."
+		cmd.exe /C "mklink $(LINK_DIR)/$(APP_NAME).exe $(BIN_FILE)"
 	endif
 
 clean:
