@@ -12,8 +12,8 @@ name: Release
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  # pull_request:
+  #   branches: [ "master" ]
 
 env:
   RELEASE_VERSION: 1.0.0
@@ -61,19 +61,18 @@ jobs:
       run: make
       shell: bash
 
-    # SKIP BINARIES FOR NOW...
     # - name: Build binary for each platform
     #   run: |
     #     pyinstaller --onefile --name games-tui src/games_tui/main.py
     #   shell: bash
     #   if: runner.os != 'Windows'
-
+    #
     # - name: Build binary for Windows
     #   run: |
     #     pyinstaller --onefile --windowed --name games-tui src/games_tui/main.py
     #   shell: pwsh
     #   if: runner.os == 'Windows'
-
+    #
     # - name: Package release for Linux and macOS
     #   run: |
     #     mkdir release
@@ -91,12 +90,12 @@ jobs:
     #     mkdir release
     #     cp Makefile release\
     #     cp dist\games-tui.exe release\
-    #     cp -r conf release\config
+    #     cp -r config release\config
     #     cp -r data release\
     #     Compress-Archive -Path release\* -DestinationPath games-tui-${{ runner.os }}.zip
     #   shell: pwsh
     #   if: runner.os == 'Windows'
-
+    #
     # - name: Upload release artifacts
     #   uses: actions/upload-artifact@v4
     #   with:

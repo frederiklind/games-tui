@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "development" ]
   pull_request:
-    branches: [ "development" ]
+    branches: [ "master", "development" ]
 
 permissions:
   contents: read
@@ -19,34 +19,68 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Set up Python 3.13
       uses: actions/setup-python@v3
       with:
         python-version: "3.13"
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       shell: bash
+
     - name: Test with pytest
       run: |
-        pytest 
+        pytest
+      shell: bash
 
-    - name: Test Makefile on macOS
-      if: matrix.os == 'macos-latest'
+    - name: Test Makefile on Ubuntu
+      if: matrix.os == 'ubuntu-latest'
       run: |
         set -x
-        make install  # Ensure dependencies and environment are set up
-        make build    # Build the project
+        make install
+        make build
+        make install_binary
         echo "Checking installed binary..."
         ls -l /usr/local/bin/games-tui || echo "Binary not found!"
         
-        # Check macOS specific directory for app data (now in /usr/local/lib/games-tui)
         echo "Checking installation directory..."
         ls -l /usr/local/lib/games-tui/config || echo "Config data not found!"
         ls -l /usr/local/lib/games-tui/data || echo "App data not found!"
       shell: bash
 
+    - name: Test Makefile on macOS
+      if: matrix.os == 'macos-latest'
+      run: |
+        set -x
+        make install
+        make build
+        make install_binary
+        echo "Checking installed binary..."
+        ls -l /usr/local/bin/games-tui || echo "Binary not found!"
+        
+        echo "Checking installation directory..."
+        ls -l /usr/local/lib/games-tui/config || echo "Config data not found!"
+        ls -l /usr/local/lib/games-tui/data || echo "App data not found!"
+      shell: bash
+
+    - name: Test Makefile on Windows
+      if: matrix.os == 'windows-latest'
+      run: |
+        set -x
+        # Ensure make is available in Windows (via Git Bash or similar)
+        make install
+        make build
+        make install_binary
+        echo "Checking installed binary..."
+        dir C:\Program\ Files\games-tui\games-tui.exe || echo "Binary not found!"
+
+        echo "Checking installation directory..."
+        dir C:\Program\ Files\games-tui\config || echo "Config data not found!"
+        dir C:\Program\ Files\games-tui\data || echo "App data not found!"
+      shell: bash
 
 

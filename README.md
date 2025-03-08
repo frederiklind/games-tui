@@ -5,6 +5,7 @@
 
 A collection of terminal based mini-games, written in python. Built using Python's builtin curses library.
 
+
 ## Contents
 
 - [Games](#games)
