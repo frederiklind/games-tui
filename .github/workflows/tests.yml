@@ -48,10 +48,9 @@ jobs:
         ls -l /usr/local/bin/games-tui || echo "Binary not found!"
         
         echo "Checking installation directory..."
-        ls -l /usr/local/lib/games-tui/config || echo "Config data not found!"
-        ls -l /usr/local/lib/games-tui/data || echo "App data not found!"
+        ls -l $HOME/.config/games-tui
 
-        games-tui || echo "Failed running the application."
+        # games-tui || echo "Failed running the application."
       shell: bash
 
     - name: Test Makefile on macOS
