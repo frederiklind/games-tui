@@ -1,5 +1,5 @@
 <div align="center">
-  <img src=".assets/logo.png" width="90%"/>
+  <img src=".assets/logo.png"/>
 </div>
 <br/>
 
@@ -23,10 +23,9 @@ A collection of terminal based mini-games, written in python. Built using Python
 
 ## Games
 
-<br/>
-<div align="center">
+<!-- <div align="center">
   <img src=".assets/klondike-logo.png" width="75%"/>
-</div>
+</div> -->
 
 ### Klondike Solitaire
 
@@ -58,10 +57,10 @@ A collection of terminal based mini-games, written in python. Built using Python
 
 #
 
-<br/>
+<!-- <br/>
 <div align="center">
   <img src=".assets/rubiks_logo.png" width="75%"/>
-</div>
+</div> -->
 
 ### Rubik's Cube Puzzle
 
@@ -82,6 +81,15 @@ Become a master of the terminal based Rubik's cube. The game will track the numb
 ### Prerequisites
 
 This appllication requires having a nerd font installed on your system and set in the terminal emulator being used to run the application. Nerd fonts can be downloaded from [www.nerdfont.com](https://nerdfont.com). 
+
+
+### Build from source
+
+```bash
+git clone https://github.com/frederiklind/games-tui.git
+cd games-tui
+make install
+```
 
 
 ## Configuration
