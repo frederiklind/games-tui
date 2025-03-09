@@ -1,4 +1,3 @@
-
 name: Run Tests
 
 on:
@@ -43,8 +42,6 @@ jobs:
       run: |
         set -x
         make install
-        make build
-        make install_binary
         echo "Checking installed binary..."
         ls -l /usr/local/bin/games-tui 
         
@@ -58,8 +55,6 @@ jobs:
       run: |
         set -x
         make install
-        make build
-        make install_binary
         echo "Checking installed binary..."
         ls -l /usr/local/bin/games-tui || echo "Binary not found!"
         
