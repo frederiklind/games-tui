@@ -151,10 +151,20 @@ jobs:
         with:
           path: artifacts
 
+      - name: Debug artifact contents
+        run: ls -R artifacts
+
       - name: Rename source code archive
         run: |
           TAG_NAME=${{ env.RELEASE_VERSION }}
-          mv artifacts/source-code.tar.gz artifacts/games-tui-${TAG_NAME}.tar.gz
+          if [ -f artifacts/source.tar.gz ]; then
+            mv artifacts/source.tar.gz artifacts/games-tui-${TAG_NAME}.tar.gz
+          elif [ -f artifacts/source-code.tar.gz ]; then
+            mv artifacts/source-code.tar.gz artifacts/games-tui-${TAG_NAME}.tar.gz
+          else
+            echo "Error: Source archive not found!"
+            exit 1
+          fi
 
       - name: Generate SHA-256 checksum
         run: |
