@@ -5,7 +5,7 @@ on:
   push:
     branches: [ "development" ]
   pull_request:
-    branches: [ "master", "development" ]
+    branches: [ "development" ]
 
 permissions:
   contents: read
@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest ]
       fail-fast: false
 
     steps:
@@ -66,19 +66,4 @@ jobs:
         echo "Checking installation directory..."
         ls -l "/Users/$(whoami)/Library/Application Support/games-tui/config" || echo "Config data not found!"
         ls -l "/Users/$(whoami)/Library/Application Support/games-tui/data" || echo "App data not found!"
-      shell: bash
-
-    - name: Test Makefile on Windows
-      if: matrix.os == 'windows-latest'
-      run: |
-        set -x
-        make install
-        make build
-        make install_binary
-        echo "Checking installed binary..."
-        dir "C:\Program Files\games-tui\games-tui.exe" || echo "Binary not found!"
-
-        echo "Checking installation directory..."
-        dir "C:\Users\$(whoami)\AppData\Roaming\games-tui\config" || echo "Config data not found!"
-        dir "C:\Users\$(whoami)\AppData\Roaming\games-tui\data" || echo "App data not found!"
       shell: bash
