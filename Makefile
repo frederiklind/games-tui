@@ -24,16 +24,17 @@ ifeq ($(OS),Linux)
 else ifeq ($(OS),Darwin)
 	APP_DIR=/usr/local/lib/$(APP_NAME)
 	CONFIG_DIR="/Users/$(CURRENT_USER)/Library/Application Support/$(APP_NAME)/config"
+	DATA_DIR="/Users/$(CURRENT_USER)/Library/Application Support/$(APP_NAME)/data"
+	BIN_DIR=/usr/local/bin
 	BIN_FILE=$(APP_DIR)/$(APP_NAME)
-	LINK_DIR=/usr/local/bin
 	VENV=.venv/bin
 
 else ifeq ($(OS),Windows)
 	APP_DIR="C:/Program Files/$(APP_NAME)"
+	CONFIG_DIR="C:/Users/$(CURRENT_USER)/AppData/Roaming/$(APP_NAME)"
 	BIN_FILE=$(APP_DIR)/$(APP_NAME).exe
 	LINK_DIR="C:/Program Files/$(APP_NAME)"
 	VENV=.venv/Scripts
-	CONFIG_DIR="C:/Users/$(CURRENT_USER)/AppData/Roaming/$(APP_NAME)"
 endif
 
 install:
@@ -57,11 +58,29 @@ install:
 	@if [ "$(OS)" = "Linux" ]; then \
 		mkdir -p $(CONFIG_DIR); \
 		cp -r config/* $(CONFIG_DIR); \
-		mkdir -p $(DATA_DIR);	\
+		mkdir -p $(DATA_DIR); \
 		cp -r data/* $(DATA_DIR); \
 		sudo mkdir $(APP_DIR); \
 		sudo cp dist/$(APP_NAME) $(APP_DIR); \
 		sudo ln -sf $(BIN_FILE) $(BIN_DIR)/$(APP_NAME); \
+	elif [ "$(OS)" = "Darwin" ]; then \
+		echo "Setting up macOS specific directories..."; \
+		mkdir -p $(CONFIG_DIR); \
+		cp -r config/* $(CONFIG_DIR); \
+		mkdir -p $(DATA_DIR); \
+		cp -r data/* $(DATA_DIR); \
+		sudo mkdir -p $(APP_DIR); \
+		sudo cp dist/$(APP_NAME) $(APP_DIR); \
+		sudo ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME); \
+	elif [ "$(OS)" = "Windows" ]; then \
+		echo "Setting up Windows specific directories..."; \
+		mkdir -p $(CONFIG_DIR); \
+		cp -r config/* $(CONFIG_DIR); \
+		mkdir -p $(DATA_DIR); \
+		cp -r data/* $(DATA_DIR); \
+		mkdir -p $(APP_DIR); \
+		cp dist/$(APP_NAME).exe $(APP_DIR)/$(APP_NAME).exe; \
+		ln -sf $(APP_DIR)/$(APP_NAME).exe $(LINK_DIR)/$(APP_NAME).exe; \
 	fi
 
 uninstall:
