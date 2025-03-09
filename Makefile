@@ -21,11 +21,11 @@ ifeq ($(OS),Linux)
 	BIN_FILE=$(APP_DIR)/$(APP_NAME)
 	VENV=.venv/bin
 
-else ifeq ($(OS),Darwin)
+ifeq ($(OS),Darwin)
 	APP_DIR=/usr/local/lib/$(APP_NAME)
 	CONFIG_DIR="/Users/$(CURRENT_USER)/Library/Application Support/$(APP_NAME)/config"
 	DATA_DIR="/Users/$(CURRENT_USER)/Library/Application Support/$(APP_NAME)/data"
-	BIN_DIR=/usr/local/bin
+	BIN_DIR=$(HOME)/.local/bin
 	BIN_FILE=$(APP_DIR)/$(APP_NAME)
 	VENV=.venv/bin
 endif
@@ -64,7 +64,8 @@ install:
 		cp -r data/* $(DATA_DIR); \
 		sudo mkdir -p $(APP_DIR); \
 		sudo cp dist/$(APP_NAME) $(APP_DIR); \
-		sudo ln -sf $(BIN_FILE) $(LINK_DIR)/$(APP_NAME); \
+		mkdir -p $(BIN_DIR); \
+		ln -sf $(BIN_FILE) $(BIN_DIR)/$(APP_NAME); \
 	fi
 
 uninstall:
