@@ -23,7 +23,7 @@ ifeq ($(OS),Linux)
 
 else ifeq ($(OS),Darwin)
 	APP_DIR=/usr/local/lib/$(APP_NAME)
-	CONFIG_DIR="/Users/$(CURRENT_USER)/Library/Application Support/games-tui/config"
+	CONFIG_DIR="/Users/$(CURRENT_USER)/Library/Application Support/$(APP_NAME)/config"
 	BIN_FILE=$(APP_DIR)/$(APP_NAME)
 	LINK_DIR=/usr/local/bin
 	VENV=.venv/bin
@@ -33,7 +33,7 @@ else ifeq ($(OS),Windows)
 	BIN_FILE=$(APP_DIR)/$(APP_NAME).exe
 	LINK_DIR="C:/Program Files/$(APP_NAME)"
 	VENV=.venv/Scripts
-	CONFIG_DIR="C:/Users/$(CURRENT_USER)/AppData/Roaming/games-tui"
+	CONFIG_DIR="C:/Users/$(CURRENT_USER)/AppData/Roaming/$(APP_NAME)"
 endif
 
 install:
@@ -62,7 +62,8 @@ install:
 		sudo mkdir $(APP_DIR); \
 		sudo cp dist/$(APP_NAME) $(APP_DIR); \
 		sudo ln -sf $(BIN_FILE) $(BIN_DIR)/$(APP_NAME); \
-	elif [ "$(OS)" = "Darwin" ]
+	elif [ "$(OS)" = "Darwin" ]; then \
+		echo "hello"; \
 	fi
 
 uninstall:
@@ -93,7 +94,9 @@ uninstall:
 					echo -e "$(APP_DIR) removed"; \
 			else \
 					echo -e "$(APP_DIR) does not exist, skipping"; \
-			fi; \
+			fi \
+	elif [ "$(OS)" = "Darwin" ]; then \
+		echo "stuff"
 	fi
 
 	@echo -e "\n\033[1;32m$(APP_NAME) have been uninstalled.\033[0m"
