@@ -61,7 +61,6 @@ A collection of terminal based mini-games, written in python. Built using Python
 
 ### Rubik's Cube Puzzle
 
-Become a master of the terminal based Rubik's cube. The game will track the number of performed moves of the cube, as well as the time used for a valid solution.
 
 <br/>
 <div align="center">
