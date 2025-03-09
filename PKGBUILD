@@ -1,25 +1,32 @@
-# Maintainer: Frederik Lind <email>
-pkgname=games-tui
+# Maintainer: Frederik Lind <frederiklind@noreply.com>
+
+_tag 
+
+pkgname="games-tui"
 pkgver=1.0.0
 pkgrel=1
-pkgdesc="A collection of terminal based mini games"
+pkgdesc="A collection of terminal based mini-games."
 arch=("any")
 url="https://github.com/frederiklind/games-tui"
-license=('MIT')
-depends=('python' 'python-pip')
-makedepends('python-setuptools')
-source=('$pkgname-$pkgver.tar.gz::https://github.com/frederiklind/games-tui/archive/refs/tags/v$pkgver.tar.gz')
-sha256sums=('SKIP') # IMPLEMENT THIS!
+license="MIT"
+depends=()
+makedepends=(git)
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=()
+source=($pkgname-$pkgver.tar.gz)
+noextract=()
+md5sums=()
 
-build() {
+
+pkgver() {
 
 }
 
 package() {
-    cd "$srcdir/$pkgname-$pkgver"
-    
-    install -dm755 "$pkgdir/usr/bin"
-    install -dm755 "$pkgdir/usr/share/$pkgname"
 
-    cp -r app conf pyproject.toml setup.py ""
 }
