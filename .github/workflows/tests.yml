@@ -1,0 +1,64 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ "development" ]
+  pull_request:
+    branches: [ "development" ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest ]
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.13"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      shell: bash
+
+    - name: Test with pytest
+      run: |
+        pytest
+      shell: bash
+
+    - name: Test Makefile on Ubuntu
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        set -x
+        make install
+        echo "Checking installed binary..."
+        ls -l /usr/local/bin/games-tui 
+        
+        echo "Checking installation directory..."
+        ls -l $HOME/.config/games-tui
+        ls -l $HOME/.local/share/games-tui
+      shell: bash
+
+    - name: Test Makefile on macOS
+      if: matrix.os == 'macos-latest'
+      run: |
+        set -x
+        make install
+        echo "Checking installed binary..."
+        ls -l /usr/local/bin/games-tui || echo "Binary not found!"
+        
+        echo "Checking installation directory..."
+        ls -l "/Users/$(whoami)/Library/Application Support/games-tui/config" || echo "Config data not found!"
+        ls -l "/Users/$(whoami)/Library/Application Support/games-tui/data" || echo "App data not found!"
+      shell: bash
