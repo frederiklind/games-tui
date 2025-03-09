@@ -62,8 +62,6 @@ install:
 		sudo mkdir $(APP_DIR); \
 		sudo cp dist/$(APP_NAME) $(APP_DIR); \
 		sudo ln -sf $(BIN_FILE) $(BIN_DIR)/$(APP_NAME); \
-	elif [ "$(OS)" = "Darwin" ]; then \
-		echo "hello"; \
 	fi
 
 uninstall:
