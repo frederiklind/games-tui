@@ -21,7 +21,7 @@ ifeq ($(OS),Linux)
 	BIN_FILE=$(APP_DIR)/$(APP_NAME)
 	VENV=.venv/bin
 
-ifeq ($(OS),Darwin)
+else ifeq ($(OS),Darwin)
 	APP_DIR=/usr/local/lib/$(APP_NAME)
 	CONFIG_DIR="/Users/$(CURRENT_USER)/Library/Application Support/$(APP_NAME)/config"
 	DATA_DIR="/Users/$(CURRENT_USER)/Library/Application Support/$(APP_NAME)/data"
