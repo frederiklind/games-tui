@@ -50,7 +50,7 @@ install:
 		echo "Installing windows curses..."; \
 		$(VENV)/pip install windows-curses; \
 	fi	
-	
+
 	@echo "Creating binary..."
 	$(VENV)/pyinstaller --onefile --name $(APP_NAME) src/games_tui/main.py
 	
@@ -67,7 +67,6 @@ install:
 uninstall:
 	@echo -e "\n\033[1;34mUninstalling $(APP_NAME)\033[0m\n"
 	@echo -e "------------------------------------------------\n"
-
 	@if [ "$(OS)" = "Linux" ]; then \
 			if [ -d "$(CONFIG_DIR)" ]; then \
 					rm -rf $(CONFIG_DIR); \
@@ -94,7 +93,7 @@ uninstall:
 					echo -e "$(APP_DIR) does not exist, skipping"; \
 			fi \
 	elif [ "$(OS)" = "Darwin" ]; then \
-		echo "stuff"
+		echo "stuff"; \
 	fi
 
 	@echo -e "\n\033[1;32m$(APP_NAME) have been uninstalled.\033[0m"
@@ -105,4 +104,3 @@ clean:
 
 
 all: install build install_binary clean
-
