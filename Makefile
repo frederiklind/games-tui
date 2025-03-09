@@ -25,7 +25,7 @@ else ifeq ($(OS),Darwin)
 	APP_DIR=/usr/local/lib/$(APP_NAME)
 	CONFIG_DIR="/Users/$(CURRENT_USER)/Library/Application Support/$(APP_NAME)/config"
 	DATA_DIR="/Users/$(CURRENT_USER)/Library/Application Support/$(APP_NAME)/data"
-	BIN_DIR=$(HOME)/.local/bin
+	BIN_DIR=/usr/local/bin
 	BIN_FILE=$(APP_DIR)/$(APP_NAME)
 	VENV=.venv/bin
 endif
