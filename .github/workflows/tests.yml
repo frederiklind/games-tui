@@ -46,34 +46,28 @@ jobs:
         make build
         make install_binary
         echo "Checking installed binary..."
-        ls -l /usr/local/bin/games-tui || echo "Binary not found!"
+        ls -l /usr/local/bin/games-tui 
         
         echo "Checking installation directory..."
         ls -l $HOME/.config/games-tui
         ls -l $HOME/.local/share/games-tui
       shell: bash
 
-    - name: Run application (Ubuntu)
+    - name: Test Makefile on macOS
+      if: matrix.os == 'macos-latest'
       run: |
-        run: script -q -c games-tui /dev/null
+        set -x
+        make install
+        make build
+        make install_binary
+        echo "Checking installed binary..."
+        ls -l /usr/local/bin/games-tui || echo "Binary not found!"
+        
+        echo "Checking installation directory..."
+        ls -l "/Users/$(whoami)/Library/Application Support/games-tui/config" || echo "Config data not found!"
+        ls -l "/Users/$(whoami)/Library/Application Support/games-tui/data" || echo "App data not found!"
+      shell: bash
 
-
-    # - name: Test Makefile on macOS
-    #   if: matrix.os == 'macos-latest'
-    #   run: |
-    #     set -x
-    #     make install
-    #     make build
-    #     make install_binary
-    #     echo "Checking installed binary..."
-    #     ls -l /usr/local/bin/games-tui || echo "Binary not found!"
-    #     
-    #     echo "Checking installation directory..."
-    #     ls -l "/Users/$(whoami)/Library/Application Support/games-tui/config" || echo "Config data not found!"
-    #     ls -l "/Users/$(whoami)/Library/Application Support/games-tui/data" || echo "App data not found!"
-    #   shell: bash
-    #
-    #
     # - name: Test Makefile on Windows
     #   if: matrix.os == 'windows-latest'
     #   run: |
