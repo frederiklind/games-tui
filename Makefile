@@ -100,11 +100,12 @@ uninstall:
 		echo "stuff"; \
 	fi
 
-	@echo -e "\n\033[1;32m$(APP_NAME) have been uninstalled.\033[0m"
+	@echo -e "\n\033[1;32m$(APP_NAME) has been uninstalled.\033[0m"
 
 clean:
 	rm -rf dist build .venv $(APP_NAME).spec
 	@echo "Cleaned up build artifacts."
 
+all: install clean
 
-all: install build install_binary clean
+.PHONY: install uninstall clean all
