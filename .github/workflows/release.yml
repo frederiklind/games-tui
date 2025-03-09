@@ -55,12 +55,13 @@ jobs:
     - name: Run Unit-tests
       run: pytest
 
+
     - name: Build source code artifact
       run: |
         TAG_NAME=${{ env.RELEASE_VERSION }}
-        tar -czf "games-tui-${TAG_NAME}.tar.gz" .  # Create the source code archive
-        mkdir -p artifacts  # Make artifacts directory
-        mv "games-tui-${TAG_NAME}.tar.gz" artifacts/  # Move to artifacts folder
+        # Create a snapshot of the code using git archive to avoid the 'file changed' error
+        git archive --format=tar.gz --output=artifacts/games-tui-${TAG_NAME}.tar.gz HEAD
+
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
