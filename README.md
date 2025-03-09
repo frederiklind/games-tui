@@ -3,7 +3,7 @@
 </div>
 <br/>
 
-A collection of terminal based mini-games, written in python. Built using Python's builtin curses library.
+A collection of terminal based mini-games, written in python.
 
 
 ## Contents
