@@ -37,6 +37,9 @@ else ifeq ($(OS),Windows)
 endif
 
 install:
+	@echo -e "\n\033[1;34mInstalling $(APP_NAME) \033[1;36m$(VERSION)\033[0m\n"
+	@echo -e "------------------------------------------------\n"
+
 	@echo "===== Creating virtual environment. ====="
 	$(PYTHON) -m venv .venv
 	$(VENV)/pip install --upgrade pip
@@ -59,15 +62,41 @@ install:
 		sudo mkdir $(APP_DIR); \
 		sudo cp dist/$(APP_NAME) $(APP_DIR); \
 		sudo ln -sf $(BIN_FILE) $(BIN_DIR)/$(APP_NAME); \
+	elif [ "$(OS)" = "Darwin" ]
 	fi
 
 uninstall:
+	@echo -e "\n\033[1;34mUninstalling $(APP_NAME)\033[0m\n"
+	@echo -e "------------------------------------------------\n"
+
 	@if [ "$(OS)" = "Linux" ]; then \
-		rm -rf $(CONFIG_DIR); \
-		rm -rf $(DATA_DIR); \
-		sudo rm $(BIN_DIR)/$(APP_NAME); \
-		sudo rm -rf $(APP_DIR); \
+			if [ -d "$(CONFIG_DIR)" ]; then \
+					rm -rf $(CONFIG_DIR); \
+					echo "$(CONFIG_DIR) removed"; \
+			else \
+					echo "$(CONFIG_DIR) does not exist, skipping"; \
+			fi; \
+			if [ -d "$(DATA_DIR)" ]; then \
+					rm -rf $(DATA_DIR); \
+					echo "$(DATA_DIR) removed"; \
+			else \
+					echo -e "$(DATA_DIR) does not exist, skipping"; \
+			fi; \
+			if [ -f "$(BIN_DIR)/$(APP_NAME)" ]; then \
+					sudo rm $(BIN_DIR)/$(APP_NAME); \
+					echo -e "$(BIN_DIR)/$(APP_NAME) removed"; \
+			else \
+					echo -e "$(BIN_DIR)/$(APP_NAME) does not exist, skipping"; \
+			fi; \
+			if [ -d "$(APP_DIR)" ]; then \
+					sudo rm -rf $(APP_DIR); \
+					echo -e "$(APP_DIR) removed"; \
+			else \
+					echo -e "$(APP_DIR) does not exist, skipping"; \
+			fi; \
 	fi
+
+	@echo -e "\n\033[1;32m$(APP_NAME) have been uninstalled.\033[0m"
 
 clean:
 	rm -rf dist build .venv $(APP_NAME).spec
