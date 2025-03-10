@@ -115,15 +115,17 @@ jobs:
 
     - name: Build the release tarball
       run: |
-        # Assuming you're creating a release tarball here, like 'release.tar.gz'
-        tar -czf release.tar.gz src/
-    
+        mkdir -p release
+        cp -r src config data LICENSE release/
+        tar -czf $GITHUB_WORKSPACE/release.tar.gz -C release .
+      
     - name: Sign the release tarball
       run: |
-        gpg --armor --detach-sign --output $GITHUB_WORKSPACE/release.tar.gz.sig $GITHUB_WORKSPACE/release.tar.gz
+        chmod 700 ~/.gnupg
+        gpg --no-tty --armor --detach-sign --output $GITHUB_WORKSPACE/release.tar.gz.sig $GITHUB_WORKSPACE/release.tar.gz
       if: success()
-
-    - name: Create GitHub release and upload assets
+    
+    - name: Upload signed release assets
       uses: softprops/action-gh-release@v1
       with:
         tag_name: "${{ env.RELEASE_VERSION }}"
