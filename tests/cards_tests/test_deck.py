@@ -1,5 +1,4 @@
 import unittest
-import random
 import copy
 
 from src.games_tui.games.cards import Deck

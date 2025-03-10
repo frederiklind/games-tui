@@ -23,7 +23,7 @@ ifeq ($(OS),Linux)
 
 else ifeq ($(OS),Darwin)
 	APP_DIR=/usr/local/lib/$(APP_NAME)
-	CONFIG_DIR="/Users/$(CURRENT_USER)/Library/Application Support/$(APP_NAME)/config"
+	CONFIG_DIR="/Users/$(CURRENT_USER)/Library/Application Support/$(APP_NAME)"
 	DATA_DIR="/Users/$(CURRENT_USER)/Library/Application Support/$(APP_NAME)/data"
 	BIN_DIR=/usr/local/bin
 	BIN_FILE=$(APP_DIR)/$(APP_NAME)
