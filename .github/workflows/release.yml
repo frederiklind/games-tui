@@ -13,6 +13,10 @@ on:
   push:
     branches: [ "master" ]
 
+env:
+  RELEASE_VERSION: 1.0.0
+  RELEASE_NOTES: "New release for version 1.0.0"
+
 permissions:
   contents: write
 
@@ -58,7 +62,6 @@ jobs:
   #   ─────────────────────╚═╝
   #
 
-
   create_tag:
     runs-on: ubuntu-latest
     needs: test
@@ -70,22 +73,8 @@ jobs:
         git config --global user.email "frederiklind@noreply.com"
         git config --global user.name "Frederik Lind"
 
-    - name: Get current version from GitHub variables
-      id: version
-      run: |
-        major=${{ vars.VERSION_MAJOR }}
-        minor=${{ vars.VERSION_MINOR }}
-        patch=${{ vars.VERSION_PATCH }}
-        
-        # Construct the new version
-        new_version="${major}.${minor}.${patch}"
-
-        echo "New version is $new_version"
-        echo "RELEASE_VERSION=$new_version" >> $GITHUB_ENV
-
     - name: Delete existing remote tag if it exists
       run: |
-        git fetch --tags
         git tag -d "${{ env.RELEASE_VERSION }}" || echo "No local tag to delete"
         git push --delete origin "${{ env.RELEASE_VERSION }}" || echo "No remote tag to delete"
 
@@ -94,7 +83,6 @@ jobs:
         git tag -a "${{ env.RELEASE_VERSION }}" -m "Release version ${{ env.RELEASE_VERSION }}"
         git push origin "${{ env.RELEASE_VERSION }}"
 
-
   # 
   #   ╔═╗────────╔═╗
   #   ║╬╠═╦╗╔═╦═╗║═╬═╗
@@ -102,7 +90,6 @@ jobs:
   #   ╚╩╩═╩═╩═╩══╩═╩═╝
   #
    
-
   release:
     runs-on: ubuntu-latest
     needs: create_tag
