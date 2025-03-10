@@ -99,16 +99,37 @@ jobs:
     - name: Fetch tags to ensure the tag is available
       run: git fetch --tags
 
-    - name: Download release artifacts
-      uses: actions/download-artifact@v4
-      with:
-        path: artifacts
+    - name: Set up GPG
+      run: |
+        mkdir -p ~/.gnupg
+        echo "$GPG_PRIVATE_KEY" > ~/.gnupg/private.key
+        gpg --batch --import ~/.gnupg/private.key
+        gpg --list-secret-keys --keyid-format LONG
+      env:
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+    
+    - name: Configure Git to use GPG
+      run: |
+        git config --global user.signingkey ${{ vars.GPG_KEY_ID }}
+        git config --global commit.gpgSign true
+
+    - name: Build the release tarball
+      run: |
+        # Assuming you're creating a release tarball here, like 'release.tar.gz'
+        tar -czf release.tar.gz src/
+    
+    - name: Sign the release tarball
+      run: |
+        gpg --armor --detach-sign --output $GITHUB_WORKSPACE/release.tar.gz.sig $GITHUB_WORKSPACE/release.tar.gz
+      if: success()
 
     - name: Create GitHub release and upload assets
       uses: softprops/action-gh-release@v1
       with:
         tag_name: "${{ env.RELEASE_VERSION }}"
-        files: artifacts/**/*
+        files: |
+          $GITHUB_WORKSPACE/release.tar.gz
+          $GITHUB_WORKSPACE/release.tar.gz.sig
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
