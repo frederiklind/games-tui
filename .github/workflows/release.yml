@@ -58,6 +58,7 @@ jobs:
   #   ─────────────────────╚═╝
   #
 
+
   create_tag:
     runs-on: ubuntu-latest
     needs: test
@@ -76,19 +77,15 @@ jobs:
         minor=${{ vars.VERSION_MINOR }}
         patch=${{ vars.VERSION_PATCH }}
         
+        # Construct the new version
         new_version="${major}.${minor}.${patch}"
 
         echo "New version is $new_version"
         echo "RELEASE_VERSION=$new_version" >> $GITHUB_ENV
 
-    - name: Update version 
-      run: |
-        curl -X PATCH "https://api.github.com/repos/${{ github.repository }}/actions/variables/VERSION_MINOR" \
-          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-          -d "{\"value\": \"${{ env.RELEASE_VERSION }}\"}"
-
     - name: Delete existing remote tag if it exists
       run: |
+        git fetch --tags
         git tag -d "${{ env.RELEASE_VERSION }}" || echo "No local tag to delete"
         git push --delete origin "${{ env.RELEASE_VERSION }}" || echo "No remote tag to delete"
 
@@ -97,6 +94,7 @@ jobs:
         git tag -a "${{ env.RELEASE_VERSION }}" -m "Release version ${{ env.RELEASE_VERSION }}"
         git push origin "${{ env.RELEASE_VERSION }}"
 
+
   # 
   #   ╔═╗────────╔═╗
   #   ║╬╠═╦╗╔═╦═╗║═╬═╗
@@ -104,6 +102,7 @@ jobs:
   #   ╚╩╩═╩═╩═╩══╩═╩═╝
   #
    
+
   release:
     runs-on: ubuntu-latest
     needs: create_tag
