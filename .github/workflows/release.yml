@@ -13,10 +13,6 @@ on:
   push:
     branches: [ "master" ]
 
-env:
-  RELEASE_VERSION: 1.0.0
-  RELEASE_NOTES: "New release for version 1.0.0"
-
 permissions:
   contents: write
 
@@ -72,6 +68,25 @@ jobs:
       run: |
         git config --global user.email "frederiklind@noreply.com"
         git config --global user.name "Frederik Lind"
+
+    - name: Get current version from GitHub variables
+      id: version
+      run: |
+        major=${{ vars.VERSION_MAJOR }}
+        minor=${{ vars.VERSION_MINOR }}
+        patch=${{ vars.VERSION_PATCH }}
+        
+        new_minor=$((minor + 1))
+        new_version="${major}.${new_minor}.${patch}"
+
+        echo "New version is $new_version"
+        echo "RELEASE_VERSION=$new_version" >> $GITHUB_ENV
+
+    - name: Update version 
+      run: |
+        curl -X PATCH "https://api.github.com/repos/${{ github.repository }}/actions/variables/VERSION_MINOR" \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -d "{\"value\": \"${{ env.RELEASE_VERSION }}\"}"
 
     - name: Delete existing remote tag if it exists
       run: |
