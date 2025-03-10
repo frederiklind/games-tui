@@ -76,8 +76,7 @@ jobs:
         minor=${{ vars.VERSION_MINOR }}
         patch=${{ vars.VERSION_PATCH }}
         
-        new_minor=$((minor + 1))
-        new_version="${major}.${new_minor}.${patch}"
+        new_version="${major}.${minor}.${patch}"
 
         echo "New version is $new_version"
         echo "RELEASE_VERSION=$new_version" >> $GITHUB_ENV
